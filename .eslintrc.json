@@ -19,6 +19,7 @@
   },
   "plugins": ["react", "@typescript-eslint"],
   "rules": {
+    "require-jsdoc": 0,
     "linebreak-style": 0,
     "import/prefer-default-export": 0,
     "import/extensions": 0,
@@ -33,7 +34,13 @@
       { "extensions": [".js", ".jsx", ".ts", ".tsx"] }
     ],
     "jsx-a11y/no-noninteractive-element-interactions": 0,
-    "@typescript-eslint/explicit-module-boundary-types": 0
+    "@typescript-eslint/explicit-module-boundary-types": 0,
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ]
   },
   "settings": {
     "import/resolver": {
