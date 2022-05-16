@@ -1,10 +1,14 @@
 import React from 'react';
-import { ToonsThemeProvider } from 'toons-components';
+import { Button, ToonsThemeProvider } from 'toons-components';
+import GloablStyles from './styles/gloabl';
 
 function App() {
   return (
     <ToonsThemeProvider themeType='DEFAULT'>
-      <div></div>
+      <GloablStyles />
+      <div>
+        <Button>BUTTON</Button>
+      </div>
     </ToonsThemeProvider>
   );
 }
