@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, ToonsThemeProvider } from 'toons-components';
-import GloablStyles from './styles/gloabl';
+import GloablStyles from './assets/styles/gloabl';
 
 function App() {
   return (
