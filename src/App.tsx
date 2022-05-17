@@ -1,16 +1,18 @@
 import React from 'react';
-import { ToonsThemeProvider } from 'toons-components';
+import { ThemeProvider } from 'styled-components';
+import { theme } from 'toons-components';
 import GlobalStyles from './assets/styles/global';
 import MainBanner from './components/home/MainBanner';
 
 function App() {
+  // later make select-theme function
   return (
-    <ToonsThemeProvider themeType="DEFAULT">
+    <ThemeProvider theme={theme}>
       <GlobalStyles />
       <div style={{ height: '200vh', backgroundColor: 'skyblue' }}>
         <MainBanner />
       </div>
-    </ToonsThemeProvider>
+    </ThemeProvider>
   );
 }
 
