@@ -1,7 +1,7 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import { theme } from 'toons-components';
-import GlobalStyles from './assets/styles/global';
+import GlobalStyles from './styles/global';
 import MainBanner from './components/home/MainBanner';
 
 function App() {
