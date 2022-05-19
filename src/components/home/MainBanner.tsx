@@ -8,6 +8,7 @@ import React, {
 import styled, { useTheme } from 'styled-components';
 import _, { indexOf } from 'lodash';
 import MainBg from '../../assets/images/main-bg.svg';
+import MouseScrollBox from './MouseScrollBox';
 
 const mainBnString = [
   'KEEP'.split(''),
@@ -107,16 +108,29 @@ function MainBanner() {
           );
         })}
       </div>
+      <MouseScrollBox />
     </MainBnWrapper>
   );
 }
 
 const MainBnWrapper = styled.div<{ isScrolled: boolean }>`
+  position: relative;
   display: flex;
   justify-content: center;
   width: 100%;
   height: 100vh;
   background-color: ${(props) => props.theme.colors.primary.main};
+  background-size: calc(100% - 2rem);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  animation-name: bgAni;
+  animation-duration: 3.6s;
+  animation-timing-function: cubic-bezier(0.45, -0.01, 0, 0.99);
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-delay: 0.8s;
+
   div.wrapper {
     display: flex;
     flex-direction: column;
@@ -124,24 +138,14 @@ const MainBnWrapper = styled.div<{ isScrolled: boolean }>`
     height: 100%;
     transition: 0.6s;
     overflow: hidden;
-    background-image: url(${MainBg});
-    background-size: 100%;
-    background-repeat: no-repeat;
-    background-position: center;
-    animation-name: bgAni;
-    animation-duration: 3.6s;
-    animation-timing-function: cubic-bezier(0.45, -0.01, 0, 0.99);
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
 
     h3 {
-      font-size: 110px;
+      font-family: 'Black Han Sans', sans-serif;
       transition: 0.3s;
 
       span.cursor {
         display: inline-block;
         width: 2px;
-        height: 81px;
         margin-left: 1rem;
         background-color: #333;
         animation-name: cursor;
@@ -167,10 +171,38 @@ const MainBnWrapper = styled.div<{ isScrolled: boolean }>`
 
   @keyframes bgAni {
     from {
-      background-position: center 400%;
+      background-image: url(${MainBg});
+      background-position: center 500px;
     }
     to {
-      background-size: center center;
+      background-image: url(${MainBg});
+      background-position: center center;
+    }
+  }
+
+  @media screen and (min-width: 541px) {
+    h3 {
+      font-size: 7rem;
+
+      span.cursor {
+        height: 5.5rem;
+      }
+    }
+  }
+  @media screen and (max-width: 540px) {
+    h3 {
+      font-size: 5rem;
+      span.cursor {
+        height: 3.5rem;
+      }
+    }
+  }
+  @media screen and (max-width: 414px) {
+    h3 {
+      font-size: 3rem;
+      span.cursor {
+        height: 1.5rem;
+      }
     }
   }
 `;
