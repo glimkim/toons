@@ -9,7 +9,8 @@ const fonts = css`
     font-display: fallback;
     src: local('Black Han Sans'),
       url(../assets/fonts/BlackHanSans-Regular.woff2) format('woff2'),
-      url(../assets/fonts/BlackHanSans-Regular.woff) format('woff');
+      url(../assets/fonts/BlackHanSans-Regular.woff) format('woff'),
+      url(../assets/fonts/BlackHanSans-Regular.ttf) format('truetype');
   }
   @font-face {
     font-family: 'Noto Sans';
@@ -18,7 +19,8 @@ const fonts = css`
     font-display: fallback;
     src: local('Noto Sans'),
       url(../assets/fonts/NotoSansKR-Regular.woff2) format('woff2'),
-      url(../assets/fonts/NotoSansKR-Regular.woff) format('woff');
+      url(../assets/fonts/NotoSansKR-Regular.woff) format('woff'),
+      url(../assets/fonts/NotoSansKR-Regular.ttf) format('truetype');
   }
   @font-face {
     font-family: 'Noto Sans';
@@ -27,11 +29,12 @@ const fonts = css`
     font-display: fallback;
     src: local('Noto Sans'),
       url(../assets/fonts/NotoSansKR-Bold.woff2) format('woff2'),
-      url(../assets/fonts/NotoSansKR-Bold.woff) format('woff');
+      url(../assets/fonts/NotoSansKR-Bold.woff) format('woff'),
+      url(../assets/fonts/NotoSansKR-Bold.ttf) format('truetype');
   }
 `;
-
-const GloablStyles = createGlobalStyle`
+// TODO need to add .ttf for androids
+const GlobalStyles = createGlobalStyle`
     ${ToonsGlobalCss};
     ${fonts};
     *{
@@ -50,4 +53,4 @@ const GloablStyles = createGlobalStyle`
     }
 `;
 
-export default GloablStyles;
+export default GlobalStyles;
