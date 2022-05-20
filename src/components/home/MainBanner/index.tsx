@@ -1,13 +1,7 @@
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  useMemo,
-  HTMLAttributes,
-} from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import styled, { useTheme } from 'styled-components';
-import _, { indexOf } from 'lodash';
-import MainBg from '../../assets/images/main-bg.svg';
+import _ from 'lodash';
+import MainBg from '@images/main-bg.svg';
 import MouseScrollBox from './MouseScrollBox';
 
 const mainBnString = [
