@@ -52,13 +52,25 @@ const MouseWrapper = styled.div`
   position: absolute;
   bottom: 1rem;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateY(100px) translateX(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
   p {
     font-size: 0.875rem;
     font-weight: 700;
+  }
+  animation-name: appearFromBottom;
+  animation-duration: 1s;
+  animation-delay: 3.8s;
+  animation-fill-mode: forwards;
+  @keyframes appearFromBottom {
+    from {
+      transform: translateY(100px) translateX(-50%);
+    }
+    to {
+      transform: translateY(0) translateX(-50%);
+    }
   }
 `;
 

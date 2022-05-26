@@ -117,11 +117,12 @@ const MainBnWrapper = styled.div<{ isScrolled: boolean }>`
   background-position: center;
   background-attachment: fixed;
   animation-name: bgAni;
-  animation-duration: 3.6s;
+  animation-duration: 3.2s;
   animation-timing-function: cubic-bezier(0.45, -0.01, 0, 0.99);
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
-  animation-delay: 0.8s;
+  animation-delay: 1.2s;
+  overflow: hidden;
 
   div.wrapper {
     display: flex;
@@ -164,7 +165,7 @@ const MainBnWrapper = styled.div<{ isScrolled: boolean }>`
   @keyframes bgAni {
     from {
       background-image: url(${MainBg});
-      background-position: center 500px;
+      background-position: center 1000px;
     }
     to {
       background-image: url(${MainBg});

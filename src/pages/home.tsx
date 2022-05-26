@@ -1,5 +1,6 @@
 import React from 'react';
 import Header from '@components/common/Header';
+import MainBanner from '@components/home/MainBanner';
 import LoginBox from '@components/home/AccountBox';
 import { useLocation } from 'react-router-dom';
 
@@ -8,7 +9,7 @@ function Home() {
 
   return (
     <div style={{ height: '200vh', backgroundColor: 'skyblue' }}>
-      <Header />
+      <MainBanner />
       {pathname === '/login' && <LoginBox />}
     </div>
   );
