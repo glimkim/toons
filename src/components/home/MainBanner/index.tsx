@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 import _ from 'lodash';
 import MainBg from '@images/main-bg.svg';
 import MouseScrollBox from './MouseScrollBox';
@@ -12,8 +12,6 @@ const mainBnString = [
 ];
 
 function MainBanner() {
-  const theme = useTheme();
-  console.log(theme);
   const [letterCount, setLetterCount] = useState({
     index: 0,
     count: 1,
@@ -113,7 +111,7 @@ const MainBnWrapper = styled.div<{ isScrolled: boolean }>`
   justify-content: center;
   width: 100%;
   height: 100vh;
-  background-color: ${(props) => props.theme.colors.primary.main};
+  background-color: ${(props) => props.theme.colors.main};
   background-size: calc(100% - 2rem);
   background-repeat: no-repeat;
   background-position: center;

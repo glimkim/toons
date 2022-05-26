@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from '@components/common/Header';
-import LoginBox from '@components/home/LoginBox';
+import LoginBox from '@components/home/AccountBox';
 import { useLocation } from 'react-router-dom';
 
 function Home() {

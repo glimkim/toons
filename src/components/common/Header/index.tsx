@@ -52,7 +52,7 @@ const MainMenuList = styled.ul`
       align-items: center;
       height: 100%;
       padding: 0 0.7rem;
-      background-color: ${(props) => props.theme.colors.primary.main};
+      background-color: ${(props) => props.theme.colors.main};
       font-weight: bold;
       transition: 0.3s;
     }
@@ -101,7 +101,7 @@ const StyledHeader = styled.header`
   align-items: center;
   justify-content: flex-end;
   height: 4.4rem;
-  background-color: ${(props) => props.theme.colors.primary.main};
+  background-color: ${(props) => props.theme.colors.main};
   a.logo {
     position: absolute;
     top: 0;
