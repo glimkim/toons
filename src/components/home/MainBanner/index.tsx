@@ -107,6 +107,7 @@ function MainBanner() {
 
 const MainBnWrapper = styled.div<{ isScrolled: boolean }>`
   position: relative;
+  z-index: 600;
   display: flex;
   justify-content: center;
   width: 100%;
