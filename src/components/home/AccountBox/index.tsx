@@ -1,19 +1,41 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as Logo } from '@images/common/logo_light.svg';
 import { Button, Checkbox, Input } from 'toons-components';
 import { ReactComponent as Google } from '@images/common/google-icon.svg';
 import { ReactComponent as Kakao } from '@images/common/kakao-icon.svg';
 import { CSSTransition } from 'react-transition-group';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import AccountForm from './AccountForm';
+import useQueryParameters from '@hooks/useQueryParameters';
 
 function LoginBox() {
-  const [isSignUp, setIsSignUp] = useState<boolean>(false);
+  // const [isSignUp, setIsSignUp] = useState<boolean>(false);
+  const { queryParams } = useQueryParameters('authType');
+  const isSignUp = useMemo(() => {
+    return queryParams[0] === 'signUp';
+  }, [queryParams]);
+  const navigate = useNavigate();
 
   const onClickSignUp = useCallback(() => {
-    setIsSignUp(true);
+    navigate('?authType=signUp', {
+      replace: true,
+    });
   }, []);
+
+  const onSocialLogin = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      const { name } = e.currentTarget;
+      console.log(name);
+      if (name === 'kakao') {
+        window.open(
+          'https://api.jinwoo.space/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/oauth2/redirect',
+          '_self',
+        );
+      }
+    },
+    [],
+  );
 
   useEffect(() => {
     // to avoid scrolling
@@ -25,38 +47,37 @@ function LoginBox() {
   }, []);
 
   return (
-    <LoginContainer className={isSignUp ? 'signUpForm' : ''}>
-      <LoginWrapper className="loginWrapper">
-        <Link to="/" className="logo">
-          <Logo />
-        </Link>
-        <AccountForm forSignUp={isSignUp} />
-        <CSSTransition in={!isSignUp} timeout={400} unmountOnExit>
-          <SocialLoginWrapper className="socialWrapper">
-            <div className="borderSpan">
-              <span className="text">OR</span>
-            </div>
-            <div className="socialButtonGroup">
-              <button type="button">
-                <Google />
-              </button>
-              <button type="button">
-                <Kakao />
-              </button>
-            </div>
-          </SocialLoginWrapper>
-        </CSSTransition>
-        <CSSTransition in={!isSignUp} timeout={300} unmountOnExit>
-          <div className="signUpBox">
-            Need an account?
-            <button type="button" onClick={onClickSignUp}>
-              Sign Up
+    <LoginWrapper
+      className={isSignUp ? 'signUpForm loginWrapper' : 'loginWrapper'}
+    >
+      <Link to="/" className="logo">
+        <Logo />
+      </Link>
+      <AccountForm forSignUp={isSignUp} />
+      <CSSTransition in={!isSignUp} timeout={400} unmountOnExit>
+        <SocialLoginWrapper className="socialWrapper">
+          <div className="borderSpan">
+            <span className="text">OR</span>
+          </div>
+          <div className="socialButtonGroup">
+            <button type="button" name="google" onClick={onSocialLogin}>
+              <Google />
+            </button>
+            <button type="button" name="kakao" onClick={onSocialLogin}>
+              <Kakao />
             </button>
           </div>
-        </CSSTransition>
-      </LoginWrapper>
-      <div className="loginBg" />
-    </LoginContainer>
+        </SocialLoginWrapper>
+      </CSSTransition>
+      <CSSTransition in={!isSignUp} timeout={300} unmountOnExit>
+        <div className="signUpBox">
+          Need an account?
+          <button type="button" onClick={onClickSignUp}>
+            Sign Up
+          </button>
+        </div>
+      </CSSTransition>
+    </LoginWrapper>
   );
 }
 
@@ -64,7 +85,7 @@ const SocialLoginWrapper = styled.div`
   position: relative;
   top: 0;
   width: 100%;
-  margin-top: 3.14rem;
+  padding: 2.14rem 2rem 0;
   div.borderSpan {
     display: flex;
     flex-direction: row;
@@ -103,26 +124,24 @@ const SocialLoginWrapper = styled.div`
 `;
 
 const LoginWrapper = styled.div`
-  position: absolute;
-  z-index: 1000;
-  right: 0;
-  left: 0;
-  top: 0;
-  bottom: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 27rem;
   max-width: 100%;
-  height: 45rem;
-  padding: 2rem;
-  max-height: 100%;
+  height: calc(100vh - 2rem);
   margin: auto;
+  max-height: 100%;
+  padding-top: 2rem;
   border-radius: 1rem;
   background-color: ${({ theme }) => theme.colors.gray00};
   overflow: hidden;
   a.logo {
-    height: 60px;
+    height: 3.5rem;
+    * {
+      height: 100%;
+      width: auto;
+    }
   }
 
   div.signUpBox {
@@ -135,32 +154,6 @@ const LoginWrapper = styled.div`
     > button {
       font-weight: bold;
       text-decoration: underline;
-    }
-  }
-`;
-
-const LoginContainer = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 1000;
-
-  div.loginBg {
-    position: fixed;
-    z-index: 500;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.7);
-  }
-  div.joinInfo {
-    opacity: 0;
-    transform: translateY(-10%);
-    > div {
-      margin-bottom: 1rem;
     }
   }
 

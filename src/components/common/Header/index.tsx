@@ -1,32 +1,45 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { ReactComponent as ToonsLogo } from '@images/common/logo_basic.svg';
+import useQueryParameters from '@hooks/useQueryParameters';
 
 const headerHeight = '4.4rem';
 
 function Header() {
+  const { appendSearchParams } = useQueryParameters();
+  const onClickLogin = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    appendSearchParams({
+      authType: 'signIn',
+    });
+  }, []);
+
   return (
     <StyledHeader>
-      <Link to="/" className="logo">
-        <ToonsLogo />
-      </Link>
-      <MainMenuList>
-        <li>
-          <a href="#mainMenu">Webtoons</a>
-          <ul className="subMenuList">
-            <li>
-              <Link to="webtoons/naver">Naver</Link>
-            </li>
-            <li>
-              <Link to="webtoons/daum">Naver</Link>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <Link to="/login">Login</Link>
-        </li>
-      </MainMenuList>
+      <div className="wrapper">
+        <Link to="/" className="logo">
+          <ToonsLogo />
+        </Link>
+        <MainMenuList>
+          <li>
+            <a href="#mainMenu">Webtoons</a>
+            <ul className="subMenuList">
+              <li>
+                <Link to="webtoons/naver">Naver</Link>
+              </li>
+              <li>
+                <Link to="webtoons/daum">Naver</Link>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href="#login" onClick={onClickLogin}>
+              Login
+            </a>
+          </li>
+        </MainMenuList>
+      </div>
     </StyledHeader>
   );
 }
@@ -65,7 +78,7 @@ const MainMenuList = styled.ul`
       width: 100%;
       opacity: 0;
       transition: 0.3s;
-      background-color: #ededed;
+      background-color: ${(props) => props.theme.colors.gray50};
       li {
         width: 100%;
         padding: 0.7rem;
@@ -75,6 +88,7 @@ const MainMenuList = styled.ul`
           font-size: 1rem;
           transition: 0.3s;
           transform-origin: left center;
+          color: #fff;
           &:hover {
             transform: scale(1.1, 1.1);
             font-weight: bold;
@@ -84,10 +98,11 @@ const MainMenuList = styled.ul`
     }
     &:hover {
       > a {
-        background-color: #ededed;
+        background-color: ${(props) => props.theme.colors.gray50};
+        color: #fff;
       }
       ul.subMenuList {
-        top: 3.4rem;
+        top: 4.4rem;
         opacity: 1;
       }
     }
@@ -95,13 +110,18 @@ const MainMenuList = styled.ul`
 `;
 
 const StyledHeader = styled.header`
-  position: relative;
+  position: fixed;
   z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
+  top: 0;
+  left: 0;
+  width: 100%;
   height: 4.4rem;
   background-color: ${(props) => props.theme.colors.main};
+  div.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
   a.logo {
     position: absolute;
     top: 0;
