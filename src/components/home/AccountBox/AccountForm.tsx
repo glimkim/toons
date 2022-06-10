@@ -1,71 +1,127 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { Button, Checkbox, Input } from 'toons-components';
 import { CSSTransition } from 'react-transition-group';
+import { useMutation } from 'react-query';
+import { Formik } from 'formik';
+import { signInAPI } from '@apis/auth';
 
 interface FormProps {
   forSignUp: boolean;
 }
 
+type SignInFormValues = {
+  email: string;
+  password: string;
+};
+
+type SignUpFormValues = {
+  email: string;
+  password: string;
+  username: string;
+  phone: string;
+};
+
 function AccountForm({ forSignUp }: FormProps) {
+  const formInitialValues: { [key: string]: string } = forSignUp
+    ? {
+        email: '',
+        password: '',
+        username: '',
+        phone: '',
+      }
+    : {
+        email: '',
+        password: '',
+      };
+  const { mutateAsync: submitSignInInfo } = useMutation('signIn', signInAPI);
+
+  const onSubmit = useCallback(
+    (formValues: { [key: string]: string }) => {
+      if (forSignUp) {
+      } else {
+        // signIn
+        console.log(formValues as SignInFormValues, 'sss');
+        submitSignInInfo(formValues as SignInFormValues).then((e) =>
+          console.log(e),
+        );
+        // submitSignInInfo({});
+      }
+    },
+    [forSignUp],
+  );
+
   return (
-    <Form className={forSignUp ? 'signUpForm' : ''}>
-      <Input
-        id="email"
-        label="Email"
-        onChange={console.log}
-        placeholder="Enter your email"
-      />
-      <Input
-        id="password"
-        label="Password"
-        onChange={console.log}
-        placeholder="Enter your password"
-      />
-      <CSSTransition in={forSignUp} timeout={800} unmountOnExit>
-        <div className="joinInfo">
+    <Formik initialValues={formInitialValues} onSubmit={onSubmit}>
+      {({ handleChange, handleBlur, handleSubmit, values }) => (
+        <Form className={forSignUp ? 'signUpForm' : ''}>
           <Input
             id="email"
             label="Email"
-            onChange={console.log}
+            onChange={handleChange}
             placeholder="Enter your email"
           />
           <Input
-            id="email"
-            label="Email"
-            onChange={console.log}
-            placeholder="Enter your email"
+            id="password"
+            label="Password"
+            onChange={handleChange}
+            placeholder="Enter your password"
+            type="password"
           />
-        </div>
-      </CSSTransition>
-      <CSSTransition
-        in={!forSignUp}
-        timeout={300}
-        classNames="rememberMe"
-        unmountOnExit
-      >
-        <div className="checkboxWrapper">
-          <Checkbox id="rememberUser" onChange={console.log} />
-          <span>Remember Me</span>
-        </div>
-      </CSSTransition>
-      <CSSTransition in={!forSignUp} timeout={300} unmountOnExit>
-        <div className="loginButtonGroup">
-          <Button fullWidth>Sing In</Button>
-          <button className="findBtn" type="button">
-            Forgot passoword?
-          </button>
-        </div>
-      </CSSTransition>
-      <CSSTransition
-        in={forSignUp}
-        timeout={300}
-        unmountOnExit
-        classNames="signUpBtn"
-      >
-        <Button fullWidth>Sing Up</Button>
-      </CSSTransition>
-    </Form>
+          <CSSTransition in={forSignUp} timeout={800} unmountOnExit>
+            <div className="joinInfo">
+              <Input
+                id="username"
+                label="Name"
+                onChange={handleChange}
+                placeholder="Enter your name"
+              />
+              <Input
+                id="contact"
+                label="Mobile"
+                onChange={handleChange}
+                placeholder="Enter your mobile number"
+              />
+            </div>
+          </CSSTransition>
+          <CSSTransition
+            in={!forSignUp}
+            timeout={300}
+            classNames="rememberMe"
+            unmountOnExit
+          >
+            <div className="checkboxWrapper">
+              <Checkbox id="rememberUser" onChange={console.log} />
+              <span>Remember Me</span>
+            </div>
+          </CSSTransition>
+          <CSSTransition in={!forSignUp} timeout={300} unmountOnExit>
+            <div className="loginButtonGroup">
+              <Button
+                fullWidth
+                onClick={(e) => {
+                  console.log(values);
+                  handleSubmit();
+                }}
+              >
+                Sing In
+              </Button>
+              <button className="findBtn" type="button">
+                Forgot passoword?
+              </button>
+            </div>
+          </CSSTransition>
+          <CSSTransition
+            in={forSignUp}
+            timeout={300}
+            unmountOnExit
+            classNames="signUpBtn"
+          >
+            <Button fullWidth>Sing Up</Button>
+          </CSSTransition>
+        </Form>
+      )}
+    </Formik>
   );
 }
 
@@ -75,6 +131,7 @@ const Form = styled.form`
   width: 100%;
   margin-top: 2.14rem;
   overflow: hidden;
+  padding: 0 2rem;
   > div {
     margin-bottom: 1rem;
   }
@@ -87,7 +144,6 @@ const Form = styled.form`
   div.loginButtonGroup {
     display: flex;
     flex-direction: column;
-    margin-top: 1.14rem;
     button:first-of-type {
       position: relative;
       top: 0;
@@ -104,6 +160,11 @@ const Form = styled.form`
     margin-top: 1.14rem;
     opacity: 0;
     transform: translateY(50%);
+  }
+  div.joinInfo {
+    > div {
+      margin-bottom: 0.7rem;
+    }
   }
   &.signUpForm {
     height: calc(100% - 60px);
