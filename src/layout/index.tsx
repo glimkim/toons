@@ -1,6 +1,6 @@
 import Header from '@components/common/Header';
 import LoginBox from '@components/home/AccountBox';
-import useQueryParameters from '@hooks/useQueryParameters';
+import useSearchParameters from '@hooks/useSearchParameters';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Dialog } from 'toons-components';
@@ -11,7 +11,7 @@ interface LayoutProps {
 
 function PageLayout({ children }: LayoutProps) {
   const { searchParams, queryParams, deleteSearchParams } =
-    useQueryParameters('authType');
+    useSearchParameters('authType');
   const [openAuth, setOpenAuth] = useState(false);
 
   const onCloseAuthBox = useCallback(() => {

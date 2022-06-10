@@ -2,12 +2,12 @@ import React, { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { ReactComponent as ToonsLogo } from '@images/common/logo_basic.svg';
-import useQueryParameters from '@hooks/useQueryParameters';
+import useSearchParameters from '@hooks/useSearchParameters';
 
 const headerHeight = '4.4rem';
 
 function Header() {
-  const { appendSearchParams } = useQueryParameters();
+  const { appendSearchParams } = useSearchParameters();
   const onClickLogin = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     appendSearchParams({

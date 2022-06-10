@@ -1,16 +1,21 @@
 import { useSearchParams } from 'react-router-dom';
 import { useMemo, useCallback } from 'react';
 
-function useQueryParameters(queryKey?: string) {
+function useSearchParameters(queryKey?: string) {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const queryParams = useMemo(() => {
     return queryKey ? searchParams.getAll(queryKey) : [];
   }, [searchParams]);
 
-  const appendSearchParams = useCallback((param: { [key: string]: string }) => {
-    setSearchParams(param);
-  }, []);
+  const appendSearchParams = useCallback(
+    (param: { [key: string]: string }, replace = false) => {
+      setSearchParams(param, {
+        replace,
+      });
+    },
+    [],
+  );
 
   const deleteSearchParams = useCallback(
     (queryKey: string) => {
@@ -28,4 +33,4 @@ function useQueryParameters(queryKey?: string) {
   };
 }
 
-export default useQueryParameters;
+export default useSearchParameters;

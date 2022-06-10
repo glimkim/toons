@@ -1,26 +1,22 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as Logo } from '@images/common/logo_light.svg';
-import { Button, Checkbox, Input } from 'toons-components';
 import { ReactComponent as Google } from '@images/common/google-icon.svg';
 import { ReactComponent as Kakao } from '@images/common/kakao-icon.svg';
 import { CSSTransition } from 'react-transition-group';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AccountForm from './AccountForm';
-import useQueryParameters from '@hooks/useQueryParameters';
+import useSearchParameters from '@hooks/useSearchParameters';
 
 function LoginBox() {
   // const [isSignUp, setIsSignUp] = useState<boolean>(false);
-  const { queryParams } = useQueryParameters('authType');
+  const { queryParams, appendSearchParams } = useSearchParameters('authType');
   const isSignUp = useMemo(() => {
     return queryParams[0] === 'signUp';
   }, [queryParams]);
-  const navigate = useNavigate();
 
   const onClickSignUp = useCallback(() => {
-    navigate('?authType=signUp', {
-      replace: true,
-    });
+    appendSearchParams({ authType: 'signUp' });
   }, []);
 
   const onSocialLogin = useCallback(
