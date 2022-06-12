@@ -40,4 +40,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: limdev/toons:${{ steps.meta.outputs.version }}
+          tags: |
+            limdev/toons:${{ steps.meta.outputs.version }}
+            limdev/toons:latest
