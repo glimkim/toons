@@ -10,6 +10,7 @@ on:
 env:
   DOCKER_USERNAME: ${{secrets.DOCKERHUB_USERNAME}}
   DOCKER_PW: ${{secrets.DOCKERHUB_PW}}
+  DOCKER_REPO: ${{secrets.DOCKERHUB_USERNAME}}/toons
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -41,5 +42,5 @@ jobs:
         with:
           push: true
           tags: |
-            limdev/toons:${{ steps.meta.outputs.version }}
-            limdev/toons:latest
+            $DOCKER_REPO:${{ steps.meta.outputs.version }}
+            $DOCKER_REPO:latest
