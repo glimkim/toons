@@ -33,4 +33,5 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: limdev/toons:$IMAGE_VERSION
+          tags: limdev/toons:latest
+        run: echo "$IMAGE_VERSION"
