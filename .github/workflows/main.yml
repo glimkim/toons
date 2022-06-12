@@ -42,5 +42,5 @@ jobs:
         with:
           push: true
           tags: |
-            ($DOCKER_REPO):${{ steps.meta.outputs.version }}
-            ($DOCKER_REPO):latest
+            ${{env.DOCKER_REPO}}:${{ steps.meta.outputs.version }}
+            ${{env.DOCKER_REPO}}:latest
