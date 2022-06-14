@@ -4,7 +4,7 @@ import { Button, Checkbox, Input } from 'toons-components';
 import { CSSTransition } from 'react-transition-group';
 import { useMutation } from 'react-query';
 import { Formik } from 'formik';
-import { signInAPI } from '@apis/auth';
+import { signInAPI, signUpAPI } from '@apis/auth';
 import { SignInResponseDTO } from '@apis/DTO/auth';
 import { useDispatch } from 'react-redux';
 import useSearchParameters from '@hooks/useSearchParameters';
@@ -23,12 +23,12 @@ type SignUpFormValues = {
   email: string;
   password: string;
   username: string;
-  phone: string;
+  // phone: string;
 };
 
 function AccountForm({ forSignUp }: FormProps) {
   const dispatch = useDispatch();
-  const { deleteSearchParams } = useSearchParameters();
+  const { deleteSearchParams, appendSearchParams } = useSearchParameters();
   const formInitialValues: { [key: string]: string } = forSignUp
     ? {
         email: '',
@@ -41,10 +41,17 @@ function AccountForm({ forSignUp }: FormProps) {
         password: '',
       };
   const { mutateAsync: submitSignInInfo } = useMutation('signIn', signInAPI);
+  const { mutateAsync: submitSignUpInfo } = useMutation('signUp', signUpAPI);
 
   const onSubmit = useCallback(
     (formValues: { [key: string]: string }) => {
       if (forSignUp) {
+        submitSignUpInfo(formValues as SignUpFormValues)
+          .then((res) => {
+            console.log(res);
+            appendSearchParams({ authType: 'signIn' });
+          })
+          .catch((e) => console.dir(e));
       } else {
         // signIn
         submitSignInInfo(formValues as SignInFormValues).then(
@@ -110,13 +117,8 @@ function AccountForm({ forSignUp }: FormProps) {
           </CSSTransition>
           <CSSTransition in={!forSignUp} timeout={300} unmountOnExit>
             <div className="loginButtonGroup">
-              <Button
-                fullWidth
-                onClick={(e) => {
-                  console.log(values);
-                  handleSubmit();
-                }}
-              >
+              <Button fullWidth onClick={() => handleSubmit()}>
+                {/* TODO Button component props extends HTMLAttributes */}
                 Sing In
               </Button>
               <button className="findBtn" type="button">
@@ -130,7 +132,9 @@ function AccountForm({ forSignUp }: FormProps) {
             unmountOnExit
             classNames="signUpBtn"
           >
-            <Button fullWidth>Sing Up</Button>
+            <Button fullWidth onClick={() => handleSubmit()}>
+              Sing Up
+            </Button>
           </CSSTransition>
         </Form>
       )}
