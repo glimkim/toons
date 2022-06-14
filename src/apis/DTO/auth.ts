@@ -4,7 +4,11 @@ export interface SignUpDTO {
   username: string;
 }
 
-export interface SignInDTO {
+export interface SignInRequestDTO {
   email: string;
   password: string;
+}
+
+export interface SignInResponseDTO {
+  token: string;
 }

@@ -1,6 +1,6 @@
 import Axios from './config';
-import { SignInDTO } from './DTO/auth';
+import { SignInRequestDTO } from './DTO/auth';
 
-export const signInAPI = async (signInInfo: SignInDTO) => {
+export const signInAPI = async (signInInfo: SignInRequestDTO) => {
   return (await Axios.post('/auth', signInInfo)).data;
 };
