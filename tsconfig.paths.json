@@ -11,7 +11,7 @@
       "@hooks/*": ["src/hooks/*"],
       "@apis/*": ["src/apis/*"],
       "@utils/*": ["src/utils/*"],
-      "@context/*": ["src/context/*"]
+      "@store/*": ["src/store/*"]
     }
   }
 }
