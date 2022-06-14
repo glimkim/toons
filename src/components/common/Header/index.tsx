@@ -1,19 +1,31 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { ReactComponent as ToonsLogo } from '@images/common/logo_basic.svg';
 import useSearchParameters from '@hooks/useSearchParameters';
+import { useDispatch, useSelector, useStore } from 'react-redux';
+import { unsetUser, User } from '@store/modules/user';
+import store, { getUser, StoreState } from '@store/root';
 
 const headerHeight = '4.4rem';
 
 function Header() {
   const { appendSearchParams } = useSearchParameters();
-  const onClickLogin = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    appendSearchParams({
-      authType: 'signIn',
-    });
-  }, []);
+  const { token } = useSelector<StoreState, User>((state) => state.user);
+  const dispatch = useDispatch();
+  const onClickAuthBtn = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>) => {
+      e.preventDefault();
+      if (!!token) {
+        dispatch(unsetUser());
+      } else {
+        appendSearchParams({
+          authType: 'signIn',
+        });
+      }
+    },
+    [token],
+  );
 
   return (
     <StyledHeader>
@@ -34,8 +46,8 @@ function Header() {
             </ul>
           </li>
           <li>
-            <a href="#login" onClick={onClickLogin}>
-              Login
+            <a href="#login" onClick={onClickAuthBtn}>
+              {!!token ? 'LogOut' : 'Login'}
             </a>
           </li>
         </MainMenuList>

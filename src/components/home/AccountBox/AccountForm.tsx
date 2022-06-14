@@ -5,6 +5,10 @@ import { CSSTransition } from 'react-transition-group';
 import { useMutation } from 'react-query';
 import { Formik } from 'formik';
 import { signInAPI } from '@apis/auth';
+import { SignInResponseDTO } from '@apis/DTO/auth';
+import { useDispatch } from 'react-redux';
+import useSearchParameters from '@hooks/useSearchParameters';
+import { setUser } from '@store/modules/user';
 
 interface FormProps {
   forSignUp: boolean;
@@ -23,6 +27,8 @@ type SignUpFormValues = {
 };
 
 function AccountForm({ forSignUp }: FormProps) {
+  const dispatch = useDispatch();
+  const { deleteSearchParams } = useSearchParameters();
   const formInitialValues: { [key: string]: string } = forSignUp
     ? {
         email: '',
@@ -41,9 +47,16 @@ function AccountForm({ forSignUp }: FormProps) {
       if (forSignUp) {
       } else {
         // signIn
-        console.log(formValues as SignInFormValues, 'sss');
-        submitSignInInfo(formValues as SignInFormValues).then((e) =>
-          console.log(e),
+        submitSignInInfo(formValues as SignInFormValues).then(
+          (res: SignInResponseDTO) => {
+            dispatch(
+              setUser({
+                email: formValues.email || '',
+                token: res.token,
+              }),
+            );
+            deleteSearchParams('authType');
+          },
         );
         // submitSignInInfo({});
       }
