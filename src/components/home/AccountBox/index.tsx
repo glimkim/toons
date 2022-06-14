@@ -4,11 +4,11 @@ import { ReactComponent as Logo } from '@images/common/logo_light.svg';
 import { ReactComponent as Google } from '@images/common/google-icon.svg';
 import { ReactComponent as Kakao } from '@images/common/kakao-icon.svg';
 import { CSSTransition } from 'react-transition-group';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import AccountForm from './AccountForm';
 import useSearchParameters from '@hooks/useSearchParameters';
 
-function LoginBox() {
+function AccountModal() {
   // const [isSignUp, setIsSignUp] = useState<boolean>(false);
   const { queryParams, appendSearchParams } = useSearchParameters('authType');
   const isSignUp = useMemo(() => {
@@ -189,4 +189,4 @@ const LoginWrapper = styled.div`
   }
 `;
 
-export default LoginBox;
+export default AccountModal;

@@ -1,8 +1,7 @@
 import Header from '@components/common/Header';
-import LoginBox from '@components/home/AccountBox';
+import AccountModal from '@components/home/AccountBox';
 import useSearchParameters from '@hooks/useSearchParameters';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Dialog } from 'toons-components';
 
 interface LayoutProps {
@@ -30,7 +29,7 @@ function PageLayout({ children }: LayoutProps) {
       <Header />
       <div className="contents">{children}</div>
       <Dialog open={openAuth} onClose={onCloseAuthBox}>
-        <LoginBox />
+        <AccountModal />
       </Dialog>
     </>
   );
