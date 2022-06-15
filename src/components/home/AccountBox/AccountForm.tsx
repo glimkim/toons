@@ -118,7 +118,6 @@ function AccountForm({ forSignUp }: FormProps) {
           <CSSTransition in={!forSignUp} timeout={300} unmountOnExit>
             <div className="loginButtonGroup">
               <Button fullWidth onClick={() => handleSubmit()}>
-                {/* TODO Button component props extends HTMLAttributes */}
                 Sing In
               </Button>
               <button className="findBtn" type="button">

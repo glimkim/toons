@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import MainBanner from '@components/home/MainBanner';
 
 function Home() {
