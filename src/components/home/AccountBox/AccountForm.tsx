@@ -88,7 +88,11 @@ function AccountForm({ forSignUp }: FormProps) {
             placeholder="Enter your password"
             type="password"
           />
-          <CSSTransition in={forSignUp} timeout={800} unmountOnExit>
+          <CSSTransition
+            in={forSignUp}
+            timeout={forSignUp ? 700 : 300}
+            unmountOnExit
+          >
             <div className="joinInfo">
               <Input
                 id="username"
@@ -171,6 +175,14 @@ const Form = styled.form`
       margin-top: 0.36rem;
       font-size: 0.875rem;
     }
+    &.enter {
+      opacity: 0;
+    }
+    &.enter-done {
+      animation-name: any;
+      animation-duration: 1.2s;
+      animation-fill-mode: forwards;
+    }
   }
   button[class*='signUpBtn'] {
     margin-top: 1.14rem;
@@ -178,6 +190,7 @@ const Form = styled.form`
     transform: translateY(50%);
   }
   div.joinInfo {
+    opacity: 0;
     > div {
       margin-bottom: 0.7rem;
     }

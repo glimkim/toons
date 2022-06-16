@@ -117,6 +117,14 @@ const SocialLoginWrapper = styled.div`
       }
     }
   }
+  &.enter {
+    opacity: 0;
+  }
+  &.enter-done {
+    animation-name: any;
+    animation-duration: 1.2s;
+    animation-fill-mode: forwards;
+  }
 `;
 
 const LoginWrapper = styled.div`
@@ -151,6 +159,22 @@ const LoginWrapper = styled.div`
       font-weight: bold;
       text-decoration: underline;
     }
+    &.enter {
+      opacity: 0;
+    }
+    &.enter-done {
+      animation-name: any;
+      animation-duration: 1.2s;
+      animation-fill-mode: forwards;
+    }
+  }
+  @keyframes any {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
 
   &.signUpForm {
@@ -167,8 +191,9 @@ const LoginWrapper = styled.div`
       animation-name: downAndDisappear;
       animation-duration: 0.8s;
       animation-fill-mode: forwards;
-      &:exit-done {
+      &.exit-done {
         display: none;
+        opacity: 0;
       }
     }
   }
