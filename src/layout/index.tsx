@@ -2,7 +2,8 @@ import Header from '@components/common/Header';
 import AccountModal from '@components/home/AccountBox';
 import useSearchParameters from '@hooks/useSearchParameters';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Dialog } from 'toons-components';
+import { useIsFetching, useIsMutating } from 'react-query';
+import { Dialog, Loader } from 'toons-components';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -12,6 +13,12 @@ function PageLayout({ children }: LayoutProps) {
   const { searchParams, queryParams, deleteSearchParams } =
     useSearchParameters('authType');
   const [openAuth, setOpenAuth] = useState(false);
+  const isFetching = useIsFetching({});
+  const isMutating = useIsMutating({
+    predicate: (mutation) => {
+      return !mutation.options.mutationKey?.includes('sign');
+    },
+  });
 
   const onCloseAuthBox = useCallback(() => {
     setOpenAuth(false);
@@ -28,6 +35,7 @@ function PageLayout({ children }: LayoutProps) {
     <>
       <Header />
       <div className="contents">{children}</div>
+      {isFetching + isMutating > 0 && <Loader isPartial={false} />}
       <Dialog open={openAuth} onClose={onCloseAuthBox}>
         <AccountModal />
       </Dialog>
