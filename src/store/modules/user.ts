@@ -35,7 +35,6 @@ export default function user(
 ) {
   switch (action.type) {
     case 'user/setUser': {
-      console.log(action.user);
       return { ...action.user };
     }
     case 'user/unsetUser': {
