@@ -9,8 +9,6 @@ function AppRouter() {
       <PageLayout>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Home />} />
-          <Route path="/auth/:authType" element={<Home />} />
         </Routes>
       </PageLayout>
     </Router>
