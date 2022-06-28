@@ -1,4 +1,4 @@
-import React, { HTMLAttributes, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { Checkbox, Input } from 'toons-components';
 import { CSSTransition } from 'react-transition-group';
@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux';
 import useSearchParameters from '@hooks/useSearchParameters';
 import { setUser } from '@store/modules/user';
 import SubmitBtn from './SubmitBtn';
+import { setAlert } from '@store/modules/alert';
 
 interface FormProps {
   forSignUp: boolean;
@@ -54,7 +55,14 @@ function AccountForm({ forSignUp }: FormProps) {
     (formValues: { [key: string]: string }) => {
       if (forSignUp) {
         submitSignUpInfo(formValues as SignUpFormValues)
-          .then((res) => {
+          .then(() => {
+            dispatch(
+              setAlert({
+                alertType: 'SUCCESS',
+                alertTitle: 'Welcome to Toons!',
+                alertContents: 'Returning to sign in page!',
+              }),
+            );
             appendSearchParams({ authType: 'signIn' });
           })
           .catch((e) => console.dir(e));
