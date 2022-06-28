@@ -2,8 +2,9 @@ import { AlertProps } from 'toons-components';
 
 export type Alert = AlertProps;
 
+type ActionType = 'alert/setAlert' | 'alert/unsetAlert';
 interface ActionObj {
-  type: 'alert/setAlert';
+  type: ActionType;
   alert?: Alert;
 }
 
@@ -14,6 +15,12 @@ export const setAlert = (alert: Omit<Alert, 'open'>): ActionObj => {
       open: true,
       ...alert,
     },
+  };
+};
+
+export const unsetAlert = (): ActionObj => {
+  return {
+    type: 'alert/unsetAlert',
   };
 };
 
@@ -31,6 +38,8 @@ export default function alert(
   switch (action.type) {
     case 'alert/setAlert':
       return { ...action.alert };
+    case 'alert/unsetAlert':
+      return { ...state, open: false };
     default:
       return state;
   }
