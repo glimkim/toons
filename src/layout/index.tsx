@@ -3,7 +3,12 @@ import AccountModal from '@components/home/AccountBox';
 import useSearchParameters from '@hooks/useSearchParameters';
 import { Alert as AlertType, unsetAlert } from '@store/modules/alert';
 import { StoreState } from '@store/root';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from 'react';
 import { useIsFetching, useIsMutating } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import { Dialog, Loader, Alert } from 'toons-components';
@@ -13,6 +18,7 @@ interface LayoutProps {
 }
 
 function PageLayout({ children }: LayoutProps) {
+  const [fontsLoaded, setFontsLoaded] = useState<boolean>(false);
   const { searchParams, queryParams, deleteSearchParams } =
     useSearchParameters('authType');
   const [openAuth, setOpenAuth] = useState(false);
@@ -40,12 +46,28 @@ function PageLayout({ children }: LayoutProps) {
       : setOpenAuth(false);
   }, [queryParams]);
 
+  useLayoutEffect(() => {
+    (document as Document).fonts.ready
+      .then((res) => {
+        res.status === 'loaded' && setFontsLoaded(true);
+      })
+      .catch(() => {
+        setTimeout(() => {
+          setFontsLoaded(true);
+        }, 3000);
+      });
+
+    return () => {
+      setFontsLoaded(false);
+    };
+  }, []);
+
+  if (!fontsLoaded) return <Loader theme={'mix'} />;
   return (
     <>
       <Alert {...alert} onCloseAlert={onCloseAlert} />
       <Header />
       <div className="contents">{children}</div>
-
       {isFetching + isMutating > 0 && <Loader isPartial={false} />}
       <Dialog open={openAuth} onClose={onCloseAuthBox}>
         <AccountModal />
