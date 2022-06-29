@@ -33,7 +33,7 @@ const fonts = css`
       url(../assets/fonts/NotoSansKR-Bold.ttf) format('truetype');
   }
 `;
-// TODO need to add .ttf for androids
+
 const GlobalStyles = createGlobalStyle`
     ${ToonsGlobalCss};
     ${fonts};
