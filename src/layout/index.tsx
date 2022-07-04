@@ -1,3 +1,4 @@
+import Footer from '@components/common/Footer';
 import Header from '@components/common/Header';
 import AccountModal from '@components/home/AccountBox';
 import useSearchParameters from '@hooks/useSearchParameters';
@@ -66,9 +67,10 @@ function PageLayout({ children }: LayoutProps) {
   return (
     <>
       <Alert {...alert} onCloseAlert={onCloseAlert} />
+      {isFetching + isMutating > 0 && <Loader isPartial={false} />}
       <Header />
       <div className="contents">{children}</div>
-      {isFetching + isMutating > 0 && <Loader isPartial={false} />}
+      <Footer />
       <Dialog open={openAuth} onClose={onCloseAuthBox}>
         <AccountModal />
       </Dialog>
