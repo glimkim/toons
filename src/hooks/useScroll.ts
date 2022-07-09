@@ -36,6 +36,10 @@ function useScroll(callbackOnScrolling?: () => void) {
 
   useEffect(() => {
     window.addEventListener('scroll', getScrollEvent);
+
+    return () => {
+      window.removeEventListener('scroll', getScrollEvent);
+    };
   }, []);
 
   return scroll;
