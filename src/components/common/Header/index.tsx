@@ -1,11 +1,11 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { ReactComponent as ToonsLogo } from '@images/common/logo_basic.svg';
 import useSearchParameters from '@hooks/useSearchParameters';
-import { useDispatch, useSelector, useStore } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { unsetUser, User } from '@store/modules/user';
-import store, { getUser, StoreState } from '@store/root';
+import { StoreState } from '@store/root';
 
 const headerHeight = '4.4rem';
 
@@ -41,7 +41,7 @@ function Header() {
                 <Link to="webtoons/naver">Naver</Link>
               </li>
               <li>
-                <Link to="webtoons/daum">Naver</Link>
+                <Link to="webtoons/daum">Kakao</Link>
               </li>
             </ul>
           </li>
@@ -142,10 +142,10 @@ const StyledHeader = styled.header`
     margin: 0 auto;
     display: flex;
     align-items: center;
-    width: 130px;
+    width: 8rem;
     height: ${headerHeight};
-    * {
-      width: 130px;
+    svg {
+      width: 8rem;
       height: auto;
     }
   }

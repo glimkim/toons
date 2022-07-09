@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import MainBanner from '@components/home/MainBanner';
+import useScroll from '@hooks/useScroll';
 
 function Home() {
   return (
