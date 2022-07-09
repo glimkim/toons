@@ -8,9 +8,9 @@ const fonts = css`
     font-weight: 400;
     font-display: fallback;
     src: local('Black Han Sans'),
-      url(../assets/fonts/BlackHanSans-Regular.woff2) format('woff2'),
-      url(../assets/fonts/BlackHanSans-Regular.woff) format('woff'),
-      url(../assets/fonts/BlackHanSans-Regular.ttf) format('truetype');
+      url(./fonts/BlackHanSans-Regular.woff2) format('woff2'),
+      url(./fonts/BlackHanSans-Regular.woff) format('woff'),
+      url(./fonts/BlackHanSans-Regular.ttf) format('truetype');
   }
   @font-face {
     font-family: 'Noto Sans';
@@ -18,19 +18,18 @@ const fonts = css`
     font-weight: 400;
     font-display: fallback;
     src: local('Noto Sans'),
-      url(../assets/fonts/NotoSansKR-Regular.woff2) format('woff2'),
-      url(../assets/fonts/NotoSansKR-Regular.woff) format('woff'),
-      url(../assets/fonts/NotoSansKR-Regular.ttf) format('truetype');
+      url(./fonts/NotoSansKR-Regular.woff2) format('woff2'),
+      url(./fonts/NotoSansKR-Regular.woff) format('woff'),
+      url(./fonts/NotoSansKR-Regular.ttf) format('truetype');
   }
   @font-face {
     font-family: 'Noto Sans';
     font-style: bold;
     font-weight: 700;
     font-display: fallback;
-    src: local('Noto Sans'),
-      url(../assets/fonts/NotoSansKR-Bold.woff2) format('woff2'),
-      url(../assets/fonts/NotoSansKR-Bold.woff) format('woff'),
-      url(../assets/fonts/NotoSansKR-Bold.ttf) format('truetype');
+    src: local('Noto Sans'), url(./fonts/NotoSansKR-Bold.woff2) format('woff2'),
+      url(./fonts/NotoSansKR-Bold.woff) format('woff'),
+      url(./fonts/NotoSansKR-Bold.ttf) format('truetype');
   }
 `;
 

@@ -7,9 +7,12 @@ function Footer() {
     <FooterContainer>
       <ToonsLogo />
       <div className="textBox">
-        <p>Contact : 010-2309-9292 | 010-</p>
+        <p>Contact 010-7242-1962</p>
         <p>&copy; 2022 TOONS</p>
-        <p>This website is created in the purpose of personal portfolio.</p>
+        <p>
+          This website is created for the purpose of personal portfolio. <br />
+          Please note that it does not contain any commercial intentions
+        </p>
       </div>
     </FooterContainer>
   );
