@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import _ from 'lodash';
 import MainBg from '@images/main-bg.svg';
 import MouseScrollBox from './MouseScrollBox';
+import useScroll from '@hooks/useScroll';
 
 const mainBnString = [
   'KEEP'.split(''),
@@ -16,49 +17,29 @@ function MainBanner() {
     index: 0,
     count: 1,
   });
-  const [scrollTop, setScrollTop] = useState(0);
+  const { scrollY, scrollDirection } = useScroll();
   const isScrolled = useMemo(() => {
-    return scrollTop > window.innerHeight / 2;
-  }, [scrollTop]);
+    return scrollY > window.innerHeight / 2;
+  }, [scrollY]);
   const mainBn = useRef<null | HTMLDivElement>(null);
 
   useEffect(() => {
-    const wHeight = window.innerHeight;
-
-    const onScroll = _.throttle(
-      () => {
-        setScrollTop((prev) => {
-          const wScrollY = window.scrollY;
-          if (prev < wScrollY) {
-            // scrolling down
-            if (wScrollY < wHeight) {
-              window.scroll({
-                top: wHeight,
-                behavior: 'smooth',
-              });
-            }
-          } else if (prev > wScrollY) {
-            // scroll up
-            if (wScrollY < wHeight) {
-              window.scroll({
-                top: 0,
-                behavior: 'smooth',
-              });
-            }
-          }
-          return wScrollY;
-        });
-      },
-      400,
-      {
-        leading: true,
-      },
-    );
-
-    window.addEventListener('scroll', onScroll);
-
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+    if (
+      0 < scrollY &&
+      scrollY < window.innerHeight &&
+      scrollDirection === 'DOWN'
+    ) {
+      window.scroll({
+        top: window.innerHeight,
+        behavior: 'smooth',
+      });
+    } else if (scrollY < window.innerHeight && scrollDirection === 'UP') {
+      window.scroll({
+        top: 0,
+        behavior: 'smooth',
+      });
+    }
+  }, [scrollY]);
 
   useEffect(() => {
     const typeInterval = setInterval(() => {
@@ -114,7 +95,7 @@ const MainBnWrapper = styled.div<{ isScrolled: boolean }>`
   height: 100vh;
   background-color: ${(props) => props.theme.colors.main};
   background-size: calc(100% - 2rem);
-  background-repeat: no-repeat;
+  background-repeat: repeat-y;
   background-position: center;
   background-attachment: fixed;
   animation-name: bgAni;
