@@ -35,7 +35,9 @@ function Header() {
         </Link>
         <MainMenuList>
           <li>
-            <a href="#mainMenu">Webtoons</a>
+            <a href="#mainMenu" onClick={(e) => e.preventDefault()}>
+              Webtoons
+            </a>
             <ul className="subMenuList">
               <li>
                 <Link to="webtoons/naver">Naver</Link>
@@ -45,6 +47,11 @@ function Header() {
               </li>
             </ul>
           </li>
+          {token && (
+            <li>
+              <a href="#mypage">My Page</a>
+            </li>
+          )}
           <li>
             <a href="#login" onClick={onClickAuthBtn}>
               {!!token ? 'LogOut' : 'Login'}
@@ -58,14 +65,11 @@ function Header() {
 
 const MainMenuList = styled.ul`
   display: flex;
-  height: ${headerHeight};
   > li {
     //mainMenuLi
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 100%;
+    height: ${headerHeight};
+    width: fit-content;
+    overflow: hidden;
     * {
       color: #2b2b2b;
     }
@@ -75,22 +79,38 @@ const MainMenuList = styled.ul`
       z-index: 10;
       display: flex;
       align-items: center;
-      height: 100%;
+      height: ${headerHeight};
+      font-style: normal;
       padding: 0 0.7rem;
       background-color: ${(props) => props.theme.colors.main};
       font-weight: bold;
       transition: 0.3s;
+      &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        display: block;
+        width: 100%;
+        height: 4px;
+        background-color: ${(props) => props.theme.colors.gray40};
+        transform-origin: left center;
+        transform: scaleX(0);
+        transition: 0.6s;
+      }
     }
     ul.subMenuList {
-      position: absolute;
-      z-index: 5;
-      top: -3.4rem;
+      position: relative;
+      top: -100px;
       display: flex;
+      visibility: hidden;
+      z-index: 1;
       flex-direction: column;
       width: 100%;
-      opacity: 0;
-      transition: 0.3s;
-      background-color: ${(props) => props.theme.colors.gray50};
+      transition: top 0.6s;
+      transition: display 0;
+      overflow: hidden;
+      animation-name: display;
       li {
         width: 100%;
         padding: 0.7rem;
@@ -109,12 +129,17 @@ const MainMenuList = styled.ul`
       }
     }
     &:hover {
+      height: fit-content;
       > a {
-        background-color: ${(props) => props.theme.colors.gray50};
-        color: #fff;
+        font-style: italic;
+        &::after {
+          transform: scaleX(1);
+        }
       }
       ul.subMenuList {
-        top: 4.4rem;
+        top: 0;
+        visibility: visible;
+        background-color: ${(props) => props.theme.colors.gray50};
         opacity: 1;
       }
     }
@@ -130,6 +155,7 @@ const StyledHeader = styled.header`
   height: 4.4rem;
   background-color: ${(props) => props.theme.colors.main};
   div.wrapper {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: flex-end;
