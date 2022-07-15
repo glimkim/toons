@@ -6,25 +6,36 @@ import useSearchParameters from '@hooks/useSearchParameters';
 import { useDispatch, useSelector } from 'react-redux';
 import { unsetUser, User } from '@store/modules/user';
 import { StoreState } from '@store/root';
+import useToken from '@hooks/useToken';
+import { setAlert } from '@store/modules/alert';
 
 const headerHeight = '4.4rem';
 
 function Header() {
   const { appendSearchParams } = useSearchParameters();
-  const { token } = useSelector<StoreState, User>((state) => state.user);
+  const user = useSelector<StoreState, User>((state) => state.user);
+  const { removeToken } = useToken();
   const dispatch = useDispatch();
   const onClickAuthBtn = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>) => {
       e.preventDefault();
-      if (!!token) {
+      if (!!user.token) {
         dispatch(unsetUser());
+        removeToken();
+        user?.tokenTimeout && clearTimeout(user.tokenTimeout);
+        dispatch(
+          setAlert({
+            alertType: 'SUCCESS',
+            alertTitle: '로그아웃 되었습니다.',
+          }),
+        );
       } else {
         appendSearchParams({
           authType: 'signIn',
         });
       }
     },
-    [token],
+    [user],
   );
 
   return (
@@ -47,14 +58,14 @@ function Header() {
               </li>
             </ul>
           </li>
-          {token && (
+          {user.token && (
             <li>
               <a href="#mypage">My Page</a>
             </li>
           )}
           <li>
             <a href="#login" onClick={onClickAuthBtn}>
-              {!!token ? 'LogOut' : 'Login'}
+              {!!user.token ? 'LogOut' : 'Login'}
             </a>
           </li>
         </MainMenuList>
@@ -151,13 +162,14 @@ const StyledHeader = styled.header`
   z-index: 100;
   top: 0;
   left: 0;
+  display: flex;
+  justify-content: center;
   width: 100%;
   height: 4.4rem;
   background-color: ${(props) => props.theme.colors.main};
   div.wrapper {
     position: relative;
     display: flex;
-    align-items: center;
     justify-content: flex-end;
   }
   a.logo {

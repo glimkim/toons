@@ -7,6 +7,7 @@ import { CSSTransition } from 'react-transition-group';
 import { Link } from 'react-router-dom';
 import AccountForm from './AccountForm';
 import useSearchParameters from '@hooks/useSearchParameters';
+import useToken from '@hooks/useToken';
 
 function AccountModal() {
   // const [isSignUp, setIsSignUp] = useState<boolean>(false);
@@ -14,6 +15,7 @@ function AccountModal() {
   const isSignUp = useMemo(() => {
     return queryParams[0] === 'signUp';
   }, [queryParams]);
+  const { tokenFromLS, removeToken } = useToken();
 
   const onClickSignUp = useCallback(() => {
     appendSearchParams({ authType: 'signUp' });
@@ -39,6 +41,9 @@ function AccountModal() {
 
     return () => {
       document.body.style.overflow = 'auto';
+      if (tokenFromLS === 'expired') {
+        removeToken();
+      }
     };
   }, []);
 

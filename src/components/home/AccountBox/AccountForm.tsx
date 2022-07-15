@@ -11,6 +11,7 @@ import useSearchParameters from '@hooks/useSearchParameters';
 import { setUser } from '@store/modules/user';
 import SubmitBtn from './SubmitBtn';
 import { setAlert } from '@store/modules/alert';
+import useToken from '@hooks/useToken';
 
 interface FormProps {
   forSignUp: boolean;
@@ -50,6 +51,7 @@ function AccountForm({ forSignUp }: FormProps) {
     'signUp',
     signUpAPI,
   );
+  const { setToken, setTokenDue } = useToken();
 
   const onSubmit = useCallback(
     (formValues: { [key: string]: string }) => {
@@ -70,16 +72,10 @@ function AccountForm({ forSignUp }: FormProps) {
         // signIn
         submitSignInInfo(formValues as SignInFormValues).then(
           (res: SignInResponseDTO) => {
-            dispatch(
-              setUser({
-                email: formValues.email || '',
-                token: res.token,
-              }),
-            );
+            setToken(res.token);
             deleteSearchParams('authType');
           },
         );
-        // submitSignInInfo({});
       }
     },
     [forSignUp],
