@@ -1,9 +1,13 @@
+import { Token } from '@apis/DTO/auth';
 import Footer from '@components/common/Footer';
 import Header from '@components/common/Header';
 import AccountModal from '@components/home/AccountBox';
 import useSearchParameters from '@hooks/useSearchParameters';
+import useToken from '@hooks/useToken';
 import { Alert as AlertType, unsetAlert } from '@store/modules/alert';
+import { setUser } from '@store/modules/user';
 import { StoreState } from '@store/root';
+import jwtDecode from 'jwt-decode';
 import React, {
   useCallback,
   useEffect,
@@ -12,6 +16,7 @@ import React, {
 } from 'react';
 import { useIsFetching, useIsMutating } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { Dialog, Loader, Alert } from 'toons-components';
 
 interface LayoutProps {
@@ -19,6 +24,10 @@ interface LayoutProps {
 }
 
 function PageLayout({ children }: LayoutProps) {
+  const alert = useSelector<StoreState, AlertType>((state) => state.alert);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { tokenFromLS, setTokenDue } = useToken();
   const [fontsLoaded, setFontsLoaded] = useState<boolean>(false);
   const { searchParams, queryParams, deleteSearchParams } =
     useSearchParameters('authType');
@@ -29,8 +38,6 @@ function PageLayout({ children }: LayoutProps) {
       return !mutation.options.mutationKey?.includes('sign');
     },
   });
-  const alert = useSelector<StoreState, AlertType>((state) => state.alert);
-  const dispatch = useDispatch();
 
   const onCloseAlert = useCallback(() => {
     dispatch(unsetAlert());
@@ -62,6 +69,18 @@ function PageLayout({ children }: LayoutProps) {
       setFontsLoaded(false);
     };
   }, []);
+
+  useEffect(() => {
+    if (!!tokenFromLS) {
+      if (tokenFromLS === 'expired') {
+        navigate('?authType=signIn');
+      } else {
+        const parsedToken = jwtDecode(tokenFromLS) as Token;
+        dispatch(setUser({ email: parsedToken.email, token: tokenFromLS }));
+        setTokenDue(tokenFromLS);
+      }
+    }
+  }, [tokenFromLS]);
 
   if (!fontsLoaded) return <Loader theme={'mix'} />;
   return (
