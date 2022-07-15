@@ -12,3 +12,8 @@ export interface SignInRequestDTO {
 export interface SignInResponseDTO {
   token: string;
 }
+export interface Token {
+  email: string;
+  exp: number;
+  iat: number;
+}
