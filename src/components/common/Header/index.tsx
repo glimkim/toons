@@ -8,8 +8,7 @@ import { unsetUser, User } from '@store/modules/user';
 import { StoreState } from '@store/root';
 import useToken from '@hooks/useToken';
 import { setAlert } from '@store/modules/alert';
-
-const headerHeight = '4.4rem';
+import { headerHeight } from '@styles/css';
 
 function Header() {
   const { appendSearchParams } = useSearchParameters();

@@ -12,6 +12,8 @@ const mainBnString = [
   'TRACK'.split(''),
 ];
 
+const innerHeight = window.innerHeight;
+
 function MainBanner() {
   const [letterCount, setLetterCount] = useState({
     index: 0,
@@ -92,9 +94,9 @@ const MainBnWrapper = styled.div<{ isScrolled: boolean }>`
   display: flex;
   justify-content: center;
   width: 100%;
-  height: 100vh;
+  height: 100vmin;
   background-color: ${(props) => props.theme.colors.main};
-  background-size: calc(100% - 2rem);
+  background-size: calc(100vw - 2rem);
   background-repeat: repeat-y;
   background-position: center;
   background-attachment: fixed;
@@ -147,7 +149,7 @@ const MainBnWrapper = styled.div<{ isScrolled: boolean }>`
   @keyframes bgAni {
     from {
       background-image: url(${MainBg});
-      background-position: center 1000px;
+      background-position: center 2400px;
     }
     to {
       background-image: url(${MainBg});
