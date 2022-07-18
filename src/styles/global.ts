@@ -43,6 +43,7 @@ const GlobalStyles = createGlobalStyle`
     *.wrapper{
         width: 1280px;
         max-width: 100%;
+        margin: 0 auto;
     }
 
     @media screen and (max-width: 1339px){
