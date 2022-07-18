@@ -4,7 +4,7 @@ export interface Contents<T> {
   first: boolean;
   sort: Sort;
   size: number;
-  content: T;
+  content: T[];
   number: number;
   numberOfElements: number;
   pageable: ContentsPageable;
@@ -32,3 +32,24 @@ export interface PageableParams {
   size: number;
   sort: string[];
 }
+
+export interface WebtoonItemResponseDTO {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+  name: string;
+  thumbnail: string;
+  dayOfWeek: DayOfWeek;
+  platform: Platform;
+  link: string;
+}
+
+export type Platform = 'NAVER' | 'KAKAO';
+export type DayOfWeek =
+  | 'MONDAY'
+  | 'TUESDAY'
+  | 'WEDNESDAY'
+  | 'THURSDAY'
+  | 'FRIDAY'
+  | 'SATURDAY'
+  | 'SUNDAY';
