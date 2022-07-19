@@ -13,7 +13,7 @@ export const getWebtoonsAPI = async (
   return (
     await Axios.get<Contents<WebtoonItemResponseDTO>>(
       `/api/webtoons?platform=${platfrom}${
-        dayOfWeek && `&day-of-week=${dayOfWeek}`
+        dayOfWeek ? `&day-of-week=${dayOfWeek}` : ''
       }`,
     )
   ).data;
