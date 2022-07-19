@@ -6,7 +6,7 @@ import { paddingUnderHeader } from '@styles/css';
 
 function Home() {
   return (
-    <div style={{ height: '200vh', overflow: 'auto' }}>
+    <div>
       <MainBanner />
       <MainContentsWrapper className="wrapper">
         <WebtoonList />
