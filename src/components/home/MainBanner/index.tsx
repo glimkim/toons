@@ -92,7 +92,7 @@ const MainBnWrapper = styled.div<{ isScrolled: boolean }>`
   display: flex;
   justify-content: center;
   width: 100%;
-  height: 100vmin;
+  height: 100vh;
   background-color: ${(props) => props.theme.colors.main};
   background-size: calc(100vw - 2rem);
   background-repeat: repeat-y;
