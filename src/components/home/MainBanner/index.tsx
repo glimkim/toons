@@ -12,8 +12,6 @@ const mainBnString = [
   'TRACK'.split(''),
 ];
 
-const innerHeight = window.innerHeight;
-
 function MainBanner() {
   const [letterCount, setLetterCount] = useState({
     index: 0,
