@@ -32,7 +32,11 @@ function PageLayout({ children }: LayoutProps) {
   const { searchParams, queryParams, deleteSearchParams } =
     useSearchParameters('authType');
   const [openAuth, setOpenAuth] = useState(false);
-  const isFetching = useIsFetching({});
+  const isFetching = useIsFetching({
+    predicate: (query) => {
+      return query.queryKey.includes('webtoon');
+    },
+  });
   const isMutating = useIsMutating({
     predicate: (mutation) => {
       return !mutation.options.mutationKey?.includes('sign');
@@ -82,11 +86,11 @@ function PageLayout({ children }: LayoutProps) {
     }
   }, [tokenFromLS]);
 
-  if (!fontsLoaded) return <Loader theme={'mix'} />;
+  if (!fontsLoaded && isFetching > 0) return <Loader theme={'mix'} />;
   return (
     <>
       <Alert {...alert} onCloseAlert={onCloseAlert} />
-      {isFetching + isMutating > 0 && <Loader isPartial={false} />}
+      {isMutating > 0 && <Loader isPartial={false} />}
       <Header />
       <div className="contents">{children}</div>
       <Footer />
