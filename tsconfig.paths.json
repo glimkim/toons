@@ -11,7 +11,8 @@
       "@hooks/*": ["src/hooks/*"],
       "@apis/*": ["src/apis/*"],
       "@utils/*": ["src/utils/*"],
-      "@store/*": ["src/store/*"]
+      "@store/*": ["src/store/*"],
+      "@layout/*": ["src/layout/*"]
     }
   }
 }
