@@ -44,6 +44,12 @@ export interface WebtoonItemResponseDTO {
   link: string;
 }
 
+export interface Pageable {
+  page: number;
+  size: number;
+  sort: string[];
+}
+
 export type Platform = 'NAVER' | 'KAKAO';
 export type DayOfWeek =
   | 'MONDAY'
