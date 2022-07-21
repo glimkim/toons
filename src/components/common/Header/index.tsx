@@ -9,8 +9,10 @@ import { StoreState } from '@store/root';
 import useToken from '@hooks/useToken';
 import { setAlert } from '@store/modules/alert';
 import { headerHeight } from '@styles/css';
+import useScroll from '@hooks/useScroll';
 
 function Header() {
+  const { scrollY } = useScroll();
   const { appendSearchParams } = useSearchParameters();
   const user = useSelector<StoreState, User>((state) => state.user);
   const { removeToken } = useToken();
@@ -38,7 +40,11 @@ function Header() {
   );
 
   return (
-    <StyledHeader>
+    <StyledHeader
+      invisible={
+        window.location.pathname === '/' && scrollY < window.innerHeight - 200
+      }
+    >
       <div className="wrapper">
         <Link to="/" className="logo">
           <ToonsLogo />
@@ -50,10 +56,10 @@ function Header() {
             </a>
             <ul className="subMenuList">
               <li>
-                <Link to="webtoons/naver">Naver</Link>
+                <Link to="/webtoons/naver">Naver</Link>
               </li>
               <li>
-                <Link to="webtoons/daum">Kakao</Link>
+                <Link to="/webtoons/kakao">Kakao</Link>
               </li>
             </ul>
           </li>
@@ -156,7 +162,7 @@ const MainMenuList = styled.ul`
   }
 `;
 
-const StyledHeader = styled.header`
+const StyledHeader = styled.header<{ invisible: boolean }>`
   position: fixed;
   z-index: 100;
   top: 0;
@@ -166,6 +172,8 @@ const StyledHeader = styled.header`
   width: 100%;
   height: 4.4rem;
   background-color: ${(props) => props.theme.colors.main};
+  opacity: ${({ invisible }) => (invisible ? 0 : 1)};
+  transition: 0.3s;
   div.wrapper {
     position: relative;
     display: flex;
