@@ -33,11 +33,6 @@ function MainBanner() {
         top: window.innerHeight,
         behavior: 'smooth',
       });
-    } else if (scrollY < window.innerHeight && scrollDirection === 'UP') {
-      window.scroll({
-        top: 0,
-        behavior: 'smooth',
-      });
     }
   }, [scrollY]);
 
