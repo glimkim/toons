@@ -1,16 +1,14 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from '@pages/home';
-import PageLayout from '../layout';
+import { BrowserRouter as Router } from 'react-router-dom';
+import Common from '../layout/common';
+import AnimatedRoutes from './AnimatedRoutes';
 
 function AppRouter() {
   return (
     <Router>
-      <PageLayout>
-        <Routes>
-          <Route path="/" element={<Home />} />
-        </Routes>
-      </PageLayout>
+      <Common>
+        <AnimatedRoutes />
+      </Common>
     </Router>
   );
 }
