@@ -1,5 +1,4 @@
 import { Token } from '@apis/DTO/auth';
-import Footer from '@components/common/Footer';
 import Header from '@components/common/Header';
 import AccountModal from '@components/home/AccountBox';
 import useSearchParameters from '@hooks/useSearchParameters';
@@ -23,7 +22,7 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
-function PageLayout({ children }: LayoutProps) {
+function Common({ children }: LayoutProps) {
   const alert = useSelector<StoreState, AlertType>((state) => state.alert);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -92,8 +91,7 @@ function PageLayout({ children }: LayoutProps) {
       <Alert {...alert} onCloseAlert={onCloseAlert} />
       {isMutating > 0 && <Loader isPartial={false} />}
       <Header />
-      <div className="contents">{children}</div>
-      <Footer />
+      {children}
       <Dialog open={openAuth} onClose={onCloseAuthBox}>
         <AccountModal />
       </Dialog>
@@ -101,4 +99,4 @@ function PageLayout({ children }: LayoutProps) {
   );
 }
 
-export default PageLayout;
+export default Common;
