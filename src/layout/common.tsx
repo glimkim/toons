@@ -4,7 +4,7 @@ import Header from '@components/common/Header';
 import AccountModal from '@components/home/AccountBox';
 import useSearchParameters from '@hooks/useSearchParameters';
 import useToken from '@hooks/useToken';
-import { updateList } from '@store/modules/alarmList';
+import { updateList } from '@store/modules/alarms';
 import { Alert as AlertType, unsetAlert } from '@store/modules/alert';
 import { setUser } from '@store/modules/user';
 import { StoreState } from '@store/root';
