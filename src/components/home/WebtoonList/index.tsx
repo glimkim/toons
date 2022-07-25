@@ -1,18 +1,16 @@
-import { Platform } from '@apis/DTO/webtoons';
-import { getWebtoonsAPI } from '@apis/webtoons';
+import useWebtoonList from '@hooks/api/useWebtoonList';
 import useScroll from '@hooks/useScroll';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { SectionBar, ToonsListItem } from 'toons-components';
 
 function WebtoonList() {
   const navigate = useNavigate();
-  const { data } = useQuery('webtoon-list', () => getWebtoonsAPI('NAVER'), {
-    select: (res) => res.content,
-  });
+  const {
+    naverWebtoonsQuery: { data: naverWebtoons },
+  } = useWebtoonList();
   const { scrollY } = useScroll();
   const [isActivated, setIsActivated] = useState(false);
   const moveToPlatformPage = (platform: 'naver' | 'kakao') => {
@@ -33,13 +31,14 @@ function WebtoonList() {
         onClickMore={() => moveToPlatformPage('naver')}
       />
       <NaverWebtoonList className={isActivated ? 'active' : ''}>
-        {data?.map((content) => (
+        {naverWebtoons?.map((_toon) => (
           <ToonsListItem
-            key={content.id}
-            name={content.name}
-            thumbnail={content.thumbnail}
-            link={content.link}
-            day={content.dayOfWeek}
+            key={_toon.id}
+            isActive={_toon.toNotify}
+            name={_toon.name}
+            thumbnail={_toon.thumbnail}
+            link={_toon.link}
+            day={_toon.dayOfWeek}
             onToggleItem={console.log}
           />
         ))}
