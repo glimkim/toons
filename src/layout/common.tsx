@@ -43,7 +43,7 @@ function Common({ children }: LayoutProps) {
       return !mutation.options.mutationKey?.includes('sign');
     },
   });
-  const { mutate: getAlaramList } = useMutation(
+  const { mutate: getAlarmList } = useMutation(
     'alaram-list',
     (token: string) => getAlarmListAPI(token),
     {
@@ -91,7 +91,7 @@ function Common({ children }: LayoutProps) {
       } else {
         const parsedToken = jwtDecode(tokenFromLS) as Token;
         dispatch(setUser({ email: parsedToken.email, token: tokenFromLS }));
-        getAlaramList(tokenFromLS);
+        getAlarmList(tokenFromLS);
         setTokenDue(tokenFromLS);
       }
     }
