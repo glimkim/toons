@@ -1,8 +1,10 @@
 import { Token } from '@apis/DTO/auth';
+import { getAlarmListAPI } from '@apis/webtoons';
 import Header from '@components/common/Header';
 import AccountModal from '@components/home/AccountBox';
 import useSearchParameters from '@hooks/useSearchParameters';
 import useToken from '@hooks/useToken';
+import { updateList } from '@store/modules/alarmList';
 import { Alert as AlertType, unsetAlert } from '@store/modules/alert';
 import { setUser } from '@store/modules/user';
 import { StoreState } from '@store/root';
@@ -13,7 +15,7 @@ import React, {
   useLayoutEffect,
   useState,
 } from 'react';
-import { useIsFetching, useIsMutating } from 'react-query';
+import { useIsFetching, useIsMutating, useMutation } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Dialog, Loader, Alert } from 'toons-components';
@@ -41,6 +43,15 @@ function Common({ children }: LayoutProps) {
       return !mutation.options.mutationKey?.includes('sign');
     },
   });
+  const { mutate: getAlaramList } = useMutation(
+    'alaram-list',
+    (token: string) => getAlarmListAPI(token),
+    {
+      onSuccess: (res) => {
+        dispatch(updateList(res));
+      },
+    },
+  );
 
   const onCloseAlert = useCallback(() => {
     dispatch(unsetAlert());
@@ -80,6 +91,7 @@ function Common({ children }: LayoutProps) {
       } else {
         const parsedToken = jwtDecode(tokenFromLS) as Token;
         dispatch(setUser({ email: parsedToken.email, token: tokenFromLS }));
+        getAlaramList(tokenFromLS);
         setTokenDue(tokenFromLS);
       }
     }
