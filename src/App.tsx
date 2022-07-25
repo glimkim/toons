@@ -9,7 +9,14 @@ import store from './store/root';
 
 function App() {
   const queryClient = new QueryClient({
-    defaultOptions: {},
+    defaultOptions: {
+      queries: {
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+        retryOnMount: false,
+      },
+    },
   });
 
   return (
