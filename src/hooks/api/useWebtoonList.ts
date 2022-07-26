@@ -4,7 +4,7 @@ import { useQuery, useMutation } from 'react-query';
 import { StoreState } from '@store/root';
 import { useSelector } from 'react-redux';
 
-interface WebtoonItem extends WebtoonItemResponseDTO {
+export interface WebtoonItem extends WebtoonItemResponseDTO {
   toNotify: boolean;
 }
 
