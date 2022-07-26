@@ -1,6 +1,7 @@
+import useAlarms from '@hooks/api/useAlarms';
 import useWebtoonList from '@hooks/api/useWebtoonList';
 import useScroll from '@hooks/useScroll';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -9,13 +10,29 @@ import { SectionBar, ToonsListItem } from 'toons-components';
 function WebtoonList() {
   const navigate = useNavigate();
   const {
-    naverWebtoonsQuery: { data: naverWebtoons },
+    naverWebtoonsQuery: { data },
   } = useWebtoonList();
+  const { addAlarmItemAsync, deleteAlarmItemAsync } = useAlarms();
   const { scrollY } = useScroll();
   const [isActivated, setIsActivated] = useState(false);
+  const naverToons = useMemo(() => {
+    return data;
+  }, [data]);
+
   const moveToPlatformPage = (platform: 'naver' | 'kakao') => {
     navigate(`/webtoons/${platform}`);
   };
+
+  const onToggleItem = useCallback(
+    (webtoonId: number, isActive: boolean, handleToggleView: () => void) => {
+      isActive
+        ? deleteAlarmItemAsync(webtoonId).then(() => handleToggleView())
+        : addAlarmItemAsync({
+            webtoonId,
+          }).then(() => handleToggleView());
+    },
+    [deleteAlarmItemAsync, addAlarmItemAsync],
+  );
 
   useEffect(() => {
     if (scrollY > window.innerHeight - 100 && !isActivated) {
@@ -31,15 +48,17 @@ function WebtoonList() {
         onClickMore={() => moveToPlatformPage('naver')}
       />
       <NaverWebtoonList className={isActivated ? 'active' : ''}>
-        {naverWebtoons?.map((_toon) => (
+        {naverToons?.map((_toon, index) => (
           <ToonsListItem
-            key={_toon.id}
+            key={index}
             isActive={_toon.toNotify}
             name={_toon.name}
             thumbnail={_toon.thumbnail}
             link={_toon.link}
             day={_toon.dayOfWeek}
-            onToggleItem={console.log}
+            onToggleItem={(isActive, handleToggleView) =>
+              onToggleItem(_toon.id, isActive, handleToggleView)
+            }
           />
         ))}
       </NaverWebtoonList>
