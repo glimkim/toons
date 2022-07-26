@@ -8,11 +8,9 @@ import { signInAPI, signUpAPI } from '@apis/auth';
 import { SignInResponseDTO } from '@apis/DTO/auth';
 import { useDispatch } from 'react-redux';
 import useSearchParameters from '@hooks/useSearchParameters';
-import { setUser } from '@store/modules/user';
 import SubmitBtn from './SubmitBtn';
 import { setAlert } from '@store/modules/alert';
 import useToken from '@hooks/useToken';
-
 interface FormProps {
   forSignUp: boolean;
 }
@@ -51,7 +49,7 @@ function AccountForm({ forSignUp }: FormProps) {
     'signUp',
     signUpAPI,
   );
-  const { setToken, setTokenDue } = useToken();
+  const { setToken } = useToken();
 
   const onSubmit = useCallback(
     (formValues: { [key: string]: string }) => {
