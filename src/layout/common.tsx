@@ -1,12 +1,12 @@
 import { Token } from '@apis/DTO/auth';
-import { getAlarmListAPI } from '@apis/webtoons';
 import Header from '@components/common/Header';
 import AccountModal from '@components/home/AccountBox';
+import useAlarms from '@hooks/api/useAlarms';
 import useSearchParameters from '@hooks/useSearchParameters';
 import useToken from '@hooks/useToken';
 import { updateList } from '@store/modules/alarms';
-import { Alert as AlertType, unsetAlert } from '@store/modules/alert';
-import { setUser } from '@store/modules/user';
+import { unsetAlert } from '@store/modules/alert';
+import { setUser, unsetUser } from '@store/modules/user';
 import { StoreState } from '@store/root';
 import jwtDecode from 'jwt-decode';
 import React, {
@@ -15,9 +15,8 @@ import React, {
   useLayoutEffect,
   useState,
 } from 'react';
-import { useIsFetching, useIsMutating, useMutation } from 'react-query';
+import { useIsFetching, useIsMutating } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { Dialog, Loader, Alert } from 'toons-components';
 
 interface LayoutProps {
@@ -25,9 +24,9 @@ interface LayoutProps {
 }
 
 function Common({ children }: LayoutProps) {
-  const alert = useSelector<StoreState, AlertType>((state) => state.alert);
+  const { data: alarmList } = useAlarms();
+  const { alert, user } = useSelector((state: StoreState) => state);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { tokenFromLS, setTokenDue } = useToken();
   const [fontsLoaded, setFontsLoaded] = useState<boolean>(false);
   const { searchParams, queryParams, deleteSearchParams } =
@@ -43,15 +42,6 @@ function Common({ children }: LayoutProps) {
       return !mutation.options.mutationKey?.includes('sign');
     },
   });
-  const { mutate: getAlarmList } = useMutation(
-    'alaram-list',
-    (token: string) => getAlarmListAPI(token),
-    {
-      onSuccess: (res) => {
-        dispatch(updateList(res));
-      },
-    },
-  );
 
   const onCloseAlert = useCallback(() => {
     dispatch(unsetAlert());
@@ -86,14 +76,13 @@ function Common({ children }: LayoutProps) {
 
   useEffect(() => {
     if (!!tokenFromLS) {
-      if (tokenFromLS === 'expired') {
-        navigate('?authType=signIn');
-      } else {
-        const parsedToken = jwtDecode(tokenFromLS) as Token;
-        dispatch(setUser({ email: parsedToken.email, token: tokenFromLS }));
-        getAlarmList(tokenFromLS);
-        setTokenDue(tokenFromLS);
-      }
+      const parsedToken = jwtDecode(tokenFromLS) as Token;
+      dispatch(setUser({ email: parsedToken.email, token: tokenFromLS }));
+      setTokenDue(tokenFromLS);
+      alarmList && dispatch(updateList(alarmList));
+    } else if (!!user?.tokenTimeout) {
+      dispatch(unsetUser());
+      clearTimeout(user.tokenTimeout);
     }
   }, [tokenFromLS]);
 

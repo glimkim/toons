@@ -14,6 +14,7 @@ function useToken() {
 
   const removeToken = () => {
     window.localStorage.removeItem(tokenName);
+    dispatch(unsetUser());
   };
 
   const setTokenDue = useCallback((token: string) => {
@@ -21,8 +22,7 @@ function useToken() {
       (jwtDecode(token) as Token).exp * 1000 - new Date().getTime();
 
     const tokenTimeout: NodeJS.Timeout = setTimeout(() => {
-      window.localStorage.setItem('toons-token', 'expired');
-      dispatch(unsetUser());
+      removeToken();
     }, tokenDue);
 
     dispatch(setTokenTimeout(tokenTimeout));
