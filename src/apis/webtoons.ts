@@ -7,11 +7,20 @@ import {
   WebtoonItemResponseDTO,
 } from './DTO/webtoons';
 
+const generateRandom = (min = 1, max = 19) => {
+  const difference = max - min;
+  let rand = Math.random();
+  rand = Math.floor(rand * difference);
+  rand = rand + min;
+
+  return rand;
+};
+
 export const getWebtoonsAPI = async (
   platfrom: Platform,
   dayOfWeek?: DayOfWeek,
   pageable: Pageable = {
-    page: 1,
+    page: generateRandom(),
     size: 30,
     sort: [],
   },
