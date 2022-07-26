@@ -7,18 +7,18 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { Provider as StoreProvider } from 'react-redux';
 import store from './store/root';
 
-function App() {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        refetchOnMount: false,
-        refetchOnWindowFocus: false,
-        refetchOnReconnect: false,
-        retryOnMount: false,
-      },
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      retryOnMount: false,
     },
-  });
+  },
+});
 
+function App() {
   return (
     <StoreProvider store={store}>
       <QueryClientProvider client={queryClient}>
