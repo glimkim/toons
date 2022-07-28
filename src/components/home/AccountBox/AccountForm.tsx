@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { Checkbox, Input } from 'toons-components';
 import { CSSTransition } from 'react-transition-group';
@@ -50,6 +50,11 @@ function AccountForm({ forSignUp }: FormProps) {
     signUpAPI,
   );
   const { setToken } = useToken();
+  const [sentCode, setSentCode] = useState(false);
+
+  const onClickVerifyMobile = useCallback(() => {
+    setSentCode(true);
+  }, []);
 
   const onSubmit = useCallback(
     (formValues: { [key: string]: string }) => {
@@ -113,7 +118,25 @@ function AccountForm({ forSignUp }: FormProps) {
                 label="Mobile"
                 onChange={handleChange}
                 placeholder="Enter your mobile number"
+                withBtn={{
+                  btnText: 'Verify',
+                  onClickBtn: () => {
+                    onClickVerifyMobile();
+                  },
+                }}
               />
+              <CSSTransition
+                in={sentCode}
+                timeout={300}
+                classNames="verificationCode"
+                unmountOnExit
+              >
+                <Input
+                  id="contact-verification"
+                  onChange={handleChange}
+                  placeholder="Verification Code"
+                />
+              </CSSTransition>
             </div>
           </CSSTransition>
           <CSSTransition
@@ -196,11 +219,7 @@ const Form = styled.form`
       animation-fill-mode: forwards;
     }
   }
-  button[class*='signUpBtn'] {
-    margin-top: 1.14rem;
-    opacity: 0;
-    transform: translateY(50%);
-  }
+
   div.joinInfo {
     opacity: 0;
     > div {
@@ -223,16 +242,30 @@ const Form = styled.form`
       }
     }
     button[class*='signUpBtn'] {
-      &[class*='enter'] {
+      opacity: 0;
+      transform: translateY(50%);
+      &.signUpBtn-enter-done {
         animation-name: appearFromBottom;
-        animation-duration: 0.6s;
-        animation-delay: 0.6s;
+        animation-duration: 0.4s;
+        animation-delay: 0.3s;
         animation-fill-mode: forwards;
       }
     }
 
     div[class*='rememberMe'] {
       display: none;
+    }
+
+    div[class*='verificationCode'] {
+      transition: 0.3s;
+      &.verificationCode-enter {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      &.verificationCode-enter-done {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     div.joinInfo {
