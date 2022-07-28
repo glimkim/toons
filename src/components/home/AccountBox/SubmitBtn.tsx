@@ -14,9 +14,9 @@ const SubmitBtn = ({ submitType, handleSubmit, isLoading }: SubmitBtnProps) => {
       {isLoading ? (
         <Loader isPartial />
       ) : submitType === 'signIn' ? (
-        'Sing In'
+        'Sign In'
       ) : (
-        'Sing Up'
+        'Sign Up'
       )}
     </Button>
   );
