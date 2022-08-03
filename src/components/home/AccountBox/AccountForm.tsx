@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
-import { Checkbox, Input } from 'toons-components';
+import { Button, Checkbox, Input } from 'toons-components';
 import { CSSTransition } from 'react-transition-group';
 import { useMutation } from 'react-query';
 import { Formik } from 'formik';
@@ -11,6 +11,7 @@ import useSearchParameters from '@hooks/useSearchParameters';
 import SubmitBtn from './SubmitBtn';
 import { setAlert } from '@store/modules/alert';
 import useToken from '@hooks/useToken';
+import MobileForm from './MobileForm';
 interface FormProps {
   forSignUp: boolean;
 }
@@ -113,18 +114,7 @@ function AccountForm({ forSignUp }: FormProps) {
                 onChange={handleChange}
                 placeholder="Enter your name"
               />
-              <Input
-                id="contact"
-                label="Mobile"
-                onChange={handleChange}
-                placeholder="Enter your mobile number"
-                withBtn={{
-                  btnText: 'Verify',
-                  onClickBtn: () => {
-                    onClickVerifyMobile();
-                  },
-                }}
-              />
+              <MobileForm onMobileVerified={console.log} />
               <CSSTransition
                 in={sentCode}
                 timeout={300}
@@ -213,11 +203,6 @@ const Form = styled.form`
     &.enter {
       opacity: 0;
     }
-    &.enter-done {
-      animation-name: any;
-      animation-duration: 1.2s;
-      animation-fill-mode: forwards;
-    }
   }
 
   div.joinInfo {
@@ -245,10 +230,9 @@ const Form = styled.form`
       opacity: 0;
       transform: translateY(50%);
       &.signUpBtn-enter-done {
-        animation-name: appearFromBottom;
-        animation-duration: 0.4s;
-        animation-delay: 0.3s;
-        animation-fill-mode: forwards;
+        transition-delay: 0.2s;
+        opacity: 1;
+        transform: translateY(0);
       }
     }
 
@@ -256,23 +240,14 @@ const Form = styled.form`
       display: none;
     }
 
-    div[class*='verificationCode'] {
-      transition: 0.3s;
-      &.verificationCode-enter {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      &.verificationCode-enter-done {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
     div.joinInfo {
       animation-name: appearFromTop;
       animation-duration: 0.8s;
       animation-fill-mode: forwards;
       animation-delay: 0.2s;
+      > div {
+        margin-bottom: 1rem;
+      }
     }
   }
 
@@ -282,17 +257,6 @@ const Form = styled.form`
       transform: translateY(-10%);
     }
     to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes appearFromBottom {
-    0% {
-      opacity: 0;
-      transform: translateY(50%);
-    }
-    100% {
       opacity: 1;
       transform: translateY(0);
     }
@@ -312,21 +276,6 @@ const Form = styled.form`
     }
     to {
       transform: translateX(-10%) scaleX(0);
-    }
-  }
-
-  @keyframes downAndDisappear {
-    0% {
-      top: 0;
-      opacity: 1;
-    }
-    50% {
-      top: 100px;
-    }
-    100% {
-      top: 100px;
-      display: none;
-      opacity: 0;
     }
   }
 `;
