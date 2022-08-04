@@ -4,7 +4,7 @@ import AccountModal from '@components/home/AccountBox';
 import useAlarms from '@hooks/api/useAlarms';
 import useSearchParameters from '@hooks/useSearchParameters';
 import useToken from '@hooks/useToken';
-import { updateList } from '@store/modules/alarms';
+import { resetList, updateList } from '@store/modules/alarms';
 import { unsetAlert } from '@store/modules/alert';
 import { setUser, unsetUser } from '@store/modules/user';
 import { StoreState } from '@store/root';
@@ -80,9 +80,10 @@ function Common({ children }: LayoutProps) {
       dispatch(setUser({ email: parsedToken.email, token: tokenFromLS }));
       setTokenDue(tokenFromLS);
       alarmList && dispatch(updateList(alarmList));
-    } else if (!!user?.tokenTimeout) {
+    } else {
       dispatch(unsetUser());
-      clearTimeout(user.tokenTimeout);
+      dispatch(resetList());
+      !!user?.tokenTimeout && clearTimeout(user.tokenTimeout);
     }
   }, [tokenFromLS]);
 
