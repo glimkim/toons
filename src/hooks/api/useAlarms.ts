@@ -1,6 +1,7 @@
+import { setAlert } from '@store/modules/alert';
 import { queryClient } from '../../App';
 import { StoreState } from '@store/root';
-import { useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { updateList } from '@store/modules/alarms';
 import { useMutation, useQuery } from 'react-query';
 import {
@@ -9,7 +10,7 @@ import {
   deleteAlarmItemAPI,
 } from '@apis/alarms';
 import { AddAlarmItemRequestDTO } from '@apis/DTO/alarms';
-import _ from 'lodash';
+import { AxiosError } from 'axios';
 
 function useAlarms() {
   const listQueryKey = 'alarm-list';
@@ -17,7 +18,7 @@ function useAlarms() {
   const {
     user: { token },
     alarms,
-  } = useSelector((state: StoreState) => state);
+  } = useSelector((state: StoreState) => state, shallowEqual);
 
   const { data } = useQuery(
     ['alarm-list', token],
@@ -31,6 +32,18 @@ function useAlarms() {
     },
   );
 
+  const authCheckOnError = (err: AxiosError) => {
+    if (err.response?.status === 401) {
+      dispatch(
+        setAlert({
+          alertType: 'WARNING',
+          alertTitle: 'You need to Sign In',
+          alertContents: '해당 기능은 로그인 후 사용하실 수 있습니다.',
+        }),
+      );
+    }
+  };
+
   const { mutateAsync: addAlarmItemAsync } = useMutation(
     'add-to-alarms',
     (newItem: AddAlarmItemRequestDTO) => addAlarmItemAPI(token!, newItem),
@@ -38,7 +51,7 @@ function useAlarms() {
       onSuccess: () => {
         queryClient.invalidateQueries(listQueryKey);
       },
-      onError: (err) => console.log(err),
+      onError: authCheckOnError,
     },
   );
 
@@ -49,7 +62,7 @@ function useAlarms() {
       onSuccess: () => {
         queryClient.invalidateQueries(listQueryKey);
       },
-      onError: (err) => console.log(err),
+      onError: authCheckOnError,
     },
   );
 

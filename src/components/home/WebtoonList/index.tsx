@@ -1,13 +1,18 @@
 import useAlarms from '@hooks/api/useAlarms';
 import useWebtoonList from '@hooks/api/useWebtoonList';
 import useScroll from '@hooks/useScroll';
+import { setAlert } from '@store/modules/alert';
+import { StoreState } from '@store/root';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { SectionBar, ToonsListItem } from 'toons-components';
 
 function WebtoonList() {
+  const dispatch = useDispatch();
+  const { token } = useSelector((state: StoreState) => state.user);
   const navigate = useNavigate();
   const {
     naverWebtoonsQuery: { data },
@@ -25,13 +30,23 @@ function WebtoonList() {
 
   const onToggleItem = useCallback(
     (webtoonId: number, isActive: boolean, handleToggleView: () => void) => {
-      isActive
-        ? deleteAlarmItemAsync(webtoonId).then(() => handleToggleView())
-        : addAlarmItemAsync({
-            webtoonId,
-          }).then(() => handleToggleView());
+      if (token) {
+        isActive
+          ? deleteAlarmItemAsync(webtoonId).then(() => handleToggleView())
+          : addAlarmItemAsync({
+              webtoonId,
+            }).then(() => handleToggleView());
+      } else {
+        dispatch(
+          setAlert({
+            alertType: 'WARNING',
+            alertTitle: 'You need to Sign In',
+            alertContents: '해당 기능은 로그인 후 사용하실 수 있습니다.',
+          }),
+        );
+      }
     },
-    [deleteAlarmItemAsync, addAlarmItemAsync],
+    [deleteAlarmItemAsync, addAlarmItemAsync, token],
   );
 
   useEffect(() => {
