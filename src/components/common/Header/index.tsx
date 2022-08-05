@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { ReactComponent as ToonsLogo } from '@images/common/logo_basic.svg';
 import useSearchParameters from '@hooks/useSearchParameters';
 import { useDispatch, useSelector } from 'react-redux';
 import { unsetUser, User } from '@store/modules/user';
@@ -10,6 +9,7 @@ import useToken from '@hooks/useToken';
 import { setAlert } from '@store/modules/alert';
 import { headerHeight } from '@styles/css';
 import useScroll from '@hooks/useScroll';
+import { Logo } from 'toons-components';
 
 function Header() {
   const { scrollY } = useScroll();
@@ -47,7 +47,7 @@ function Header() {
     >
       <div className="wrapper">
         <Link to="/" className="logo">
-          <ToonsLogo />
+          <Logo style="BASIC" />
         </Link>
         <MainMenuList>
           <li>

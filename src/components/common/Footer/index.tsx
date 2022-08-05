@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ReactComponent as ToonsLogo } from '@images/common/logo_dark.svg';
+import { Logo } from 'toons-components';
 
 function Footer() {
   return (
     <FooterContainer>
-      <ToonsLogo />
+      <Logo style="DARK" />
       <div className="textBox">
         <p>Contact 010-7242-1962</p>
         <p>&copy; 2022 TOONS</p>

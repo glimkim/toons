@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
-import { ReactComponent as Logo } from '@images/common/logo_light.svg';
 import { ReactComponent as Google } from '@images/common/google-icon.svg';
 import { ReactComponent as Kakao } from '@images/common/kakao-icon.svg';
 import { CSSTransition } from 'react-transition-group';
@@ -8,6 +7,7 @@ import { Link } from 'react-router-dom';
 import AccountForm from './AccountForm';
 import useSearchParameters from '@hooks/useSearchParameters';
 import useToken from '@hooks/useToken';
+import { Logo } from 'toons-components';
 
 function AccountModal() {
   // const [isSignUp, setIsSignUp] = useState<boolean>(false);
@@ -52,7 +52,7 @@ function AccountModal() {
       className={isSignUp ? 'signUpForm loginWrapper' : 'loginWrapper'}
     >
       <Link to="/" className="logo">
-        <Logo />
+        <Logo style="LIGHT" />
       </Link>
       <AccountForm forSignUp={isSignUp} />
       <CSSTransition in={!isSignUp} timeout={400} unmountOnExit>
