@@ -1,5 +1,6 @@
 import useAlarms from '@hooks/api/useAlarms';
 import Home from '@pages/home';
+import MyPage from '@pages/myPage';
 import KakaoDetailPage from '@pages/webtoons/kakao';
 import NaverDetailPage from '@pages/webtoons/naver';
 import { updateList } from '@store/modules/alarms';
@@ -36,6 +37,7 @@ function AnimatedRoutes() {
             <Route path="/" element={<Home />} />
             <Route path="/webtoons/naver" element={<NaverDetailPage />} />
             <Route path="/webtoons/kakao" element={<KakaoDetailPage />} />
+            <Route path="/my-page" element={<MyPage />} />
           </Routes>
         </CSSTransition>
       </TransitionGroup>

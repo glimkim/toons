@@ -65,7 +65,7 @@ function Header() {
           </li>
           {user.token && (
             <li>
-              <a href="#mypage">My Page</a>
+              <Link to="/my-page">My Page</Link>
             </li>
           )}
           <li>
@@ -189,9 +189,10 @@ const StyledHeader = styled.header<{ invisible: boolean }>`
     align-items: center;
     width: 8rem;
     height: ${headerHeight};
-    svg {
+    svg,
+    path {
       width: 8rem;
-      height: auto;
+      height: 100%;
     }
   }
 `;
