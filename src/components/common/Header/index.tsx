@@ -48,8 +48,12 @@ function Header() {
   );
 
   useEffect(() => {
-    !isInvisible && setObserveScroll(false);
-  }, [isInvisible]);
+    if (window.location.pathname !== '/') {
+      setObserveScroll(false);
+    } else {
+      setObserveScroll(true);
+    }
+  }, [window.location.pathname]);
 
   return (
     <StyledHeader invisible={isInvisible}>
