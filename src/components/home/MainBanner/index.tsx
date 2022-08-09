@@ -17,7 +17,9 @@ function MainBanner() {
     index: 0,
     count: 1,
   });
-  const { scrollY, scrollDirection } = useScroll();
+  const {
+    scroll: { scrollY, scrollDirection },
+  } = useScroll();
   const isScrolled = useMemo(() => {
     return scrollY > window.innerHeight / 2;
   }, [scrollY]);

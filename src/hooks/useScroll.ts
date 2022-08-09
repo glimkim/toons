@@ -7,11 +7,8 @@ interface ScrollObject {
   scrollDirection: 'UP' | 'DOWN';
 }
 
-interface useScrollProps {
-  callbackOnScrolling?: () => void;
-}
-
 function useScroll(callbackOnScrolling?: () => void) {
+  const [observeScroll, setObserveScroll] = useState(true);
   const [scroll, setScroll] = useState<ScrollObject>({
     scrollY: 0,
     scrollX: 0,
@@ -35,14 +32,14 @@ function useScroll(callbackOnScrolling?: () => void) {
   );
 
   useEffect(() => {
-    window.addEventListener('scroll', getScrollEvent);
+    observeScroll && window.addEventListener('scroll', getScrollEvent);
 
     return () => {
       window.removeEventListener('scroll', getScrollEvent);
     };
-  }, []);
+  }, [observeScroll]);
 
-  return scroll;
+  return { scroll, setObserveScroll };
 }
 
 export default useScroll;

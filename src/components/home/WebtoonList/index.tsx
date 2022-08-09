@@ -3,7 +3,7 @@ import useWebtoonList from '@hooks/api/useWebtoonList';
 import useScroll from '@hooks/useScroll';
 import { setAlert } from '@store/modules/alert';
 import { StoreState } from '@store/root';
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
@@ -15,14 +15,14 @@ function WebtoonList() {
   const { token } = useSelector((state: StoreState) => state.user);
   const navigate = useNavigate();
   const {
-    naverWebtoonsQuery: { data },
+    naverWebtoonsQuery: { data: naverToons },
   } = useWebtoonList();
   const { addAlarmItemAsync, deleteAlarmItemAsync } = useAlarms();
-  const { scrollY } = useScroll();
+  const {
+    scroll: { scrollY },
+    setObserveScroll,
+  } = useScroll();
   const [isActivated, setIsActivated] = useState(false);
-  const naverToons = useMemo(() => {
-    return data;
-  }, [data]);
 
   const moveToPlatformPage = (platform: 'naver' | 'kakao') => {
     navigate(`/webtoons/${platform}`);
@@ -52,6 +52,7 @@ function WebtoonList() {
   useEffect(() => {
     if (scrollY > window.innerHeight - 100 && !isActivated) {
       setIsActivated(true);
+      setObserveScroll(false);
     }
   }, [scrollY]);
 

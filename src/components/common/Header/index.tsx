@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import useSearchParameters from '@hooks/useSearchParameters';
@@ -12,7 +12,15 @@ import useScroll from '@hooks/useScroll';
 import { Logo } from 'toons-components';
 
 function Header() {
-  const { scrollY } = useScroll();
+  const {
+    scroll: { scrollY },
+    setObserveScroll,
+  } = useScroll();
+  const isInvisible = useMemo(() => {
+    return (
+      window.location.pathname === '/' && scrollY < window.innerHeight - 200
+    );
+  }, [window.location.pathname, scrollY]);
   const { appendSearchParams } = useSearchParameters();
   const user = useSelector<StoreState, User>((state) => state.user);
   const { removeToken } = useToken();
@@ -39,12 +47,12 @@ function Header() {
     [user],
   );
 
+  useEffect(() => {
+    !isInvisible && setObserveScroll(false);
+  }, [isInvisible]);
+
   return (
-    <StyledHeader
-      invisible={
-        window.location.pathname === '/' && scrollY < window.innerHeight - 200
-      }
-    >
+    <StyledHeader invisible={isInvisible}>
       <div className="wrapper">
         <Link to="/" className="logo">
           <Logo style="BASIC" />
