@@ -1,6 +1,6 @@
 import { Token } from '@apis/DTO/auth';
 import Header from '@components/common/Header';
-import AccountModal from '@components/home/AccountBox';
+import AccountModal from '@components/common/AccountBox';
 import useAlarms from '@hooks/api/useAlarms';
 import useSearchParameters from '@hooks/useSearchParameters';
 import useToken from '@hooks/useToken';

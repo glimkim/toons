@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import AccountForm from './AccountForm';
 import useSearchParameters from '@hooks/useSearchParameters';
 import useToken from '@hooks/useToken';
-import { Logo } from 'toons-components';
+import { Icon, Logo } from 'toons-components';
 
 function AccountModal() {
   // const [isSignUp, setIsSignUp] = useState<boolean>(false);
@@ -62,10 +62,10 @@ function AccountModal() {
           </div>
           <div className="socialButtonGroup">
             <button type="button" name="google" onClick={onSocialLogin}>
-              <Google />
+              <Icon icon="Google" />
             </button>
             <button type="button" name="kakao" onClick={onSocialLogin}>
-              <Kakao />
+              <Icon icon="Kakao" />
             </button>
           </div>
         </SocialLoginWrapper>
