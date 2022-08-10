@@ -68,10 +68,12 @@ function WebtoonList() {
           <ToonsListItem
             key={index}
             isActive={_toon.toNotify}
-            name={_toon.name}
-            thumbnail={_toon.thumbnail}
-            link={_toon.link}
-            day={_toon.dayOfWeek}
+            itemInfo={{
+              name: _toon.name,
+              thumbnail: _toon.thumbnail,
+              day: _toon.dayOfWeek,
+              link: _toon.link,
+            }}
             onToggleItem={(isActive, handleToggleView) =>
               onToggleItem(_toon.id, isActive, handleToggleView)
             }
