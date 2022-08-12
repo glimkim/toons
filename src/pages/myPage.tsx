@@ -25,8 +25,7 @@ function MyPage() {
     },
   ];
   return (
-    <PageLayout>
-      <Helmet title="Toons | My Page" />
+    <PageLayout pageTitle="My Page">
       <MyPageContainer>
         <div className="wrapper">
           <ProfileContainer>

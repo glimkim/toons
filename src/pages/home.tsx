@@ -7,7 +7,7 @@ import PageLayout from '@layout/pageLayout';
 
 function Home() {
   return (
-    <PageLayout>
+    <PageLayout pageTitle="Home">
       <MainBanner />
       <MainContentsWrapper className="wrapper">
         <WebtoonList />

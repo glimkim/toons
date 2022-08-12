@@ -1,14 +1,17 @@
 import Footer from '@components/common/Footer';
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 
 interface PageLayoutProps {
+  pageTitle: string;
   children: React.ReactNode;
 }
 
-function PageLayout({ children }: PageLayoutProps) {
+function PageLayout({ pageTitle, children }: PageLayoutProps) {
   return (
     <PageLayoutContainer>
+      <Helmet title={`Toons | ${pageTitle}`} />
       <div className="contents">{children}</div>
       <Footer />
     </PageLayoutContainer>

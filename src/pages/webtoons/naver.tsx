@@ -4,7 +4,7 @@ import React from 'react';
 
 function NaverDetailPage() {
   return (
-    <PageLayout>
+    <PageLayout pageTitle="Naver toons">
       <DetailPageTemplate platform="NAVER">NAVER</DetailPageTemplate>
     </PageLayout>
   );
