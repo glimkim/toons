@@ -1,23 +1,42 @@
-import useAlarms from '@hooks/api/useAlarms';
-import useWebtoonList from '@hooks/api/useWebtoonList';
+import useAlarmMutation from '@hooks/api/useAlarmMutation';
+import useWebtoonList, { WebtoonItem } from '@hooks/api/useWebtoonList';
 import useScroll from '@hooks/useScroll';
+import { addToList, deleteFromList } from '@store/modules/alarms';
 import { setAlert } from '@store/modules/alert';
 import { StoreState } from '@store/root';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { SectionBar, ToonsListItem } from 'toons-components';
 
 function WebtoonList() {
   const dispatch = useDispatch();
-  const { token } = useSelector((state: StoreState) => state.user);
+  const {
+    user: { token },
+    alarms,
+  } = useSelector((state: StoreState) => state);
   const navigate = useNavigate();
   const {
-    naverWebtoonsQuery: { data: naverToons },
+    naverWebtoonsQuery: { data },
   } = useWebtoonList();
-  const { addAlarmItemAsync, deleteAlarmItemAsync } = useAlarms();
+  const naverToons = useMemo<WebtoonItem[]>(() => {
+    return !!data
+      ? data.content.map((item) =>
+          alarms.some(({ webtoonDTO: _item }) => _item.name === item.name)
+            ? {
+                ...item,
+                toNotify: true,
+              }
+            : {
+                ...item,
+                toNotify: false,
+              },
+        )
+      : [];
+  }, [data, alarms]);
+  const { addAlarmItemAsync, deleteAlarmItemAsync } = useAlarmMutation();
   const {
     scroll: { scrollY },
     setObserveScroll,
@@ -29,13 +48,21 @@ function WebtoonList() {
   };
 
   const onToggleItem = useCallback(
-    (webtoonId: number, isActive: boolean, handleToggleView: () => void) => {
+    (item: WebtoonItem, isActive: boolean, handleToggleView: () => void) => {
       if (token) {
-        isActive
-          ? deleteAlarmItemAsync(webtoonId).then(() => handleToggleView())
-          : addAlarmItemAsync({
-              webtoonId,
-            }).then(() => handleToggleView());
+        if (isActive) {
+          deleteAlarmItemAsync(item.id).then(() => {
+            handleToggleView();
+            dispatch(deleteFromList(item.id));
+          });
+        } else {
+          addAlarmItemAsync({
+            webtoonId: item.id,
+          }).then(() => {
+            handleToggleView();
+            dispatch(addToList({ ...item, deletedAt: '' }));
+          });
+        }
       } else {
         dispatch(
           setAlert({
@@ -67,15 +94,11 @@ function WebtoonList() {
         {naverToons?.map((_toon, index) => (
           <ToonsListItem
             key={index}
-            isActive={_toon.toNotify}
             itemInfo={{
-              name: _toon.name,
-              thumbnail: _toon.thumbnail,
-              day: _toon.dayOfWeek,
-              link: _toon.link,
+              ..._toon,
             }}
             onToggleItem={(isActive, handleToggleView) =>
-              onToggleItem(_toon.id, isActive, handleToggleView)
+              onToggleItem(_toon, isActive, handleToggleView)
             }
           />
         ))}
