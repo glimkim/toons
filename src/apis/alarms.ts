@@ -1,5 +1,5 @@
 import Axios from './config';
-import { AlarmItem, AddAlarmItemRequestDTO } from './DTO/alarms';
+import { AlarmItemResponseDTO, AddAlarmItemRequestDTO } from './DTO/alarms';
 
 const getHeaders = (token: string) => {
   return {
@@ -9,7 +9,7 @@ const getHeaders = (token: string) => {
 
 export const getAlarmListAPI = async (token: string) => {
   return (
-    await Axios.get<AlarmItem[]>('/api/alarms', {
+    await Axios.get<AlarmItemResponseDTO[]>('/api/alarms', {
       headers: getHeaders(token),
     })
   ).data;
