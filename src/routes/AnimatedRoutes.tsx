@@ -1,27 +1,19 @@
-import useAlarms from '@hooks/api/useAlarms';
+import { alarmListQuqeryKey } from '@hooks/api/useAlarms';
 import Home from '@pages/home';
 import MyPage from '@pages/myPage';
 import KakaoDetailPage from '@pages/webtoons/kakao';
 import NaverDetailPage from '@pages/webtoons/naver';
-import { updateList } from '@store/modules/alarms';
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { queryClient } from '../App';
 import styled from 'styled-components';
 
 function AnimatedRoutes() {
   const { pathname } = useLocation();
-  const dispatch = useDispatch();
-  const { data: alarmList } = useAlarms();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    // only update alarmList store on moving pages
-    if (['/', '/webtoons/naver', '/webtoons/kakao'].includes(pathname)) {
-      console.log('sss');
-      alarmList && dispatch(updateList(alarmList));
-    }
   }, [pathname]);
 
   return (
