@@ -14,7 +14,7 @@ function useWebtoonsByDay(platform: Platform, dayOfWeek: DayOfWeek) {
     {
       select: (res) => {
         return res.content.map((item) =>
-          alarmList.some((_item) => _item.webtoonName === item.name)
+          alarmList.some(({ webtoonDTO: _item }) => _item.name === item.name)
             ? {
                 ...item,
                 toNotify: true,
