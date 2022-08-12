@@ -35,8 +35,6 @@ export interface PageableParams {
 
 export interface WebtoonItemResponseDTO {
   id: number;
-  createdAt: Date;
-  updatedAt: Date;
   name: string;
   thumbnail: string;
   dayOfWeek: DayOfWeek;
