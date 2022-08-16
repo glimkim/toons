@@ -1,29 +1,46 @@
+import { Platform } from '@apis/DTO/webtoons';
+import useAlarms from '@hooks/api/useAlarms';
 import PageLayout from '@layout/pageLayout';
 import { StoreState } from '@store/root';
 import { paddingUnderHeader } from '@styles/css';
-import React from 'react';
-import { Helmet } from 'react-helmet';
+import React, { HTMLAttributes, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Icon, TabBar } from 'toons-components';
+import { List, ListItem } from 'toons-components';
 
 function MyPage() {
-  const user = useSelector((state: StoreState) => state.user);
+  const { user, alarms } = useSelector((state: StoreState) => state);
 
-  const tabs = [
-    {
-      title: 'ALL',
-      contents: <div>contents here</div>,
-    },
-    {
-      title: 'NAVER',
-      contents: <div>contents here</div>,
-    },
-    {
-      title: 'KAKAO',
-      contents: <div>contents here</div>,
-    },
-  ];
+  const notiTabs = useMemo(() => {
+    const tabs = ['ALL', 'NAVER', 'KAKAO'];
+    const alarmList = alarms.map((_alarms) => _alarms.webtoonDTO);
+
+    return tabs.map((_tab) => {
+      const yourAlarms =
+        _tab === 'ALL'
+          ? alarmList
+          : alarmList.filter((_alarm) => _alarm.platform === _tab);
+      return {
+        title: _tab,
+        contents: (
+          <List id="s">
+            {yourAlarms.map(
+              (_alarm, index) =>
+                (
+                  <ListItem
+                    key={index}
+                    itemInfo={{ ..._alarm, toNotify: true }}
+                    onToggleItem={console.log}
+                  />
+                ) as HTMLAttributes<HTMLLIElement>,
+            )}
+          </List>
+        ),
+      };
+    });
+  }, [alarms]);
+
   return (
     <PageLayout pageTitle="My Page">
       <MyPageContainer>
@@ -43,12 +60,21 @@ function MyPage() {
               <li>010-2309-9296</li>
             </ul>
           </ProfileContainer>
-          <TabBar headTitle="Your Notification" tabs={tabs} />
+          <TabBar headTitle="Your Notifications" tabs={notiTabs} />
         </div>
       </MyPageContainer>
     </PageLayout>
   );
 }
+
+const NotiList = styled.ul`
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  flex-direction: row;
+  flex-wrap: wrap;
+`;
 
 const ProfileContainer = styled.div`
   margin-bottom: 3rem;
@@ -70,8 +96,8 @@ const ProfileContainer = styled.div`
 const MyPageContainer = styled.div`
   ${paddingUnderHeader};
   div.wrapper {
-    padding-top: 3rem;
-    padding-bottom: 3rem;
+    padding-top: 4rem;
+    padding-bottom: 10rem;
   }
   background-color: ${({ theme: { colors } }) => colors.main};
 `;
