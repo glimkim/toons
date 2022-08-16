@@ -39,7 +39,10 @@ function Common({ children }: LayoutProps) {
   });
   const isMutating = useIsMutating({
     predicate: (mutation) => {
-      return !mutation.options.mutationKey?.includes('sign');
+      return (
+        !mutation.options.mutationKey?.includes('sign') &&
+        !mutation.options.mutationKey?.includes('alarm')
+      );
     },
   });
 
