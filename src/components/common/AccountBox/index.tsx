@@ -138,7 +138,7 @@ const LoginWrapper = styled.div`
   align-items: center;
   width: 27rem;
   max-width: 100%;
-  height: calc(100vh - 2rem);
+  height: calc(100vh - 6rem);
   margin: auto;
   max-height: 100%;
   padding-top: 2rem;
