@@ -1,3 +1,4 @@
+import { minimumWidth } from './css';
 import { createGlobalStyle, css } from 'styled-components';
 import { ToonsGlobalCss } from 'toons-components';
 
@@ -41,7 +42,7 @@ const GlobalStyles = createGlobalStyle`
         font-weight: 400;
     }
     *.wrapper{
-        width: 1280px;
+        ${minimumWidth};
         max-width: 100%;
         margin: 0 auto;
     }
