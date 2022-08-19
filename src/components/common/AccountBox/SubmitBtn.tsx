@@ -3,13 +3,17 @@ import { Button, Loader } from 'toons-components';
 
 interface SubmitBtnProps extends HTMLAttributes<HTMLButtonElement> {
   submitType: 'signIn' | 'signUp';
-  handleSubmit: (e?: React.FormEvent<HTMLFormElement> | undefined) => void;
   isLoading: boolean;
+  disabled?: boolean;
 }
 
-const SubmitBtn = ({ submitType, handleSubmit, isLoading }: SubmitBtnProps) => {
+const SubmitBtn = ({
+  submitType,
+  isLoading,
+  disabled = false,
+}: SubmitBtnProps) => {
   return (
-    <Button fullWidth onClick={() => handleSubmit()}>
+    <Button fullWidth type="submit" disabled={disabled}>
       {/* TODO disabled on loading */}
       {isLoading ? (
         <Loader isPartial />
