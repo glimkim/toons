@@ -1,9 +1,8 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { Button, Checkbox, Input } from 'toons-components';
+import { Checkbox, Input } from 'toons-components';
 import { CSSTransition } from 'react-transition-group';
 import { useMutation } from 'react-query';
-import { Formik } from 'formik';
 import { signInAPI, signUpAPI } from '@apis/auth';
 import { SignInResponseDTO } from '@apis/DTO/auth';
 import { useDispatch } from 'react-redux';
@@ -12,36 +11,59 @@ import SubmitBtn from './SubmitBtn';
 import { setAlert } from '@store/modules/alert';
 import useToken from '@hooks/useToken';
 import MobileForm from './MobileForm';
+import { Controller, FormProvider, useForm } from 'react-hook-form';
+import _ from 'lodash';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 interface FormProps {
   forSignUp: boolean;
 }
 
-type SignInFormValues = {
-  email: string;
-  password: string;
-};
-
-type SignUpFormValues = {
+export interface FormValues {
   email: string;
   password: string;
   username: string;
-  // phone: string;
-};
+  phoneNumber: string;
+  code: string;
+}
+
+export const debounceChange = _.debounce(
+  (
+    e: React.ChangeEvent<HTMLInputElement>,
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
+  ) => onChange(e),
+  300,
+);
+
+const schema = yup.object({
+  email: yup
+    .string()
+    .email('Please enter a valid email address.')
+    .required('Please enter your email.'),
+  password: yup.string().required('Please enter your password.'),
+  username: yup.string().required('Please enter username.'),
+  phoneNumber: yup
+    .string()
+    .matches(/^\+?[1-9]\d{1,14}$/, 'Please enter a valid mobile number.')
+    .required('Please enter your mobile number.'),
+  code: yup.string().required('Please enter code.'),
+});
 
 function AccountForm({ forSignUp }: FormProps) {
   const dispatch = useDispatch();
   const { deleteSearchParams, appendSearchParams } = useSearchParameters();
-  const formInitialValues: { [key: string]: string } = forSignUp
-    ? {
-        email: '',
-        password: '',
-        username: '',
-        phone: '',
-      }
-    : {
-        email: '',
-        password: '',
-      };
+  const methods = useForm({
+    defaultValues: {
+      email: '',
+      password: '',
+      username: '',
+      phoneNumber: '',
+      code: '',
+    },
+    mode: 'all',
+    resolver: yupResolver(schema),
+  });
+  const { errors } = methods.formState;
   const { mutateAsync: submitSignInInfo, isLoading: isSigningIn } = useMutation(
     'signIn',
     signInAPI,
@@ -51,122 +73,134 @@ function AccountForm({ forSignUp }: FormProps) {
     signUpAPI,
   );
   const { setToken } = useToken();
-  const [sentCode, setSentCode] = useState(false);
+  const [isMobileVerified, setIsMobileVerified] = useState(false);
 
-  const onClickVerifyMobile = useCallback(() => {
-    setSentCode(true);
-  }, []);
+  const onMobileVerified = useCallback(() => {
+    setIsMobileVerified(true);
+  }, [setIsMobileVerified]);
 
   const onSubmit = useCallback(
-    (formValues: { [key: string]: string }) => {
+    ({ email, password, username, phoneNumber }: FormValues) => {
       if (forSignUp) {
-        submitSignUpInfo(formValues as SignUpFormValues)
-          .then(() => {
-            dispatch(
-              setAlert({
-                alertType: 'SUCCESS',
-                alertTitle: 'Welcome to Toons!',
-                alertContents: 'Returning to sign in page!',
-              }),
-            );
-            appendSearchParams({ authType: 'signIn' });
+        isMobileVerified &&
+          submitSignUpInfo({
+            email,
+            password,
+            username,
+            phoneNumber,
           })
-          .catch((e) => console.dir(e));
+            .then(() => {
+              dispatch(
+                setAlert({
+                  alertType: 'SUCCESS',
+                  alertTitle: 'Welcome to Toons!',
+                  alertContents: 'Returning to sign in page!',
+                }),
+              );
+              appendSearchParams({ authType: 'signIn' });
+            })
+            .catch((e) => console.dir(e));
       } else {
         // signIn
-        submitSignInInfo(formValues as SignInFormValues).then(
-          (res: SignInResponseDTO) => {
-            setToken(res.token);
-            deleteSearchParams('authType');
-          },
-        );
+        submitSignInInfo({ email, password }).then((res: SignInResponseDTO) => {
+          setToken(res.token);
+          deleteSearchParams('authType');
+        });
       }
     },
-    [forSignUp],
+    [forSignUp, isMobileVerified, submitSignUpInfo, submitSignInInfo],
   );
 
   return (
-    <Formik initialValues={formInitialValues} onSubmit={onSubmit}>
-      {({ handleChange, handleBlur, handleSubmit, values }) => (
-        <Form className={forSignUp ? 'signUpForm' : ''}>
-          <Input
-            id="email"
-            label="Email"
-            onChange={handleChange}
-            placeholder="Enter your email"
-          />
-          <Input
-            id="password"
-            label="Password"
-            onChange={handleChange}
-            placeholder="Enter your password"
-            type="password"
-          />
-          <CSSTransition
-            in={forSignUp}
-            timeout={forSignUp ? 700 : 300}
-            unmountOnExit
-          >
-            <div className="joinInfo">
-              <Input
-                id="username"
-                label="Name"
-                onChange={handleChange}
-                placeholder="Enter your name"
-              />
-              <MobileForm onMobileVerified={console.log} />
-              <CSSTransition
-                in={sentCode}
-                timeout={300}
-                classNames="verificationCode"
-                unmountOnExit
-              >
-                <Input
-                  id="contact-verification"
-                  onChange={handleChange}
-                  placeholder="Verification Code"
-                />
-              </CSSTransition>
-            </div>
-          </CSSTransition>
-          <CSSTransition
-            in={!forSignUp}
-            timeout={300}
-            classNames="rememberMe"
-            unmountOnExit
-          >
-            <div className="checkboxWrapper">
-              <Checkbox id="rememberUser" onChange={console.log} />
-              <span>Remember Me</span>
-            </div>
-          </CSSTransition>
-          <CSSTransition in={!forSignUp} timeout={300} unmountOnExit>
-            <div className="loginButtonGroup">
-              <SubmitBtn
-                submitType={'signIn'}
-                handleSubmit={handleSubmit}
-                isLoading={isSigningIn}
-              />
-              <button className="findBtn" type="button">
-                Forgot passoword?
-              </button>
-            </div>
-          </CSSTransition>
-          <CSSTransition
-            in={forSignUp}
-            timeout={300}
-            unmountOnExit
-            classNames="signUpBtn"
-          >
-            <SubmitBtn
-              submitType={'signUp'}
-              handleSubmit={handleSubmit}
-              isLoading={isSigningUp}
+    <FormProvider {...methods}>
+      <Form
+        className={forSignUp ? 'signUpForm' : ''}
+        onSubmit={methods.handleSubmit(onSubmit)}
+      >
+        <Controller
+          name="email"
+          control={methods.control}
+          render={({ field: { onChange }, formState }) => (
+            <Input
+              id="email"
+              label="Email"
+              placeholder="Enter your email"
+              autoComplete="email"
+              required
+              errorText={errors.email?.message}
+              onChange={(e) => debounceChange(e, onChange)}
             />
-          </CSSTransition>
-        </Form>
-      )}
-    </Formik>
+          )}
+        />
+        <Controller
+          name="password"
+          control={methods.control}
+          render={({ field: { onChange } }) => (
+            <Input
+              type="password"
+              id="password"
+              label="Password"
+              placeholder="Enter your password"
+              autoComplete="current-password"
+              onChange={(e) => debounceChange(e, onChange)}
+              required
+              errorText={errors.password?.message}
+            />
+          )}
+        />
+        <CSSTransition
+          in={forSignUp}
+          timeout={forSignUp ? 700 : 300}
+          unmountOnExit
+        >
+          <div className="joinInfo">
+            <Controller
+              name="username"
+              control={methods.control}
+              render={({ field: { onChange } }) => (
+                <Input
+                  id="username"
+                  label="Name"
+                  placeholder="Enter your username"
+                  autoComplete="username"
+                  onChange={(e) => debounceChange(e, onChange)}
+                  required
+                  errorText={errors.username?.message}
+                />
+              )}
+            />
+            <MobileForm onMobileVerified={onMobileVerified} />
+          </div>
+        </CSSTransition>
+        <CSSTransition
+          in={!forSignUp}
+          timeout={300}
+          classNames="rememberMe"
+          unmountOnExit
+        >
+          <div className="checkboxWrapper">
+            <Checkbox id="rememberUser" onChange={console.log} />
+            <span>Remember Me</span>
+          </div>
+        </CSSTransition>
+        <CSSTransition in={!forSignUp} timeout={300} unmountOnExit>
+          <div className="loginButtonGroup">
+            <SubmitBtn submitType={'signIn'} isLoading={isSigningIn} />
+            <button className="findBtn" type="button">
+              Forgot passoword?
+            </button>
+          </div>
+        </CSSTransition>
+        <CSSTransition
+          in={forSignUp}
+          timeout={300}
+          unmountOnExit
+          classNames="signUpBtn"
+        >
+          <SubmitBtn submitType={'signUp'} isLoading={isSigningUp} />
+        </CSSTransition>
+      </Form>
+    </FormProvider>
   );
 }
 

@@ -2,6 +2,7 @@ export interface SignUpRequestDTO {
   email: string;
   password: string;
   username: string;
+  phoneNumber: string;
 }
 
 export interface SignInRequestDTO {
@@ -16,4 +17,13 @@ export interface Token {
   email: string;
   exp: number;
   iat: number;
+}
+
+export interface MobileVerificationRequestDTO {
+  phoneNumber: string;
+}
+
+export interface MobileVerificationCheckDTO
+  extends MobileVerificationRequestDTO {
+  code: string;
 }
