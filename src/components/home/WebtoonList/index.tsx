@@ -36,7 +36,7 @@ function WebtoonList() {
         )
       : [];
   }, [data, alarms]);
-  const { addAlarmItemAsync, deleteAlarmItemAsync } = useAlarmMutation();
+  const { onToggleItem } = useAlarmMutation();
   const {
     scroll: { scrollY },
     setObserveScroll,
@@ -46,35 +46,6 @@ function WebtoonList() {
   const moveToPlatformPage = (platform: 'naver' | 'kakao') => {
     navigate(`/webtoons/${platform}`);
   };
-
-  const onToggleItem = useCallback(
-    (item: WebtoonItem, isActive: boolean, handleToggleView: () => void) => {
-      if (token) {
-        if (isActive) {
-          deleteAlarmItemAsync(item.id).then(() => {
-            handleToggleView();
-            dispatch(deleteFromList(item.id));
-          });
-        } else {
-          addAlarmItemAsync({
-            webtoonId: item.id,
-          }).then(() => {
-            handleToggleView();
-            dispatch(addToList({ ...item, deletedAt: '' }));
-          });
-        }
-      } else {
-        dispatch(
-          setAlert({
-            alertType: 'WARNING',
-            alertTitle: 'You need to Sign In',
-            alertContents: '해당 기능은 로그인 후 사용하실 수 있습니다.',
-          }),
-        );
-      }
-    },
-    [deleteAlarmItemAsync, addAlarmItemAsync, token],
-  );
 
   useEffect(() => {
     if (scrollY > window.innerHeight - 100 && !isActivated) {

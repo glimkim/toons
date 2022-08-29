@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { StoreState } from '@store/root';
 import { addAlarmItemAPI, deleteAlarmItemAPI } from '@apis/alarms';
 import { AddAlarmItemRequestDTO } from '@apis/DTO/alarms';
@@ -5,6 +6,8 @@ import { setAlert } from '@store/modules/alert';
 import { AxiosError } from 'axios';
 import { useMutation } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
+import { addToList, deleteFromList } from '@store/modules/alarms';
+import { WebtoonItem } from './useWebtoonList';
 
 function useAlarmMutation() {
   const { token } = useSelector((state: StoreState) => state.user);
@@ -38,9 +41,39 @@ function useAlarmMutation() {
     },
   );
 
+  const onToggleItem = useCallback(
+    (item: WebtoonItem, isActive: boolean, handleToggleView: () => void) => {
+      if (token) {
+        if (isActive) {
+          deleteAlarmItemAsync(item.id).then(() => {
+            handleToggleView();
+            dispatch(deleteFromList(item.id));
+          });
+        } else {
+          addAlarmItemAsync({
+            webtoonId: item.id,
+          }).then(() => {
+            handleToggleView();
+            dispatch(addToList({ ...item, deletedAt: '' }));
+          });
+        }
+      } else {
+        dispatch(
+          setAlert({
+            alertType: 'WARNING',
+            alertTitle: 'You need to Sign In',
+            alertContents: '해당 기능은 로그인 후 사용하실 수 있습니다.',
+          }),
+        );
+      }
+    },
+    [deleteAlarmItemAsync, addAlarmItemAsync, token],
+  );
+
   return {
     addAlarmItemAsync,
     deleteAlarmItemAsync,
+    onToggleItem,
   };
 }
 
