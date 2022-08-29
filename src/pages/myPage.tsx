@@ -1,4 +1,5 @@
 import { Platform } from '@apis/DTO/webtoons';
+import useAlarmMutation from '@hooks/api/useAlarmMutation';
 import useAlarms from '@hooks/api/useAlarms';
 import PageLayout from '@layout/pageLayout';
 import { StoreState } from '@store/root';
@@ -11,6 +12,7 @@ import { List, ListItem } from 'toons-components';
 
 function MyPage() {
   const { user, alarms } = useSelector((state: StoreState) => state);
+  const { onToggleItem } = useAlarmMutation();
 
   const notiTabs = useMemo(() => {
     const tabs = ['ALL', 'NAVER', 'KAKAO'];
@@ -31,7 +33,13 @@ function MyPage() {
                   <ListItem
                     key={index}
                     itemInfo={{ ..._alarm, toNotify: true }}
-                    onToggleItem={console.log}
+                    onToggleItem={(isActive, handleToggleView) =>
+                      onToggleItem(
+                        { ..._alarm, toNotify: true },
+                        isActive,
+                        handleToggleView,
+                      )
+                    }
                   />
                 ) as HTMLAttributes<HTMLLIElement>,
             )}
