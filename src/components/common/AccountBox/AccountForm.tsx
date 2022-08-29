@@ -35,7 +35,15 @@ export const debounceChange = _.debounce(
   300,
 );
 
-const schema = yup.object({
+const signInSchema = yup.object({
+  email: yup
+    .string()
+    .email('Please enter a valid email address.')
+    .required('Please enter your email.'),
+  password: yup.string().required('Please enter your password.'),
+});
+
+const signUpSchema = yup.object({
   email: yup
     .string()
     .email('Please enter a valid email address.')
@@ -52,6 +60,9 @@ const schema = yup.object({
 function AccountForm({ forSignUp }: FormProps) {
   const dispatch = useDispatch();
   const { deleteSearchParams, appendSearchParams } = useSearchParameters();
+  const formSchema = useMemo(() => {
+    return forSignUp ? signUpSchema : signInSchema;
+  }, [forSignUp]);
   const methods = useForm({
     defaultValues: {
       email: '',
@@ -61,7 +72,7 @@ function AccountForm({ forSignUp }: FormProps) {
       code: '',
     },
     mode: 'all',
-    resolver: yupResolver(schema),
+    resolver: yupResolver(formSchema),
   });
   const { errors } = methods.formState;
   const { mutateAsync: submitSignInInfo, isLoading: isSigningIn } = useMutation(
@@ -101,6 +112,7 @@ function AccountForm({ forSignUp }: FormProps) {
             })
             .catch((e) => console.dir(e));
       } else {
+        console.log('sssss');
         // signIn
         submitSignInInfo({ email, password }).then((res: SignInResponseDTO) => {
           setToken(res.token);
@@ -115,7 +127,7 @@ function AccountForm({ forSignUp }: FormProps) {
     <FormProvider {...methods}>
       <Form
         className={forSignUp ? 'signUpForm' : ''}
-        onSubmit={methods.handleSubmit(onSubmit)}
+        onSubmit={methods.handleSubmit(onSubmit, (e) => console.log(e))}
       >
         <Controller
           name="email"
@@ -164,7 +176,7 @@ function AccountForm({ forSignUp }: FormProps) {
                   placeholder="Enter your username"
                   autoComplete="username"
                   onChange={(e) => debounceChange(e, onChange)}
-                  required
+                  required={forSignUp}
                   errorText={errors.username?.message}
                 />
               )}

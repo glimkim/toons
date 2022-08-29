@@ -16,6 +16,7 @@ import _ from 'lodash';
 import { useDispatch } from 'react-redux';
 import { setAlert } from '@store/modules/alert';
 import { AxiosError } from 'axios';
+import useSearchParameters from '@hooks/useSearchParameters';
 
 interface MobileFormProps {
   onMobileVerified: () => void;
@@ -36,6 +37,7 @@ function MobileForm({ onMobileVerified }: MobileFormProps) {
     (verificationInfo: MobileVerificationCheckDTO) =>
       checkMobileVerification(verificationInfo),
   );
+  const { queryParams } = useSearchParameters('authType');
 
   const sendVerificationCode = useCallback(() => {
     sendCodeAsync({
@@ -105,7 +107,7 @@ function MobileForm({ onMobileVerified }: MobileFormProps) {
                       onChange(e);
                     }, 400)();
                   }}
-                  required
+                  required={queryParams[0] === 'signUp'}
                 />
               )}
             />
@@ -137,7 +139,7 @@ function MobileForm({ onMobileVerified }: MobileFormProps) {
                 btnText: 'Verify',
                 onClickBtn: onClickVerifyMobile,
               }}
-              required
+              required={queryParams[0] === 'signUp'}
               errorText={errors.code?.message}
             />
           )}
