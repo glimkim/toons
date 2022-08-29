@@ -11,21 +11,27 @@ interface PageTemplateProps {
 function DetailPageTemplate({ children, platform }: PageTemplateProps) {
   return (
     <PageTemplateContainer platform={platform}>
-      {children}
+      <div className="pageHead wrapper">
+        <h3>{platform === 'NAVER' ? '네이버' : '카카오'}</h3>
+        {children}
+      </div>
     </PageTemplateContainer>
   );
 }
 
 const PageTemplateContainer = styled.div<{ platform: Platform }>`
   ${paddingUnderHeader};
-  background-color: ${({ platform }) =>
-    platform === 'NAVER' ? 'pink' : 'skyblue'};
-  height: 100vh;
-  font-size: 10rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
+  div.pageHead {
+    padding: 5rem 0 3rem;
+    h3 {
+      font-family: 'Black Han Sans';
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+  }
+  div.loader {
+    padding: 3rem 0;
+  }
 `;
 
 export default DetailPageTemplate;

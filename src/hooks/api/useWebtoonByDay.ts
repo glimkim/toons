@@ -4,13 +4,18 @@ import { DayOfWeek } from './../../apis/DTO/webtoons';
 import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
 import { StoreState } from '@store/root';
+import { useState, useMemo } from 'react';
 
-function useWebtoonsByDay(platform: Platform, dayOfWeek: DayOfWeek) {
+function useWebtoonsByDay(platform: Platform) {
   const { alarms: alarmList } = useSelector((state: StoreState) => state);
+  const [dayOfWeek, setDayOfWeek] = useState<DayOfWeek>('MONDAY');
+  const selectedPlatform = useMemo(() => {
+    return platform;
+  }, [platform]);
 
   const webtoonsByDayQuery = useQuery(
     [`${dayOfWeek}-list`, alarmList],
-    () => getWebtoonsAPI(platform, dayOfWeek),
+    () => getWebtoonsAPI(selectedPlatform, dayOfWeek),
     {
       select: (res) => {
         return res.content.map((item) =>
@@ -28,7 +33,7 @@ function useWebtoonsByDay(platform: Platform, dayOfWeek: DayOfWeek) {
     },
   );
 
-  return { webtoonsByDayQuery };
+  return { webtoonsByDayQuery, setDayOfWeek, dayOfWeek };
 }
 
 export default useWebtoonsByDay;
