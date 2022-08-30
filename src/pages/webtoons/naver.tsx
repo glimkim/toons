@@ -2,11 +2,10 @@ import { DayOfWeek } from '@apis/DTO/webtoons';
 import DetailPageTemplate from '@components/common/DetailPageTemplate';
 import useAlarmMutation from '@hooks/api/useAlarmMutation';
 import useWebtoonsByDay from '@hooks/api/useWebtoonByDay';
-import useWebtoonList from '@hooks/api/useWebtoonList';
+import useListState from '@hooks/useListState';
 import PageLayout from '@layout/pageLayout';
 import React, { HTMLAttributes, useCallback, useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { Icon, List, ListItem, Loader, TabBar } from 'toons-components';
+import { List, ListItem, Loader, TabBar } from 'toons-components';
 
 function NaverDetailPage() {
   const {
@@ -14,6 +13,7 @@ function NaverDetailPage() {
     setDayOfWeek,
     dayOfWeek,
   } = useWebtoonsByDay('NAVER');
+  const naverToons = useListState(data?.content || []);
   const { onToggleItem } = useAlarmMutation();
   const [tabContents, setTabContents] = useState<
     {
@@ -43,9 +43,9 @@ function NaverDetailPage() {
     setTabContents(() => {
       return days.map((_day) => ({
         title: _day,
-        contents: data ? (
+        contents: naverToons ? (
           <List id={`naver_${_day}`}>
-            {data.map(
+            {naverToons.map(
               (_item, index) =>
                 (
                   <ListItem
