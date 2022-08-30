@@ -1,41 +1,19 @@
 import useAlarmMutation from '@hooks/api/useAlarmMutation';
-import useWebtoonList, { WebtoonItem } from '@hooks/api/useWebtoonList';
+import useWebtoonList from '@hooks/api/useWebtoonList';
+import useListState from '@hooks/useListState';
 import useScroll from '@hooks/useScroll';
-import { addToList, deleteFromList } from '@store/modules/alarms';
-import { setAlert } from '@store/modules/alert';
-import { StoreState } from '@store/root';
-import React, { HTMLAttributes, useCallback, useEffect, useMemo } from 'react';
+import React, { HTMLAttributes, useEffect } from 'react';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { SectionBar, ListItem, List } from 'toons-components';
 
 function WebtoonList() {
-  const dispatch = useDispatch();
-  const {
-    user: { token },
-    alarms,
-  } = useSelector((state: StoreState) => state);
   const navigate = useNavigate();
   const {
     naverWebtoonsQuery: { data },
   } = useWebtoonList();
-  const naverToons = useMemo<WebtoonItem[]>(() => {
-    return !!data
-      ? data.content.map((item) =>
-          alarms.some(({ webtoonDTO: _item }) => _item.name === item.name)
-            ? {
-                ...item,
-                toNotify: true,
-              }
-            : {
-                ...item,
-                toNotify: false,
-              },
-        )
-      : [];
-  }, [data, alarms]);
+  const naverToons = useListState(data?.content || []);
   const { onToggleItem } = useAlarmMutation();
   const {
     scroll: { scrollY },
