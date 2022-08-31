@@ -75,15 +75,6 @@ function MyPage() {
   );
 }
 
-const NotiList = styled.ul`
-  width: 100%;
-  display: flex;
-  gap: 1rem;
-  justify-content: space-between;
-  flex-direction: row;
-  flex-wrap: wrap;
-`;
-
 const ProfileContainer = styled.div`
   margin-bottom: 3rem;
   h6 {
