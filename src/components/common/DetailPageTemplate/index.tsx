@@ -21,8 +21,10 @@ function DetailPageTemplate({ children, platform }: PageTemplateProps) {
 
 const PageTemplateContainer = styled.div<{ platform: Platform }>`
   ${paddingUnderHeader};
+  background-color: #fff;
   div.pageHead {
-    padding: 5rem 0 3rem;
+    padding-top: 5rem;
+    padding-bottom: 3rem;
     h3 {
       font-family: 'Black Han Sans';
       font-size: 2rem;
