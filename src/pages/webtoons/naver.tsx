@@ -9,7 +9,7 @@ import { List, ListItem, Loader, TabBar } from 'toons-components';
 
 function NaverDetailPage() {
   const {
-    webtoonsByDayQuery: { data },
+    webtoonsByDayQuery: { data, isLoading },
     setDayOfWeek,
     dayOfWeek,
   } = useWebtoonsByDay('NAVER');
@@ -43,28 +43,29 @@ function NaverDetailPage() {
     setTabContents(() => {
       return days.map((_day) => ({
         title: _day,
-        contents: naverToons ? (
-          <List id={`naver_${_day}`}>
-            {naverToons.map(
-              (_item, index) =>
-                (
-                  <ListItem
-                    key={index}
-                    itemInfo={{
-                      ..._item,
-                    }}
-                    onToggleItem={(isActive, handleToggleView) =>
-                      onToggleItem(_item, isActive, handleToggleView)
-                    }
-                  />
-                ) as HTMLAttributes<HTMLLIElement>,
-            )}
-          </List>
-        ) : (
-          <div className="loader">
-            <Loader isPartial={true} theme="white" />
-          </div>
-        ),
+        contents:
+          naverToons && !isLoading ? (
+            <List id={`naver_${_day}`}>
+              {naverToons.map(
+                (_item, index) =>
+                  (
+                    <ListItem
+                      key={index}
+                      itemInfo={{
+                        ..._item,
+                      }}
+                      onToggleItem={(isActive, handleToggleView) =>
+                        onToggleItem(_item, isActive, handleToggleView)
+                      }
+                    />
+                  ) as HTMLAttributes<HTMLLIElement>,
+              )}
+            </List>
+          ) : (
+            <div className="loader">
+              <Loader isPartial={true} theme="mix" />
+            </div>
+          ),
         onClickTab: () => onClickTab(_day),
       }));
     });
