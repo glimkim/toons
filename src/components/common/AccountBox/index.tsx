@@ -1,7 +1,5 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
-import { ReactComponent as Google } from '@images/common/google-icon.svg';
-import { ReactComponent as Kakao } from '@images/common/kakao-icon.svg';
 import { CSSTransition } from 'react-transition-group';
 import { Link } from 'react-router-dom';
 import AccountForm from './AccountForm';
