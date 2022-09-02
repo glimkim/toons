@@ -74,7 +74,11 @@ function Header() {
   );
 
   useEffect(() => {
-    if (['kakao', 'naver', 'my-page'].includes(window.location.pathname)) {
+    if (
+      ['/webtoons/kakao', '/webtoons/naver', '/my-page'].includes(
+        window.location.pathname,
+      )
+    ) {
       setObserveScroll(false);
     } else {
       setObserveScroll(true);
