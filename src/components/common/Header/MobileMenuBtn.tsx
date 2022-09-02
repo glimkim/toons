@@ -1,15 +1,13 @@
-import React, { useCallback, useState } from 'react';
+import React, { HTMLAttributes, useCallback, useState } from 'react';
 import styled from 'styled-components';
 
-function MenuButton() {
-  const [isActive, setIsActive] = useState<boolean>(false);
+interface MenuBtnProps extends HTMLAttributes<HTMLButtonElement> {
+  isMenuActive: boolean;
+}
 
-  const handleMenuButton = useCallback(() => {
-    setIsActive((prev) => !prev);
-  }, []);
-
+function MenuButton({ isMenuActive, ...props }: MenuBtnProps) {
   return (
-    <MenuBtn className={isActive ? 'active' : ''} onClick={handleMenuButton}>
+    <MenuBtn className={isMenuActive ? 'active' : ''} {...props}>
       <span className="circle" />
       <span className="circle" />
       <span className="circle" />
@@ -19,7 +17,8 @@ function MenuButton() {
 
 const MenuBtn = styled.button`
   position: relative;
-  display: flex;
+  right: -1rem;
+  display: none;
   flex-direction: column;
   gap: 8px;
   align-items: center;
@@ -68,23 +67,12 @@ const MenuBtn = styled.button`
         height: 3rem;
         z-index: 1;
         opacity: 0;
-        /* animation-name: middleCircle;
-        animation-duration: 0.6s;
-        animation-fill-mode: forwards; */
       }
     }
   }
 
-  @keyframes middleCircle {
-    from {
-      opacity: 1;
-      width: 3rem;
-      height: 3rem;
-    }
-    to {
-      z-index: 1;
-      opacity: 0;
-    }
+  @media screen and (max-width: 767px) {
+    display: flex;
   }
 `;
 
