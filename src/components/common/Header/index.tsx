@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import useSearchParameters from '@hooks/useSearchParameters';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,13 +15,11 @@ import MobileMenuBtn from './MobileMenuBtn';
 function Header() {
   const {
     scroll: { scrollY },
-    setObserveScroll,
   } = useScroll();
+  const { pathname } = useLocation();
   const isInvisible = useMemo(() => {
-    return (
-      window.location.pathname === '/' && scrollY < window.innerHeight - 200
-    );
-  }, [window.location.pathname, scrollY]);
+    return pathname === '/' && scrollY < window.innerHeight - 200;
+  }, [pathname, scrollY]);
   const { appendSearchParams } = useSearchParameters();
   const user = useSelector<StoreState, User>((state) => state.user);
   const { removeToken } = useToken();
@@ -72,18 +70,6 @@ function Header() {
     },
     [mobileMenuActive],
   );
-
-  useEffect(() => {
-    if (
-      ['/webtoons/kakao', '/webtoons/naver', '/my-page'].includes(
-        window.location.pathname,
-      )
-    ) {
-      setObserveScroll(false);
-    } else {
-      setObserveScroll(true);
-    }
-  }, [window.location.pathname]);
 
   useEffect(() => {
     if (mobileMenuActive) {
