@@ -28,10 +28,10 @@ function Header() {
 
   const onToggleMobileBtn = useCallback(() => {
     setMobileMenuActive((prev) => {
-      prev &&
-        document
-          .querySelector('a[href="#mainMenu"]')
-          ?.classList.remove('active');
+      document
+        .getElementById('header')
+        ?.querySelectorAll('.active')
+        .forEach((el) => el.classList.remove('active'));
       return !prev;
     });
   }, [setMobileMenuActive]);
@@ -81,6 +81,7 @@ function Header() {
 
   return (
     <StyledHeader
+      id="header"
       invisible={isInvisible}
       className={mobileMenuActive ? 'mobileActive' : ''}
     >
