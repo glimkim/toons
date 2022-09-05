@@ -13,6 +13,7 @@ import React, {
   useCallback,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useState,
 } from 'react';
 import { useIsFetching, useIsMutating } from 'react-query';
@@ -29,9 +30,10 @@ function Common({ children }: LayoutProps) {
   const dispatch = useDispatch();
   const { tokenFromLS, setTokenDue } = useToken();
   const [fontsLoaded, setFontsLoaded] = useState<boolean>(false);
-  const { searchParams, queryParams, deleteSearchParams } =
-    useSearchParameters('authType');
-  const [openAuth, setOpenAuth] = useState(false);
+  const { queryParams, deleteSearchParams } = useSearchParameters('authType');
+  const openAuth = useMemo(() => {
+    return ['signIn', 'signUp'].includes(queryParams[0]);
+  }, [queryParams]);
   const isFetching = useIsFetching({
     predicate: (query) => {
       return query.queryKey.includes('webtoon');
@@ -51,15 +53,8 @@ function Common({ children }: LayoutProps) {
   }, [unsetAlert]);
 
   const onCloseAuthBox = useCallback(() => {
-    setOpenAuth(false);
     deleteSearchParams('authType');
-  }, [searchParams]);
-
-  useEffect(() => {
-    ['signIn', 'signUp'].includes(queryParams[0])
-      ? setOpenAuth(true)
-      : setOpenAuth(false);
-  }, [queryParams]);
+  }, [deleteSearchParams]);
 
   useLayoutEffect(() => {
     (document as Document).fonts.ready
