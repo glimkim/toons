@@ -6,7 +6,7 @@ function useSearchParameters(queryKey?: string) {
 
   const queryParams = useMemo(() => {
     return queryKey ? searchParams.getAll(queryKey) : [];
-  }, [searchParams]);
+  }, [searchParams, queryKey]);
 
   const appendSearchParams = useCallback(
     (param: { [key: string]: string }, replace = false) => {
@@ -14,7 +14,7 @@ function useSearchParameters(queryKey?: string) {
         replace,
       });
     },
-    [],
+    [setSearchParams],
   );
 
   const deleteSearchParams = useCallback(
@@ -22,7 +22,7 @@ function useSearchParameters(queryKey?: string) {
       searchParams.delete(queryKey);
       setSearchParams(searchParams);
     },
-    [searchParams],
+    [searchParams, setSearchParams],
   );
 
   return {
