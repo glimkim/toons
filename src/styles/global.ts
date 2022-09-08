@@ -4,7 +4,7 @@ import { ToonsGlobalCss } from 'toons-components';
 
 const fonts = css`
   @font-face {
-    font-family: 'Black Han Sans';
+    font-family: 'BlackHan Sans';
     font-style: normal;
     font-weight: 400;
     font-display: fallback;
@@ -19,18 +19,18 @@ const fonts = css`
     font-weight: 400;
     font-display: fallback;
     src: local('Noto Sans'),
-      url(./fonts/NotoSansKR-Regular.woff2) format('woff2'),
-      url(./fonts/NotoSansKR-Regular.woff) format('woff'),
-      url(./fonts/NotoSansKR-Regular.ttf) format('truetype');
+      url(/fonts/NotoSansKR-Regular.woff2) format('woff2'),
+      url(/fonts/NotoSansKR-Regular.woff) format('woff'),
+      url(/fonts/NotoSansKR-Regular.ttf) format('truetype');
   }
   @font-face {
     font-family: 'Noto Sans';
     font-style: bold;
     font-weight: 700;
     font-display: fallback;
-    src: local('Noto Sans'), url(./fonts/NotoSansKR-Bold.woff2) format('woff2'),
-      url(./fonts/NotoSansKR-Bold.woff) format('woff'),
-      url(./fonts/NotoSansKR-Bold.ttf) format('truetype');
+    src: local('Noto Sans'), url(/fonts/NotoSansKR-Bold.woff2) format('woff2'),
+      url(/fonts/NotoSansKR-Bold.woff) format('woff'),
+      url(/fonts/NotoSansKR-Bold.ttf) format('truetype');
   }
 `;
 
