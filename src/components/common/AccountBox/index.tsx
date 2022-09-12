@@ -114,10 +114,7 @@ const SocialLoginWrapper = styled.div`
     gap: 0.7rem;
     padding: 2rem 0 1.7rem;
     button {
-      width: 3.14rem;
-      * {
-        width: 100%;
-      }
+      width: auto;
     }
   }
   &.enter {
@@ -135,10 +132,10 @@ const LoginWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 27rem;
-  max-width: 100%;
-  height: calc(100vh - 6rem);
+  max-width: calc(100vw - 2rem);
+  max-height: calc(100% - 4rem);
+  padding: 3rem 0 5rem;
   margin: auto;
-  max-height: 100%;
   padding-top: 2rem;
   border-radius: 1rem;
   background-color: ${({ theme }) => theme.colors.gray00};
@@ -214,6 +211,10 @@ const LoginWrapper = styled.div`
       display: none;
       opacity: 0;
     }
+  }
+
+  @media screen and (max-height: 680px) {
+    padding: 1rem 0;
   }
 `;
 

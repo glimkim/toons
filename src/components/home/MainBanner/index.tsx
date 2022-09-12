@@ -89,7 +89,7 @@ const MainBnWrapper = styled.div<{ isScrolled: boolean }>`
   display: flex;
   justify-content: center;
   width: 100%;
-  height: 100vh;
+  height: ${() => window.innerHeight + 'px'};
   background-color: ${(props) => props.theme.colors.main};
   background-size: calc(100vw - 2rem);
   background-repeat: repeat-y;
@@ -152,7 +152,12 @@ const MainBnWrapper = styled.div<{ isScrolled: boolean }>`
     }
   }
 
-  @media screen and (min-width: 541px) {
+  @media screen and (min-width: 1680px) {
+    h3 {
+      font-size: 8rem;
+    }
+  }
+  @media screen and (max-width: 1679px) and (min-width: 541px) {
     h3 {
       font-size: 7rem;
 
