@@ -321,6 +321,7 @@ const StyledHeader = styled.header<{ invisible: boolean }>`
     position: relative;
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     z-index: 100;
     transform-style: preserve-3d;
   }
