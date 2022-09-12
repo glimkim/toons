@@ -133,8 +133,8 @@ const LoginWrapper = styled.div`
   align-items: center;
   width: 27rem;
   max-width: calc(100vw - 2rem);
+  height: ${() => `calc(${window.innerHeight}px - 8rem)`};
   max-height: calc(100% - 4rem);
-  padding: 3rem 0 5rem;
   margin: auto;
   padding-top: 2rem;
   border-radius: 1rem;
@@ -213,7 +213,8 @@ const LoginWrapper = styled.div`
     }
   }
 
-  @media screen and (max-height: 680px) {
+  @media screen and (max-height: 600px) {
+    height: ${() => `calc(${window.innerHeight}px - 2rem)`};
     padding: 1rem 0;
   }
 `;

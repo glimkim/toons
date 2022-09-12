@@ -91,7 +91,7 @@ const MainBnWrapper = styled.div<{ isScrolled: boolean }>`
   width: 100%;
   height: ${() => window.innerHeight + 'px'};
   background-color: ${(props) => props.theme.colors.main};
-  background-size: calc(100vw - 2rem);
+  background-size: calc(100% - 2rem);
   background-repeat: repeat-y;
   background-position: center;
   background-attachment: fixed;
