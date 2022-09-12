@@ -20,7 +20,7 @@ const MenuBtn = styled.button`
   right: -1rem;
   display: none;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
   justify-content: center;
   width: 48px;
@@ -46,19 +46,19 @@ const MenuBtn = styled.button`
     span.circle {
       position: absolute;
       &:nth-child(odd) {
-        width: 40px;
+        width: 36px;
         height: 4px;
         border-radius: 0.5rem;
       }
       &:first-of-type {
-        top: 8px;
-        left: 10px;
+        top: 9.5px;
+        left: 11.2px;
         transform-origin: left;
         transform: rotate(45deg);
       }
       &:nth-child(3) {
-        bottom: 8px;
-        left: 10px;
+        bottom: 9.5px;
+        left: 11.2px;
         transform-origin: left;
         transform: rotate(-45deg);
       }
