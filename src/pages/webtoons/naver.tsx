@@ -42,7 +42,7 @@ function NaverDetailPage() {
     ];
     setTabContents(() => {
       return days.map((_day) => ({
-        title: _day,
+        title: _day.slice(0, 3),
         contents:
           naverToons && !isLoading ? (
             <List id={`naver_${_day}`}>
@@ -73,13 +73,7 @@ function NaverDetailPage() {
 
   return (
     <PageLayout pageTitle="Naver toons">
-      <DetailPageTemplate platform="NAVER">
-        <TabBar
-          theme="MAIN"
-          headTitle={`NAVER > WEBTOONS > ${dayOfWeek}`}
-          tabs={tabContents}
-        />
-      </DetailPageTemplate>
+      <DetailPageTemplate platform="NAVER" />
     </PageLayout>
   );
 }

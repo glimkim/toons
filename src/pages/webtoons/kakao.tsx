@@ -5,7 +5,7 @@ import React from 'react';
 function KakaoDetailPage() {
   return (
     <PageLayout pageTitle="Kakao toons">
-      <DetailPageTemplate platform="KAKAO">KAKAO</DetailPageTemplate>
+      <DetailPageTemplate platform="KAKAO" />
     </PageLayout>
   );
 }
