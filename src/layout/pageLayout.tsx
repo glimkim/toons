@@ -13,9 +13,8 @@ function PageLayout({ pageTitle, children }: PageLayoutProps) {
   return (
     <PageLayoutContainer>
       <Helmet>
-        <title>Toons | ${pageTitle}</title>
+        <title>Toons | {pageTitle}</title>
       </Helmet>
-      {/* <Helmet title={`Toons | ${pageTitle}`} /> */}
       <div className="contents">{children}</div>
       <Footer />
     </PageLayoutContainer>
@@ -24,6 +23,7 @@ function PageLayout({ pageTitle, children }: PageLayoutProps) {
 
 const PageLayoutContainer = styled.div`
   width: 100%;
+  background-color: #fff;
 `;
 
 export default PageLayout;
