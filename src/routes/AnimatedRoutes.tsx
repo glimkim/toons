@@ -6,18 +6,18 @@ import NaverDetailPage from '@pages/webtoons/naver';
 import React, { useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { queryClient } from '../App';
+
 import styled from 'styled-components';
 
 function AnimatedRoutes() {
-  const { pathname } = useLocation();
+  const location = useLocation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [pathname]);
+  }, [location.pathname]);
 
   return (
-    <RoutesContainer>
+    <RoutesContainer pathname={location.pathname}>
       <TransitionGroup className={'transition-group'}>
         <CSSTransition
           key={location.pathname}
@@ -37,15 +37,17 @@ function AnimatedRoutes() {
   );
 }
 
-const RoutesContainer = styled.div`
+const RoutesContainer = styled.div<{ pathname: string }>`
   position: relative;
   .transition-group {
     div[class*='fade'] {
       position: absolute;
       top: 0;
       left: 0;
+      z-index: 0;
       width: 100%;
-      transition: all 0.3s ease-in-out;
+      // transition: all 0.3s ease-in-out;
+      transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
     }
     .fade-enter {
       opacity: 0;
@@ -63,10 +65,10 @@ const RoutesContainer = styled.div`
       transform: translateX(0%);
     }
 
-    .fade-exit-active,
-    .fade-exit-done {
+    .fade-exit-active {
       transform: translateX(-50%);
-      transition: all 0.6s ease-in-out;
+      transition: transform 0.6s ease-in-out, opacity 0.3s ease-in-out;
+      opacity: ${({ pathname }) => (pathname === '/' ? 1 : 0)};
     }
   }
 `;
