@@ -1,4 +1,4 @@
-import { Contents, WebtoonItemResponseDTO } from '@apis/DTO/webtoons';
+import { Contents, WebtoonItemResponseDTO, Platform } from '@apis/DTO/webtoons';
 import { getWebtoonsAPI } from '@apis/webtoons';
 import { useQuery } from 'react-query';
 export interface WebtoonItem extends WebtoonItemResponseDTO {
@@ -6,12 +6,17 @@ export interface WebtoonItem extends WebtoonItemResponseDTO {
 }
 
 function useWebtoonList() {
-  const naverWebtoonsQuery = useQuery<Contents<WebtoonItemResponseDTO>>(
-    ['naver-webtoon-list'],
-    () => getWebtoonsAPI('NAVER'),
-  );
+  const getPlatformQuery = (platform: Platform) => {
+    return useQuery<Contents<WebtoonItemResponseDTO>>(
+      [`${platform}-webtoon-list`],
+      () => getWebtoonsAPI(platform),
+    );
+  };
 
-  return { naverWebtoonsQuery };
+  return {
+    naverWebtoonsQuery: getPlatformQuery('NAVER'),
+    kakaoWebtoonsQuery: getPlatformQuery('KAKAO'),
+  };
 }
 
 export default useWebtoonList;

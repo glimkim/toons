@@ -11,9 +11,11 @@ import { SectionBar, ListItem, List } from 'toons-components';
 function WebtoonList() {
   const navigate = useNavigate();
   const {
-    naverWebtoonsQuery: { data },
+    naverWebtoonsQuery: { data: naverData },
+    kakaoWebtoonsQuery: { data: kakaoData },
   } = useWebtoonList();
-  const naverToons = useListState(data?.content || []);
+  const naverToons = useListState(naverData?.content || []);
+  const kakaoToons = useListState(kakaoData?.content || []);
   const { onToggleItem } = useAlarmMutation();
   const {
     scroll: { scrollY },
@@ -39,7 +41,7 @@ function WebtoonList() {
         isActive={isActivated}
         onClickMore={() => moveToPlatformPage('naver')}
       />
-      <NaverWebtoonListWrapper className={isActivated ? 'active' : ''}>
+      <WebtoonListWrapper className={isActivated ? 'active' : ''}>
         <List id="naverList">
           {naverToons?.map(
             (_toon, index) =>
@@ -56,7 +58,31 @@ function WebtoonList() {
               ) as HTMLAttributes<HTMLLIElement>,
           )}
         </List>
-      </NaverWebtoonListWrapper>
+      </WebtoonListWrapper>
+      <SectionBar
+        platform="KAKAO"
+        isActive={isActivated}
+        onClickMore={() => moveToPlatformPage('kakao')}
+      />
+      <WebtoonListWrapper className={isActivated ? 'active' : ''}>
+        <List id="kakaoList">
+          {kakaoToons?.map(
+            (_toon, index) =>
+              (
+                <ListItem
+                  key={index}
+                  itemInfo={{
+                    ..._toon,
+                    thumbnail: _toon.thumbnail + '.webp',
+                  }}
+                  onToggleItem={(isActive, handleToggleView) =>
+                    onToggleItem(_toon, isActive, handleToggleView)
+                  }
+                />
+              ) as HTMLAttributes<HTMLLIElement>,
+          )}
+        </List>
+      </WebtoonListWrapper>
     </WebtoonListContainer>
   );
 }
@@ -66,11 +92,12 @@ const WebtoonListContainer = styled.div`
   margin-bottom: 15rem;
 `;
 
-const NaverWebtoonListWrapper = styled.ul`
+const WebtoonListWrapper = styled.ul`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 1rem;
+  margin-bottom: 8rem;
   transform: translateY(60px);
   transition-timing-function: ease-in-out;
   opacity: 0;

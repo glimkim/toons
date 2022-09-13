@@ -10,7 +10,7 @@ function useWebtoonsByDay(platform: Platform) {
     return platform;
   }, [platform]);
 
-  const webtoonsByDayQuery = useQuery([`${dayOfWeek}-list`], () =>
+  const webtoonsByDayQuery = useQuery([`${platform}-${dayOfWeek}-list`], () =>
     getWebtoonsAPI(selectedPlatform, dayOfWeek),
   );
 
