@@ -229,11 +229,8 @@ const MainMenuList = styled.ul`
     opacity: 0;
     transition: 0.4s;
     > li {
-      &:first-of-type {
-        margin-bottom: 1rem;
-      }
       //mainMenuLi
-
+      margin-bottom: 1rem;
       * {
         color: #2b2b2b;
       }
