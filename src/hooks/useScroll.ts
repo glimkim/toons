@@ -16,7 +16,7 @@ function useScroll(callbackOnScrolling?: () => void) {
   });
 
   const getScrollEvent = useCallback(
-    _.throttle((e) => {
+    _.throttle(() => {
       setScroll((prev) => {
         const bodyOffset = document.body.getBoundingClientRect();
         return {
