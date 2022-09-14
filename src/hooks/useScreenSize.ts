@@ -33,11 +33,6 @@ function useScreenSize(callbackOnResizing?: () => void) {
   );
 
   useEffect(() => {
-    setScreenSize(() => ({
-      innerHeight: window.innerHeight,
-      innerWidth: window.innerWidth,
-    }));
-
     observeResizing
       ? window.addEventListener('resize', getResizingEvent)
       : window.removeEventListener('resize', getResizingEvent);

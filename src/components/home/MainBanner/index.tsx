@@ -8,9 +8,8 @@ import useScreenSize from '@hooks/useScreenSize';
 function MainBanner() {
   const {
     scroll: { scrollY, scrollDirection },
-    setObserveScroll,
   } = useScroll();
-  const { screenSize } = useScreenSize();
+  const { screenSize, setObserveResizing } = useScreenSize();
   const mainBn = useRef<null | HTMLDivElement>(null);
 
   useEffect(() => {
@@ -20,17 +19,10 @@ function MainBanner() {
           top: screenSize.innerHeight,
           behavior: 'smooth',
         });
-      } else if (
-        scrollDirection === 'UP' &&
-        scrollY < screenSize.innerHeight - 50
-      ) {
-        window.scroll({
-          top: 0,
-          behavior: 'smooth',
-        });
+        setObserveResizing(false);
       }
     }
-  }, [scrollY, screenSize]);
+  }, [scrollY, screenSize, setObserveResizing]);
 
   return (
     <MainBnWrapper height={screenSize.innerHeight} ref={mainBn}>
