@@ -8,28 +8,43 @@ import useScreenSize from '@hooks/useScreenSize';
 function MainBanner() {
   const {
     scroll: { scrollY, scrollDirection },
+    setObserveScroll,
   } = useScroll();
   const { screenSize } = useScreenSize();
   const mainBn = useRef<null | HTMLDivElement>(null);
 
   useEffect(() => {
-    if (0 < scrollY && scrollY < innerHeight && scrollDirection === 'DOWN') {
-      window.scroll({
-        top: innerHeight,
-        behavior: 'smooth',
-      });
+    if (scrollY < screenSize.innerHeight) {
+      if (0 < scrollY && scrollDirection === 'DOWN') {
+        window.scroll({
+          top: screenSize.innerHeight,
+          behavior: 'smooth',
+        });
+      } else if (
+        scrollDirection === 'UP' &&
+        scrollY < screenSize.innerHeight - 50
+      ) {
+        window.scroll({
+          top: 0,
+          behavior: 'smooth',
+        });
+      }
     }
-  }, [scrollY]);
+  }, [scrollY, screenSize]);
 
   return (
-    <MainBnWrapper height={screenSize?.innerHeight} ref={mainBn}>
+    <MainBnWrapper height={screenSize.innerHeight} ref={mainBn}>
       <div className="wrapper">
         <AnimatedLetters>KEEP</AnimatedLetters>
         <AnimatedLetters>YOUR FAVOURITES</AnimatedLetters>
         <AnimatedLetters>ON</AnimatedLetters>
         <AnimatedLetters>TRACK</AnimatedLetters>
         <BackgroundImg>
+          {screenSize.innerWidth < 960 && <img src={MainBg} />}
+          {screenSize.innerWidth < 960 && <img src={MainBg} />}
           <img src={MainBg} />
+          {screenSize.innerWidth < 960 && <img src={MainBg} />}
+          {screenSize.innerWidth < 960 && <img src={MainBg} />}
         </BackgroundImg>
       </div>
       <MouseScrollBox />
@@ -43,6 +58,7 @@ const BackgroundImg = styled.figure`
   top: 0;
   left: 0;
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   width: 100%;
@@ -70,6 +86,11 @@ const BackgroundImg = styled.figure`
       opacity: 1;
       transform: scale(1, 1) translateY(0);
     }
+  }
+
+  @media screen and (max-width: 960px) {
+    flex-direction: column;
+    gap: 2rem;
   }
 `;
 

@@ -16,8 +16,6 @@ function Home() {
   );
 }
 
-const MainContentsWrapper = styled.div`
-  ${paddingUnderHeader};
-`;
+const MainContentsWrapper = styled.div``;
 
 export default Home;

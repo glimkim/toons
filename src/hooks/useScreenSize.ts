@@ -2,8 +2,8 @@ import _ from 'lodash';
 import { useState, useCallback, useEffect } from 'react';
 
 interface ResizingObj {
-  innerHeight?: number;
-  innerWidth?: number;
+  innerHeight: number;
+  innerWidth: number;
 }
 
 /**
@@ -13,7 +13,10 @@ interface ResizingObj {
  */
 function useScreenSize(callbackOnResizing?: () => void) {
   const [observeResizing, setObserveResizing] = useState(true);
-  const [screenSize, setScreenSize] = useState<ResizingObj>({});
+  const [screenSize, setScreenSize] = useState<ResizingObj>({
+    innerHeight,
+    innerWidth,
+  });
 
   const getResizingEvent = useCallback(
     _.throttle(({ currentTarget }) => {
