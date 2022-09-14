@@ -28,7 +28,7 @@ function useScreenSize(callbackOnResizing?: () => void) {
       });
 
       callbackOnResizing && callbackOnResizing();
-    }, 300),
+    }, 500),
     [callbackOnResizing],
   );
 
