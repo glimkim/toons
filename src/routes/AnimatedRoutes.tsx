@@ -47,12 +47,12 @@ const RoutesContainer = styled.div<{ pathname: string }>`
       z-index: 0;
       width: 100%;
       // transition: all 0.3s ease-in-out;
-      transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+      transition: transform 0.6s ease-in-out, opacity 0.3s ease-in-out;
     }
     .fade-enter {
       opacity: 0;
       z-index: 10;
-      transform: translateX(50%);
+      transform: translateX(100%);
     }
     .fade-enter-active,
     .fade-enter-done {
@@ -66,8 +66,8 @@ const RoutesContainer = styled.div<{ pathname: string }>`
     }
 
     .fade-exit-active {
-      transform: translateX(-50%);
-      transition: transform 0.6s ease-in-out, opacity 0.3s ease-in-out;
+      transform: translateX(-100%);
+      transition: transform 0.8s ease-in-out, opacity 0.3s ease-in-out;
       opacity: ${({ pathname }) => (pathname === '/' ? 1 : 0)};
     }
   }

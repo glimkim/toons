@@ -20,6 +20,7 @@ const Mouse = styled.div`
   border-radius: 0.6rem;
   background-color: #fff;
   overflow: hidden;
+
   > span {
     position: absolute;
     top: 0.36rem;
@@ -35,6 +36,7 @@ const Mouse = styled.div`
     animation-duration: 1.5s;
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
   }
   @keyframes ball {
     from {
@@ -50,6 +52,7 @@ const Mouse = styled.div`
 
 const MouseWrapper = styled.div`
   position: absolute;
+  z-index: 50;
   bottom: 1rem;
   left: 50%;
   transform: translateY(100px) translateX(-50%);
@@ -62,14 +65,14 @@ const MouseWrapper = styled.div`
   }
   animation-name: appearFromBottom;
   animation-duration: 1s;
-  animation-delay: 3.8s;
+  animation-delay: 2s;
   animation-fill-mode: forwards;
   @keyframes appearFromBottom {
     from {
-      transform: translateY(100px) translateX(-50%);
+      transform: translate(-50%, 100px);
     }
     to {
-      transform: translateY(0) translateX(-50%);
+      transform: translate(-50%, 0);
     }
   }
 `;
