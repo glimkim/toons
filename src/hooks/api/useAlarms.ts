@@ -18,8 +18,17 @@ function useAlarms() {
     () => getAlarmListAPI(token!),
     {
       enabled: !!token,
-      onSuccess: (res) => {
-        alarms.length === 0 && dispatch(updateList(res));
+      select: (res) => {
+        const alarmList = res.map((_alarm) =>
+          _alarm.webtoonDTO.platform === 'NAVER'
+            ? _alarm.webtoonDTO
+            : {
+                ..._alarm.webtoonDTO,
+                thumbnail: _alarm.webtoonDTO.thumbnail + '.webp',
+              },
+        );
+        alarms.length === 0 && dispatch(updateList(alarmList));
+        return alarmList;
       },
       onError: (err) => console.log(err),
     },

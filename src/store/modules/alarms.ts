@@ -1,6 +1,6 @@
-import { AlarmItemResponseDTO, AlarmWebtoonDTO } from '@apis/DTO/alarms';
+import { AlarmWebtoonDTO } from '@apis/DTO/alarms';
 
-export type AlarmList = AlarmItemResponseDTO[];
+export type AlarmList = AlarmWebtoonDTO[];
 
 type ActionType =
   | 'alarms/update'
@@ -49,9 +49,9 @@ export default function alarms(state: AlarmList = [], action: ActionObj) {
     case 'alarms/reset':
       return [];
     case 'alarms/add':
-      return state.concat({ webtoonDTO: action.newItem! });
+      return state.concat(action.newItem!);
     case 'alarms/delete':
-      return state.filter((_item) => _item.webtoonDTO.id === action.webtoonId!);
+      return state.filter((_item) => _item.id === action.webtoonId!);
     default:
       return state;
   }

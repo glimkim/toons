@@ -11,9 +11,7 @@ function useListState(data: WebtoonItemResponseDTO[]): WebtoonItem[] {
     return data
       ? data.map((_item) => ({
           ..._item,
-          toNotify: alarms.some(
-            (_alarm) => _alarm.webtoonDTO.name === _item.name,
-          ),
+          toNotify: alarms.some((_alarm) => _alarm.name === _item.name),
         }))
       : [];
   }, [data, alarms]);

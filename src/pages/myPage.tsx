@@ -1,6 +1,4 @@
-import { Platform } from '@apis/DTO/webtoons';
 import useAlarmMutation from '@hooks/api/useAlarmMutation';
-import useAlarms from '@hooks/api/useAlarms';
 import PageLayout from '@layout/pageLayout';
 import { StoreState } from '@store/root';
 import { paddingUnderHeader } from '@styles/css';
@@ -16,13 +14,12 @@ function MyPage() {
 
   const notiTabs = useMemo(() => {
     const tabs = ['ALL', 'NAVER', 'KAKAO'];
-    const alarmList = alarms.map((_alarms) => _alarms.webtoonDTO);
 
     return tabs.map((_tab) => {
       const yourAlarms =
         _tab === 'ALL'
-          ? alarmList
-          : alarmList.filter((_alarm) => _alarm.platform === _tab);
+          ? alarms
+          : alarms.filter((_alarm) => _alarm.platform === _tab);
       return {
         title: _tab,
         contents: (
@@ -35,7 +32,10 @@ function MyPage() {
                     itemInfo={{ ..._alarm, toNotify: true }}
                     onToggleItem={(isActive, handleToggleView) =>
                       onToggleItem(
-                        { ..._alarm, toNotify: true },
+                        {
+                          ..._alarm,
+                          toNotify: true,
+                        },
                         isActive,
                         handleToggleView,
                       )
