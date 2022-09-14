@@ -1,6 +1,8 @@
 export interface User {
-  email: string | null;
-  token: string | null;
+  email?: string;
+  token?: string;
+  phoneNumber?: string;
+  username?: string;
   tokenTimeout?: number;
 }
 
@@ -32,10 +34,7 @@ export const setTokenTimeout = (timeout: NodeJS.Timeout): ActionObj => {
   };
 };
 
-const initialUserState: User = {
-  email: null,
-  token: null,
-};
+const initialUserState: User = {};
 
 export default function user(
   state: User = initialUserState,
