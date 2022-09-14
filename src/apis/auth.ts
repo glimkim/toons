@@ -1,9 +1,11 @@
+import { getAPIHeaderWithAuth } from '@utils/getAPIHeaderWithAuth';
 import Axios from './config';
 import {
   MobileVerificationCheckDTO,
   MobileVerificationRequestDTO,
   SignInRequestDTO,
   SignUpRequestDTO,
+  UserInfo,
 } from './DTO/auth';
 
 export const signInAPI = async (signInInfo: SignInRequestDTO) => {
@@ -24,4 +26,12 @@ export const checkMobileVerification = async (
   verificationInfo: MobileVerificationCheckDTO,
 ) => {
   return await Axios.post('api/members/certification/check', verificationInfo);
+};
+
+export const getUserInfoAPI = async (token: string) => {
+  return (
+    await Axios.get<UserInfo>('/api/members', {
+      headers: getAPIHeaderWithAuth(token),
+    })
+  ).data;
 };

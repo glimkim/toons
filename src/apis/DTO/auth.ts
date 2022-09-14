@@ -1,3 +1,5 @@
+import { string } from 'yup';
+
 export interface SignUpRequestDTO {
   email: string;
   password: string;
@@ -26,4 +28,10 @@ export interface MobileVerificationRequestDTO {
 export interface MobileVerificationCheckDTO
   extends MobileVerificationRequestDTO {
   code: string;
+}
+
+export interface UserInfo {
+  username: string;
+  email: string;
+  phoneNumber: string;
 }

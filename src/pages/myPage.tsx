@@ -57,15 +57,15 @@ function MyPage() {
             <h6>
               Hello,
               <br />
-              Lim!{' '}
+              {user.username}!{' '}
               <button type="button">
                 <Icon icon="Edit" />
               </button>
             </h6>
             <ul className="userInfo">
-              <li>ltbllim@gmail.com</li>
+              <li>{user.email}</li>
               <li>|</li>
-              <li>010-2309-9296</li>
+              <li>{user.phoneNumber}</li>
             </ul>
           </ProfileContainer>
           <TabBar headTitle="Your Notifications" tabs={notiTabs} />

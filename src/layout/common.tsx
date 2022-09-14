@@ -19,6 +19,7 @@ import React, {
 import { useIsFetching, useIsMutating } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import { Dialog, Loader, Alert } from 'toons-components';
+import useUserInfo from '@hooks/api/useUserInfo';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -26,6 +27,7 @@ interface LayoutProps {
 
 function Common({ children }: LayoutProps) {
   const { data: alarmList } = useAlarms();
+  const { data: userInfo } = useUserInfo();
   const { alert, user } = useSelector((state: StoreState) => state);
   const dispatch = useDispatch();
   const { tokenFromLS, setTokenDue } = useToken();
@@ -75,7 +77,14 @@ function Common({ children }: LayoutProps) {
   useEffect(() => {
     if (!!tokenFromLS) {
       const parsedToken = jwtDecode(tokenFromLS) as Token;
-      dispatch(setUser({ email: parsedToken.email, token: tokenFromLS }));
+      dispatch(
+        setUser({
+          email: parsedToken.email,
+          token: tokenFromLS,
+          username: userInfo?.username,
+          phoneNumber: userInfo?.phoneNumber,
+        }),
+      );
       setTokenDue(tokenFromLS);
       alarmList && dispatch(updateList(alarmList));
     } else {
@@ -83,7 +92,7 @@ function Common({ children }: LayoutProps) {
       dispatch(resetList());
       !!user?.tokenTimeout && clearTimeout(user.tokenTimeout);
     }
-  }, [tokenFromLS]);
+  }, [tokenFromLS, userInfo]);
 
   if (!fontsLoaded && isFetching > 0) return <Loader theme={'mix'} />;
   return (
