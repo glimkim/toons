@@ -54,10 +54,14 @@ const MouseWrapper = styled.div`
   position: absolute;
   z-index: 50;
   bottom: 1rem;
-  left: 50%;
-  transform: translateY(100px) translateX(-50%);
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  transform: translateY(100px);
   display: flex;
+  width: 100px;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   p {
     font-size: 0.875rem;
@@ -69,10 +73,10 @@ const MouseWrapper = styled.div`
   animation-fill-mode: forwards;
   @keyframes appearFromBottom {
     from {
-      transform: translate(-50%, 100px);
+      transform: translateY(100px);
     }
     to {
-      transform: translate(-50%, 0);
+      transform: translateY(0);
     }
   }
 `;

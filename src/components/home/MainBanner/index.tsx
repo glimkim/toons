@@ -13,40 +13,13 @@ function MainBanner() {
   const mainBn = useRef<null | HTMLDivElement>(null);
 
   useEffect(() => {
-    if (
-      screenSize?.innerHeight &&
-      50 < scrollY &&
-      scrollY < screenSize?.innerHeight &&
-      scrollDirection === 'DOWN'
-    ) {
+    if (0 < scrollY && scrollY < innerHeight && scrollDirection === 'DOWN') {
       window.scroll({
         top: innerHeight,
         behavior: 'smooth',
       });
     }
-  }, [scrollY, screenSize?.innerHeight]);
-
-  // useEffect(() => {
-  //   const typeInterval = setInterval(() => {
-  //     setLetterCount((prev) => ({
-  //       index:
-  //         prev.count === mainBnString[prev.index].length
-  //           ? prev.index + 1
-  //           : prev.index,
-  //       count:
-  //         prev.count === mainBnString[prev.index].length ? 1 : prev.count + 1,
-  //     }));
-  //   }, 120);
-
-  //   if (letterCount.index === 3 && letterCount.count === 5) {
-  //     clearInterval(typeInterval);
-  //     mainBn?.current?.classList.add('active');
-  //   }
-
-  //   return () => {
-  //     clearInterval(typeInterval);
-  //   };
-  // }, [letterCount]);
+  }, [scrollY]);
 
   return (
     <MainBnWrapper height={screenSize?.innerHeight} ref={mainBn}>
@@ -163,7 +136,7 @@ const AnimatedLetters = styled.h3`
   }
 `;
 
-const MainBnWrapper = styled.div<{ height: number | undefined }>`
+const MainBnWrapper = styled.div<{ height?: number }>`
   position: relative;
   z-index: 600;
   display: flex;
