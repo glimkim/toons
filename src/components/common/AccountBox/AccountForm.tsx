@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Checkbox, Input } from 'toons-components';
 import { CSSTransition } from 'react-transition-group';
@@ -132,7 +132,7 @@ function AccountForm({ forSignUp }: FormProps) {
         <Controller
           name="email"
           control={methods.control}
-          render={({ field: { onChange }, formState }) => (
+          render={({ field: { onChange } }) => (
             <Input
               id="email"
               label="Email"

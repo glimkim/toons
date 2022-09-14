@@ -1,6 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import styled, { css } from 'styled-components';
-import _ from 'lodash';
 import MainBg from '@images/main-bg.svg';
 import MouseScrollBox from './MouseScrollBox';
 import useScroll from '@hooks/useScroll';
@@ -170,22 +169,8 @@ const MainBnWrapper = styled.div<{ height: number | undefined }>`
   display: flex;
   justify-content: center;
   width: 100%;
-  height: ${({ height }) => {
-    console.log(height, 'sss');
-    return height + 'px' || '100vh';
-  }};
+  height: ${({ height }) => height + 'px' || '100vh'};
   background-color: ${(props) => props.theme.colors.main};
-  /* background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-attachment: fixed;
-  background-image: url(${MainBg});
-  animation-name: bgAni;
-  animation-duration: 2s;
-  animation-timing-function: cubic-bezier(0.45, -0.01, 0, 0.99);
-  animation-iteration-count: 1;
-  animation-fill-mode: forwards;
-  animation-delay: 1.2s; */
   overflow: hidden;
 
   div.wrapper {

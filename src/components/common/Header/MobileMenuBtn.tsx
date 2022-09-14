@@ -1,4 +1,4 @@
-import React, { HTMLAttributes, useCallback, useState } from 'react';
+import React, { HTMLAttributes } from 'react';
 import styled from 'styled-components';
 
 interface MenuBtnProps extends HTMLAttributes<HTMLButtonElement> {

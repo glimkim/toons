@@ -1,4 +1,3 @@
-import { alarmListQuqeryKey } from '@hooks/api/useAlarms';
 import Home from '@pages/home';
 import MyPage from '@pages/myPage';
 import KakaoDetailPage from '@pages/webtoons/kakao';

@@ -11,7 +11,6 @@ import {
 } from '@apis/DTO/auth';
 import { Controller, useFormContext } from 'react-hook-form';
 import { debounceChange, FormValues } from './AccountForm';
-import _default from 'react-redux/es/components/connect';
 import _ from 'lodash';
 import { useDispatch } from 'react-redux';
 import { setAlert } from '@store/modules/alert';
