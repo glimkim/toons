@@ -1,6 +1,7 @@
 import { WebtoonItemResponseDTO } from './webtoons';
 
 export interface AlarmItemResponseDTO {
+  id: number;
   webtoonDTO: AlarmWebtoonDTO;
 }
 

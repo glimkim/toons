@@ -1,3 +1,4 @@
+import { AlarmWebtoonDTO, AlarmItemResponseDTO } from './../../apis/DTO/alarms';
 import { StoreState } from '@store/root';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { updateList } from '@store/modules/alarms';
@@ -6,6 +7,10 @@ import { getAlarmListAPI } from '@apis/alarms';
 
 export const alarmListQuqeryKey = 'alarm-list';
 
+export interface AlarmItem extends AlarmWebtoonDTO {
+  alarmId: number;
+}
+
 function useAlarms() {
   const dispatch = useDispatch();
   const {
@@ -13,20 +18,20 @@ function useAlarms() {
     alarms,
   } = useSelector((state: StoreState) => state, shallowEqual);
 
-  const { data } = useQuery(
+  const { data } = useQuery<AlarmItemResponseDTO[], unknown, AlarmItem[]>(
     ['alarm-list', token],
     () => getAlarmListAPI(token!),
     {
       enabled: !!token,
       select: (res) => {
-        const alarmList = res.map((_alarm) =>
-          _alarm.webtoonDTO.platform === 'NAVER'
-            ? _alarm.webtoonDTO
-            : {
-                ..._alarm.webtoonDTO,
-                thumbnail: _alarm.webtoonDTO.thumbnail + '.webp',
-              },
-        );
+        const alarmList = res.map(({ id, webtoonDTO }) => ({
+          ...webtoonDTO,
+          thumbnail:
+            webtoonDTO.platform === 'NAVER'
+              ? webtoonDTO.thumbnail
+              : webtoonDTO.thumbnail + '.webp',
+          alarmId: id,
+        }));
         alarms.length === 0 && dispatch(updateList(alarmList));
         return alarmList;
       },

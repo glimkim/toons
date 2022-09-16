@@ -7,7 +7,7 @@ import { AxiosError } from 'axios';
 import { useMutation } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToList, deleteFromList } from '@store/modules/alarms';
-import { WebtoonItem } from './useWebtoonList';
+import { WebtoonItem } from '@hooks/useListState';
 
 function useAlarmMutation() {
   const { token } = useSelector((state: StoreState) => state.user);
@@ -25,7 +25,11 @@ function useAlarmMutation() {
     }
   };
 
-  const { mutateAsync: addAlarmItemAsync } = useMutation(
+  const { mutateAsync: addAlarmItemAsync } = useMutation<
+    { id: number },
+    AxiosError,
+    AddAlarmItemRequestDTO
+  >(
     'add-to-alarms',
     (newItem: AddAlarmItemRequestDTO) => addAlarmItemAPI(token!, newItem),
     {
@@ -52,9 +56,9 @@ function useAlarmMutation() {
         } else {
           addAlarmItemAsync({
             webtoonId: item.id,
-          }).then(() => {
+          }).then((res) => {
             handleToggleView();
-            dispatch(addToList({ ...item, deletedAt: '' }));
+            dispatch(addToList({ ...item, deletedAt: '', alarmId: res.id }));
           });
         }
       } else {

@@ -1,6 +1,6 @@
-import { AlarmWebtoonDTO } from '@apis/DTO/alarms';
+import { AlarmItem } from '@hooks/api/useAlarms';
 
-export type AlarmList = AlarmWebtoonDTO[];
+export type AlarmList = AlarmItem[];
 
 type ActionType =
   | 'alarms/update'
@@ -11,7 +11,7 @@ type ActionType =
 interface ActionObj {
   type: ActionType;
   newList?: AlarmList;
-  newItem?: AlarmWebtoonDTO;
+  newItem?: AlarmItem;
   webtoonId?: number;
 }
 
@@ -28,7 +28,7 @@ export const resetList = (): ActionObj => {
   };
 };
 
-export const addToList = (newItem: AlarmWebtoonDTO): ActionObj => {
+export const addToList = (newItem: AlarmItem): ActionObj => {
   return {
     type: 'alarms/add',
     newItem: newItem,
