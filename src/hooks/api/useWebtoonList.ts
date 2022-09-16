@@ -1,9 +1,6 @@
 import { Contents, WebtoonItemResponseDTO, Platform } from '@apis/DTO/webtoons';
 import { getWebtoonsAPI } from '@apis/webtoons';
 import { useQuery } from 'react-query';
-export interface WebtoonItem extends WebtoonItemResponseDTO {
-  toNotify: boolean;
-}
 
 function useWebtoonList() {
   const getPlatformQuery = (platform: Platform) => {
