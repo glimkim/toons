@@ -2,8 +2,9 @@ import useAlarmMutation from '@hooks/api/useAlarmMutation';
 import PageLayout from '@layout/pageLayout';
 import { StoreState } from '@store/root';
 import { paddingUnderHeader } from '@styles/css';
-import React, { HTMLAttributes, useMemo } from 'react';
+import React, { HTMLAttributes, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Icon, TabBar } from 'toons-components';
 import { List, ListItem } from 'toons-components';
@@ -11,6 +12,7 @@ import { List, ListItem } from 'toons-components';
 function MyPage() {
   const { user, alarms } = useSelector((state: StoreState) => state);
   const { onToggleItem } = useAlarmMutation();
+  const navigate = useNavigate();
 
   const notiTabs = useMemo(() => {
     const tabs = ['ALL', 'NAVER', 'KAKAO'];
@@ -48,6 +50,12 @@ function MyPage() {
       };
     });
   }, [alarms]);
+
+  useEffect(() => {
+    if (!user.token) {
+      navigate('/');
+    }
+  }, [user.token]);
 
   return (
     <PageLayout pageTitle="My Page">
