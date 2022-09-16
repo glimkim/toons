@@ -1,18 +1,26 @@
 import { StoreState } from '@store/root';
 import { useMemo } from 'react';
-import { WebtoonItem } from '@hooks/api/useWebtoonList';
 import { WebtoonItemResponseDTO } from '@apis/DTO/webtoons';
 import { useSelector } from 'react-redux';
+
+export interface WebtoonItem extends WebtoonItemResponseDTO {
+  toNotify: boolean;
+  alarmId?: number;
+}
 
 function useListState(data: WebtoonItemResponseDTO[]): WebtoonItem[] {
   const alarms = useSelector((state: StoreState) => state.alarms);
 
   const listWithNotiInfo = useMemo(() => {
     return data
-      ? data.map((_item) => ({
-          ..._item,
-          toNotify: alarms.some((_alarm) => _alarm.name === _item.name),
-        }))
+      ? data.map((_item) => {
+          const alarmItem = alarms.find((_alarm) => _alarm.name === _item.name);
+          return {
+            ..._item,
+            toNotify: !!alarmItem,
+            alarmId: alarmItem?.alarmId,
+          };
+        })
       : [];
   }, [data, alarms]);
 
