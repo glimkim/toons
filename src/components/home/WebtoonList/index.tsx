@@ -88,7 +88,7 @@ function WebtoonList() {
 }
 
 const WebtoonListContainer = styled.div`
-  padding-top: 11rem;
+  padding-top: 10rem;
   margin-bottom: 15rem;
 `;
 
