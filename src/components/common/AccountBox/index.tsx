@@ -22,10 +22,14 @@ function AccountModal() {
   const onSocialLogin = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       const { name } = e.currentTarget;
-      console.log(name);
       if (name === 'kakao') {
         window.open(
           'https://api.jinwoo.space/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/oauth2/redirect',
+          '_self',
+        );
+      } else {
+        window.open(
+          'https://api.jinwoo.space/oauth2/authorization/google?redirect_uri=http://localhost:3000/oauth2/redirect',
           '_self',
         );
       }
