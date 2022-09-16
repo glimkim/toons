@@ -15,6 +15,7 @@ import { Controller, FormProvider, useForm } from 'react-hook-form';
 import _ from 'lodash';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { AxiosError } from 'axios';
 interface FormProps {
   forSignUp: boolean;
 }
@@ -112,12 +113,22 @@ function AccountForm({ forSignUp }: FormProps) {
             })
             .catch((e) => console.dir(e));
       } else {
-        console.log('sssss');
         // signIn
-        submitSignInInfo({ email, password }).then((res: SignInResponseDTO) => {
-          setToken(res.token);
-          deleteSearchParams('authType');
-        });
+        submitSignInInfo({ email, password })
+          .then((res: SignInResponseDTO) => {
+            setToken(res.token);
+            deleteSearchParams('authType');
+          })
+          .catch((err: AxiosError) => {
+            err.response?.status === 401 &&
+              dispatch(
+                setAlert({
+                  alertType: 'ERROR',
+                  alertTitle: 'Invalid email or password',
+                  alertContents: 'Please check your email address or password.',
+                }),
+              );
+          });
       }
     },
     [forSignUp, isMobileVerified, submitSignUpInfo, submitSignInInfo],
