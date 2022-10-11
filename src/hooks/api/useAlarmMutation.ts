@@ -49,10 +49,12 @@ function useAlarmMutation() {
     (item: WebtoonItem, isActive: boolean, handleToggleView: () => void) => {
       if (token) {
         if (isActive) {
-          deleteAlarmItemAsync(item.id).then(() => {
-            handleToggleView();
-            dispatch(deleteFromList(item.id));
-          });
+          item.alarmId
+            ? deleteAlarmItemAsync(item.alarmId).then(() => {
+                handleToggleView();
+                dispatch(deleteFromList(item.alarmId!));
+              })
+            : console.log('alarmId not exist');
         } else {
           addAlarmItemAsync({
             webtoonId: item.id,
@@ -71,7 +73,7 @@ function useAlarmMutation() {
         );
       }
     },
-    [deleteAlarmItemAsync, addAlarmItemAsync, token],
+    [deleteAlarmItemAsync, addAlarmItemAsync, token, deleteFromList, addToList],
   );
 
   return {

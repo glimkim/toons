@@ -1,5 +1,4 @@
 import { AlarmItem } from '@hooks/api/useAlarms';
-
 export type AlarmList = AlarmItem[];
 
 type ActionType =
@@ -12,7 +11,7 @@ interface ActionObj {
   type: ActionType;
   newList?: AlarmList;
   newItem?: AlarmItem;
-  webtoonId?: number;
+  alarmId?: number;
 }
 
 export const updateList = (newList: AlarmList): ActionObj => {
@@ -35,10 +34,10 @@ export const addToList = (newItem: AlarmItem): ActionObj => {
   };
 };
 
-export const deleteFromList = (webtoonId: number): ActionObj => {
+export const deleteFromList = (alarmId: number): ActionObj => {
   return {
     type: 'alarms/delete',
-    webtoonId,
+    alarmId,
   };
 };
 
@@ -51,9 +50,8 @@ export default function alarms(state: AlarmList = [], action: ActionObj) {
     case 'alarms/add':
       return state.concat(action.newItem!);
     case 'alarms/delete':
-      return state.filter((_item) => _item.id === action.webtoonId!);
+      return state.filter((_item) => _item.alarmId !== action.alarmId!);
     default:
       return state;
   }
 }
-``;

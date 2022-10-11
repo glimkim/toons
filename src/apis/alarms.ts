@@ -15,15 +15,15 @@ export const addAlarmItemAPI = async (
   alarmItem: AddAlarmItemRequestDTO,
 ) => {
   return (
-    await Axios.put('/api/alarms', alarmItem, {
+    await Axios.put<AlarmItemResponseDTO>('/api/alarms', alarmItem, {
       headers: getAPIHeaderWithAuth(token),
     })
   ).data;
 };
 
-export const deleteAlarmItemAPI = async (token: string, webtoonId: number) => {
+export const deleteAlarmItemAPI = async (token: string, alarmId: number) => {
   return (
-    await Axios.delete(`/api/alarms/${webtoonId}`, {
+    await Axios.delete(`/api/alarms/${alarmId}`, {
       headers: getAPIHeaderWithAuth(token),
     })
   ).data;
