@@ -25,18 +25,18 @@ function MyPage() {
       return {
         title: _tab,
         contents: (
-          <List id="s">
+          <List id="my-page-list">
             {yourAlarms.map(
-              (_alarm, index) =>
+              (_alarm) =>
                 (
                   <ListItem
-                    key={index}
+                    key={_alarm.alarmId}
                     itemInfo={{ ..._alarm, toNotify: true }}
                     onToggleItem={(isActive, handleToggleView) =>
                       onToggleItem(
                         {
                           ..._alarm,
-                          toNotify: true,
+                          toNotify: isActive,
                         },
                         isActive,
                         handleToggleView,
@@ -49,12 +49,23 @@ function MyPage() {
         ),
       };
     });
-  }, [alarms]);
+  }, [alarms, onToggleItem]);
 
   useEffect(() => {
-    if (!user.token) {
-      navigate('/');
-    }
+    let count = 0;
+    const moveToHomeInterval = setInterval(() => {
+      if (count < 3) {
+        !user.token && count++;
+      } else {
+        !user.token && navigate('/');
+      }
+    }, 400);
+
+    user.token && clearTimeout(moveToHomeInterval);
+
+    return () => {
+      clearTimeout(moveToHomeInterval);
+    };
   }, [user.token]);
 
   return (
