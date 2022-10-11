@@ -166,6 +166,9 @@ function AccountForm({ forSignUp }: FormProps) {
               placeholder="Enter your password"
               autoComplete="current-password"
               onChange={(e) => debounceChange(e, onChange)}
+              onKeyDown={(e) =>
+                e.code === 'Enter' && methods.handleSubmit(onSubmit)
+              }
               required
               errorText={errors.password?.message}
             />
@@ -195,7 +198,7 @@ function AccountForm({ forSignUp }: FormProps) {
             <MobileForm onMobileVerified={onMobileVerified} />
           </div>
         </CSSTransition>
-        <CSSTransition
+        {/* <CSSTransition
           in={!forSignUp}
           timeout={300}
           classNames="rememberMe"
@@ -205,7 +208,7 @@ function AccountForm({ forSignUp }: FormProps) {
             <Checkbox id="rememberUser" onChange={console.log} />
             <span>Remember Me</span>
           </div>
-        </CSSTransition>
+        </CSSTransition> */}
         <CSSTransition in={!forSignUp} timeout={300} unmountOnExit>
           <div className="loginButtonGroup">
             <SubmitBtn submitType={'signIn'} isLoading={isSigningIn} />
