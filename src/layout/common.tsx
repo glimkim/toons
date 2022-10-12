@@ -34,8 +34,8 @@ function Common({ children }: LayoutProps) {
   const [fontsLoaded, setFontsLoaded] = useState<boolean>(false);
   const { queryParams, deleteSearchParams } = useSearchParameters('authType');
   const openAuth = useMemo(() => {
-    return ['signIn', 'signUp'].includes(queryParams[0]);
-  }, [queryParams]);
+    return queryParams[0]?.includes('sign');
+  }, [queryParams[0]]);
   const isFetching = useIsFetching({
     predicate: (query) => {
       return query.queryKey.includes('webtoon');
