@@ -1,22 +1,18 @@
-import useAlarmMutation from '@hooks/api/useAlarmMutation';
+import WebtoonList from '@components/common/WebtoonList';
 import useWebtoonList from '@hooks/api/useWebtoonList';
-import useListState from '@hooks/useListState';
 import useScroll from '@hooks/useScroll';
-import React, { HTMLAttributes, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { SectionBar, ListItem, List } from 'toons-components';
+import { SectionBar, Loader } from 'toons-components';
 
-function WebtoonList() {
+function WebtoonListSection() {
   const navigate = useNavigate();
   const {
-    naverWebtoonsQuery: { data: naverData },
-    kakaoWebtoonsQuery: { data: kakaoData },
+    naverWebtoonsQuery: { data: naverData, isLoading: isNaverLoading },
+    kakaoWebtoonsQuery: { data: kakaoData, isLoading: isKakaoLoading },
   } = useWebtoonList();
-  const naverToons = useListState(naverData?.content || []);
-  const kakaoToons = useListState(kakaoData?.content || []);
-  const { onToggleItem } = useAlarmMutation();
   const {
     scroll: { scrollY },
     setObserveScroll,
@@ -34,7 +30,11 @@ function WebtoonList() {
     }
   }, [scrollY]);
 
-  return (
+  return isNaverLoading && isKakaoLoading ? (
+    <LoaderContainer>
+      <Loader isPartial={true} theme={'main'} />
+    </LoaderContainer>
+  ) : (
     <WebtoonListContainer>
       <SectionBar
         platform="NAVER"
@@ -42,22 +42,9 @@ function WebtoonList() {
         onClickMore={() => moveToPlatformPage('naver')}
       />
       <WebtoonListWrapper className={isActivated ? 'active' : ''}>
-        <List id="naverList">
-          {naverToons?.map(
-            (_toon, index) =>
-              (
-                <ListItem
-                  key={index}
-                  itemInfo={{
-                    ..._toon,
-                  }}
-                  onToggleItem={(isActive, handleToggleView) =>
-                    onToggleItem(_toon, isActive, handleToggleView)
-                  }
-                />
-              ) as HTMLAttributes<HTMLLIElement>,
-          )}
-        </List>
+        {naverData && (
+          <WebtoonList listId="naver-list" data={naverData.content} />
+        )}
       </WebtoonListWrapper>
       <SectionBar
         platform="KAKAO"
@@ -65,27 +52,19 @@ function WebtoonList() {
         onClickMore={() => moveToPlatformPage('kakao')}
       />
       <WebtoonListWrapper className={isActivated ? 'active' : ''}>
-        <List id="kakaoList">
-          {kakaoToons?.map(
-            (_toon, index) =>
-              (
-                <ListItem
-                  key={index}
-                  itemInfo={{
-                    ..._toon,
-                    thumbnail: _toon.thumbnail + '.webp',
-                  }}
-                  onToggleItem={(isActive, handleToggleView) =>
-                    onToggleItem(_toon, isActive, handleToggleView)
-                  }
-                />
-              ) as HTMLAttributes<HTMLLIElement>,
-          )}
-        </List>
+        {kakaoData && (
+          <WebtoonList listId="kakao-list" data={kakaoData.content} />
+        )}
       </WebtoonListWrapper>
     </WebtoonListContainer>
   );
 }
+
+const LoaderContainer = styled.div`
+  height: 5vh;
+  padding-top: 10rem;
+  margin-bottom: 15rem;
+`;
 
 const WebtoonListContainer = styled.div`
   padding-top: 10rem;
@@ -109,4 +88,4 @@ const WebtoonListWrapper = styled.ul`
   }
 `;
 
-export default WebtoonList;
+export default WebtoonListSection;
