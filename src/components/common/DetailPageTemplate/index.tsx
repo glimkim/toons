@@ -1,11 +1,10 @@
 import { DayOfWeek, Platform } from '@apis/DTO/webtoons';
-import useAlarmMutation from '@hooks/api/useAlarmMutation';
 import useWebtoonsByDay from '@hooks/api/useWebtoonByDay';
-import useListState from '@hooks/useListState';
 import { paddingUnderHeader } from '@styles/css';
-import React, { HTMLAttributes, useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { List, ListItem, Loader, TabBar } from 'toons-components';
+import { Loader, TabBar } from 'toons-components';
+import WebtoonList from '../WebtoonList';
 
 interface PageTemplateProps {
   platform: Platform;
@@ -18,8 +17,6 @@ function DetailPageTemplate({ platform, children }: PageTemplateProps) {
     setDayOfWeek,
     dayOfWeek,
   } = useWebtoonsByDay(platform);
-  const toons = useListState(data?.content || []);
-  const { onToggleItem } = useAlarmMutation();
   const [tabContents, setTabContents] = useState<
     {
       title: string;
@@ -49,26 +46,8 @@ function DetailPageTemplate({ platform, children }: PageTemplateProps) {
       return days.map((_day) => ({
         title: _day.slice(0, 3),
         contents:
-          toons && !isLoading ? (
-            <List id={`${platform}_${_day}`}>
-              {toons.map(
-                (_item, index) =>
-                  (
-                    <ListItem
-                      key={index}
-                      itemInfo={{
-                        ..._item,
-                        thumbnail:
-                          _item.thumbnail +
-                          (platform === 'NAVER' ? '' : '.webp'),
-                      }}
-                      onToggleItem={(isActive, handleToggleView) =>
-                        onToggleItem(_item, isActive, handleToggleView)
-                      }
-                    />
-                  ) as HTMLAttributes<HTMLLIElement>,
-              )}
-            </List>
+          data && !isLoading ? (
+            <WebtoonList listId={`${platform}_${_day}`} data={data.content} />
           ) : (
             <div className="loader">
               <Loader isPartial={true} theme="mix" />

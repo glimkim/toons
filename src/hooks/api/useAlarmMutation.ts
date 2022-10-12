@@ -7,7 +7,7 @@ import { AxiosError } from 'axios';
 import { useMutation } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToList, deleteFromList } from '@store/modules/alarms';
-import { WebtoonItem } from '@hooks/useListState';
+import { WebtoonItem } from '@apis/DTO/webtoons';
 
 function useAlarmMutation() {
   const { token } = useSelector((state: StoreState) => state.user);

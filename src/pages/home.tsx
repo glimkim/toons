@@ -1,8 +1,7 @@
 import React from 'react';
 import MainBanner from '@components/home/MainBanner';
-import WebtoonList from '@components/home/WebtoonList';
+import WebtoonListSection from '@components/home/WebtoonListSection';
 import styled from 'styled-components';
-import { paddingUnderHeader } from '@styles/css';
 import PageLayout from '@layout/pageLayout';
 
 function Home() {
@@ -10,7 +9,7 @@ function Home() {
     <PageLayout pageTitle="Home">
       <MainBanner />
       <MainContentsWrapper className="wrapper">
-        <WebtoonList />
+        <WebtoonListSection />
       </MainContentsWrapper>
     </PageLayout>
   );
