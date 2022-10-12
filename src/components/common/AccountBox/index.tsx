@@ -1,10 +1,9 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 import { CSSTransition } from 'react-transition-group';
 import { Link } from 'react-router-dom';
 import AccountForm from './AccountForm';
 import useSearchParameters from '@hooks/useSearchParameters';
-import useToken from '@hooks/useToken';
 import { Icon, Logo } from 'toons-components';
 
 function AccountModal() {
@@ -13,7 +12,6 @@ function AccountModal() {
   const isSignUp = useMemo(() => {
     return queryParams[0] === 'signUp';
   }, [queryParams]);
-  const { tokenFromLS, removeToken } = useToken();
 
   const onClickSignUp = useCallback(() => {
     appendSearchParams({ authType: 'signUp' });
@@ -36,18 +34,6 @@ function AccountModal() {
     },
     [],
   );
-
-  useEffect(() => {
-    // to avoid scrolling
-    document.body.style.overflow = 'hidden';
-
-    return () => {
-      document.body.style.overflow = 'auto';
-      if (tokenFromLS === 'expired') {
-        removeToken();
-      }
-    };
-  }, []);
 
   return (
     <LoginWrapper
