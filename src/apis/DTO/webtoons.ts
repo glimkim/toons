@@ -57,3 +57,8 @@ export type DayOfWeek =
   | 'FRIDAY'
   | 'SATURDAY'
   | 'SUNDAY';
+
+export interface WebtoonItem extends WebtoonItemResponseDTO {
+  toNotify: boolean;
+  alarmId?: number;
+}
