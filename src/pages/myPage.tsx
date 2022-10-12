@@ -2,7 +2,7 @@ import useAlarmMutation from '@hooks/api/useAlarmMutation';
 import PageLayout from '@layout/pageLayout';
 import { StoreState } from '@store/root';
 import { paddingUnderHeader } from '@styles/css';
-import React, { HTMLAttributes, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -26,25 +26,22 @@ function MyPage() {
         title: _tab,
         contents: (
           <List id="my-page-list">
-            {yourAlarms.map(
-              (_alarm) =>
-                (
-                  <ListItem
-                    key={_alarm.alarmId}
-                    itemInfo={{ ..._alarm, toNotify: true }}
-                    onToggleItem={(isActive, handleToggleView) =>
-                      onToggleItem(
-                        {
-                          ..._alarm,
-                          toNotify: isActive,
-                        },
-                        isActive,
-                        handleToggleView,
-                      )
-                    }
-                  />
-                ) as HTMLAttributes<HTMLLIElement>,
-            )}
+            {yourAlarms.map((_alarm) => (
+              <ListItem
+                key={_alarm.alarmId}
+                itemInfo={{ ..._alarm, toNotify: true }}
+                onToggleItem={(isActive, handleToggleView) =>
+                  onToggleItem(
+                    {
+                      ..._alarm,
+                      toNotify: isActive,
+                    },
+                    isActive,
+                    handleToggleView,
+                  )
+                }
+              />
+            ))}
           </List>
         ),
       };
