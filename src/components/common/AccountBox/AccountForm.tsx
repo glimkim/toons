@@ -33,7 +33,7 @@ export const debounceChange = _.debounce(
     e: React.ChangeEvent<HTMLInputElement>,
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
   ) => onChange(e),
-  300,
+  250,
 );
 
 const signInSchema = yup.object({
