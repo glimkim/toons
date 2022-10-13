@@ -2,7 +2,7 @@ import { Token } from '@apis/DTO/auth';
 import Header from '@components/common/Header';
 import AccountModal from '@components/common/AccountBox';
 import useAlarms from '@hooks/api/useAlarms';
-import useSearchParameters from '@hooks/useSearchParameters';
+import useSearchParameters, { QueryKey } from '@hooks/useSearchParameters';
 import useToken from '@hooks/useToken';
 import { resetList, updateList } from '@store/modules/alarms';
 import { unsetAlert } from '@store/modules/alert';
@@ -13,13 +13,13 @@ import React, {
   useCallback,
   useEffect,
   useLayoutEffect,
-  useMemo,
   useState,
 } from 'react';
 import { useIsFetching, useIsMutating } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import { Dialog, Loader, Alert } from 'toons-components';
 import useUserInfo from '@hooks/api/useUserInfo';
+import EditForm from '@components/my-page/EditUserInfoForm';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -32,10 +32,7 @@ function Common({ children }: LayoutProps) {
   const dispatch = useDispatch();
   const { tokenFromLS, setTokenDue } = useToken();
   const [fontsLoaded, setFontsLoaded] = useState<boolean>(false);
-  const { queryParams, deleteSearchParams } = useSearchParameters('authType');
-  const openAuth = useMemo(() => {
-    return queryParams[0]?.includes('sign');
-  }, [queryParams[0]]);
+  const { queryParams, deleteSearchParams } = useSearchParameters();
   const isFetching = useIsFetching({
     predicate: (query) => {
       return query.queryKey.includes('webtoon');
@@ -49,14 +46,45 @@ function Common({ children }: LayoutProps) {
       );
     },
   });
+  const initialModalState = {
+    open: false,
+    component: '',
+  };
+  const [modal, setModal] = useState<{
+    open: boolean;
+    onCloseModal?: () => void;
+    component: React.ReactNode;
+  }>(initialModalState);
+
+  useEffect(() => {
+    setModal(() => {
+      const currentParam: { [key in QueryKey]?: string } = queryParams[0];
+      const onCloseModal = (queryKey: QueryKey) => {
+        deleteSearchParams(queryKey);
+        setModal(initialModalState);
+      };
+
+      if (currentParam) {
+        if (currentParam?.authType && currentParam.authType.includes('sign')) {
+          return {
+            open: true,
+            onCloseModal: () => onCloseModal('authType'),
+            component: <AccountModal />,
+          };
+        } else if (currentParam?.userInfo && currentParam.userInfo === 'edit') {
+          return {
+            open: true,
+            onCloseModal: () => onCloseModal('userInfo'),
+            component: <EditForm />,
+          };
+        } else return initialModalState;
+      } else return initialModalState;
+    });
+  }, [queryParams, deleteSearchParams, setModal]);
 
   const onCloseAlert = useCallback(() => {
     dispatch(unsetAlert());
   }, [unsetAlert]);
-
-  const onCloseAuthBox = useCallback(() => {
-    deleteSearchParams('authType');
-  }, [deleteSearchParams]);
 
   useLayoutEffect(() => {
     (document as Document).fonts.ready
@@ -101,8 +129,8 @@ function Common({ children }: LayoutProps) {
       {isMutating > 0 && <Loader isPartial={false} />}
       <Header />
       {children}
-      <Dialog open={openAuth} onClose={onCloseAuthBox}>
-        <AccountModal />
+      <Dialog open={modal.open} onClose={modal.onCloseModal}>
+        {modal.component}
       </Dialog>
     </>
   );
