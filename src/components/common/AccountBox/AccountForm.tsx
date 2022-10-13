@@ -16,6 +16,7 @@ import _ from 'lodash';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { AxiosError } from 'axios';
+import { debounceChange } from '@utils/debounceChange';
 interface FormProps {
   forSignUp: boolean;
 }
@@ -27,14 +28,6 @@ export interface FormValues {
   phoneNumber: string;
   code: string;
 }
-
-export const debounceChange = _.debounce(
-  (
-    e: React.ChangeEvent<HTMLInputElement>,
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
-  ) => onChange(e),
-  250,
-);
 
 const signInSchema = yup.object({
   email: yup
