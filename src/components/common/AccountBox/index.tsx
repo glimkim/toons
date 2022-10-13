@@ -7,10 +7,10 @@ import useSearchParameters from '@hooks/useSearchParameters';
 import { Icon, Logo } from 'toons-components';
 
 function AccountModal() {
-  // const [isSignUp, setIsSignUp] = useState<boolean>(false);
-  const { queryParams, appendSearchParams } = useSearchParameters('authType');
+  const paramKey = 'authType';
+  const { queryParams, appendSearchParams } = useSearchParameters(paramKey);
   const isSignUp = useMemo(() => {
-    return queryParams[0] === 'signUp';
+    return queryParams[0] && queryParams[0][paramKey] === 'signUp';
   }, [queryParams]);
 
   const onClickSignUp = useCallback(() => {
