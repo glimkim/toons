@@ -1,8 +1,9 @@
 import useAlarmMutation from '@hooks/api/useAlarmMutation';
+import useSearchParameters from '@hooks/useSearchParameters';
 import PageLayout from '@layout/pageLayout';
 import { StoreState } from '@store/root';
 import { paddingUnderHeader } from '@styles/css';
-import React, { useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -13,6 +14,7 @@ function MyPage() {
   const { user, alarms } = useSelector((state: StoreState) => state);
   const { onToggleItem } = useAlarmMutation();
   const navigate = useNavigate();
+  const { appendSearchParams } = useSearchParameters();
 
   const notiTabs = useMemo(() => {
     const tabs = ['ALL', 'NAVER', 'KAKAO'];
@@ -48,6 +50,10 @@ function MyPage() {
     });
   }, [alarms, onToggleItem]);
 
+  const onClickEditBtn = useCallback(() => {
+    appendSearchParams({ userInfo: 'edit' });
+  }, [appendSearchParams]);
+
   useEffect(() => {
     let count = 0;
     const moveToHomeInterval = setInterval(() => {
@@ -74,7 +80,7 @@ function MyPage() {
               Hello,
               <br />
               {user.username}!{' '}
-              <button type="button">
+              <button type="button" onClick={onClickEditBtn}>
                 <Icon icon="Edit" />
               </button>
             </h6>
