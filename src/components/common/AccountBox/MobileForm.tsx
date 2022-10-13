@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { CSSTransition } from 'react-transition-group';
 import { Button, Input } from 'toons-components';
@@ -10,18 +10,24 @@ import {
   MobileVerificationRequestDTO,
 } from '@apis/DTO/auth';
 import { Controller, useFormContext } from 'react-hook-form';
-import { debounceChange, FormValues } from './AccountForm';
+import { FormValues } from './AccountForm';
 import _ from 'lodash';
 import { useDispatch } from 'react-redux';
 import { setAlert } from '@store/modules/alert';
 import { AxiosError } from 'axios';
 import useSearchParameters from '@hooks/useSearchParameters';
+import { debounceChange } from '@utils/debounceChange';
 
 interface MobileFormProps {
   onMobileVerified: () => void;
+  editMobile?: {
+    isSavedMobile: boolean;
+    defaultMobile: string;
+  };
 }
 
-function MobileForm({ onMobileVerified }: MobileFormProps) {
+function MobileForm({ onMobileVerified, editMobile }: MobileFormProps) {
+  console.log(editMobile);
   const dispatch = useDispatch();
   const [sentCode, setSentCode] = useState(false);
   const { getValues, control, formState } = useFormContext<FormValues>();
@@ -37,6 +43,9 @@ function MobileForm({ onMobileVerified }: MobileFormProps) {
       checkMobileVerification(verificationInfo),
   );
   const { queryParams } = useSearchParameters('authType');
+  const authType = useMemo(() => {
+    return queryParams[0] && queryParams[0].authType;
+  }, [queryParams]);
 
   const sendVerificationCode = useCallback(() => {
     sendCodeAsync({
@@ -97,22 +106,22 @@ function MobileForm({ onMobileVerified }: MobileFormProps) {
             <Controller
               name="phoneNumber"
               control={control}
-              render={({ field: { onChange } }) => (
+              defaultValue={editMobile?.defaultMobile}
+              render={({ field: { onChange, value } }) => (
                 <PhoneInput
                   placeholder="Enter your mobile number"
                   autoComplete="tel"
-                  onChange={(e) => {
-                    _.debounce(() => {
-                      onChange(e);
-                    }, 400)();
-                  }}
-                  required={queryParams[0] === 'signUp'}
+                  onChange={onChange}
+                  value={value}
+                  required={authType !== 'signIn'}
                 />
               )}
             />
-            <Button onClick={sendVerificationCode} size="small">
-              Send Code
-            </Button>
+            {!editMobile?.isSavedMobile && (
+              <Button onClick={sendVerificationCode} size="small">
+                Send Code
+              </Button>
+            )}
           </div>
           {errors.phoneNumber?.message && (
             <p className="phoneErrorTxt">{errors.phoneNumber?.message}</p>
@@ -138,7 +147,7 @@ function MobileForm({ onMobileVerified }: MobileFormProps) {
                 btnText: 'Verify',
                 onClickBtn: onClickVerifyMobile,
               }}
-              required={queryParams[0] === 'signUp'}
+              required={authType === 'signUp'}
               errorText={errors.code?.message}
             />
           )}
