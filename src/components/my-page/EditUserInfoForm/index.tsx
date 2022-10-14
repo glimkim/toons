@@ -9,6 +9,7 @@ import { FormProvider, useForm, Controller } from 'react-hook-form';
 import { useMutation } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { queryClient } from '../../../App';
 import styled from 'styled-components';
 import { Button, Input } from 'toons-components';
 import * as yup from 'yup';
@@ -68,6 +69,7 @@ function EditForm() {
       isMobileVerified
         ? updateUserInfo(e)
             .then(() => {
+              queryClient.refetchQueries('user-info');
               dispatch(
                 setAlert({
                   alertType: 'SUCCESS',
@@ -92,7 +94,7 @@ function EditForm() {
             }),
           );
     },
-    [isMobileVerified, updateUserInfo, navigate],
+    [isMobileVerified, updateUserInfo, navigate, queryClient],
   );
 
   useEffect(() => {
