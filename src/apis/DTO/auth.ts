@@ -15,6 +15,12 @@ export interface SignInRequestDTO {
 export interface SignInResponseDTO {
   token: string;
 }
+
+export interface UpdateUserRequestDTO {
+  email: string;
+  username: string;
+  phoneNumber: string;
+}
 export interface Token {
   email: string;
   exp: number;

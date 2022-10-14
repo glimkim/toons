@@ -5,6 +5,7 @@ import {
   MobileVerificationRequestDTO,
   SignInRequestDTO,
   SignUpRequestDTO,
+  UpdateUserRequestDTO,
   UserInfo,
 } from './DTO/auth';
 
@@ -31,6 +32,17 @@ export const checkMobileVerification = async (
 export const getUserInfoAPI = async (token: string) => {
   return (
     await Axios.get<UserInfo>('/api/members', {
+      headers: getAPIHeaderWithAuth(token),
+    })
+  ).data;
+};
+
+export const updateUserInfoAPI = async (
+  updateInfo: UpdateUserRequestDTO,
+  token: string,
+) => {
+  return (
+    await Axios.put('/api/members', updateInfo, {
       headers: getAPIHeaderWithAuth(token),
     })
   ).data;
