@@ -125,13 +125,13 @@ function Common({ children }: LayoutProps) {
   if (!fontsLoaded && isFetching > 0) return <Loader theme={'mix'} />;
   return (
     <>
-      <Alert {...alert} onCloseAlert={onCloseAlert} />
       {isMutating > 0 && <Loader isPartial={false} />}
       <Header />
       {children}
       <Dialog open={modal.open} onClose={modal.onCloseModal}>
         {modal.component}
       </Dialog>
+      <Alert {...alert} onCloseAlert={onCloseAlert} />
     </>
   );
 }
