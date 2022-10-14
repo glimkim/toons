@@ -27,7 +27,6 @@ interface MobileFormProps {
 }
 
 function MobileForm({ onMobileVerified, editMobile }: MobileFormProps) {
-  console.log(editMobile);
   const dispatch = useDispatch();
   const [sentCode, setSentCode] = useState(false);
   const { getValues, control, formState } = useFormContext<FormValues>();
